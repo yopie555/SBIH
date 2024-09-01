@@ -10,7 +10,7 @@ const DetailDashboard = () => {
   return (
     <Tab.Navigator
     screenOptions={{
-        tabBarActiveTintColor: '#0061A6',
+        tabBarActiveTintColor: '#0074BD',
         tabBarInactiveTintColor: '#979797',
         tabBarLabelStyle: {
           fontSize: 14,

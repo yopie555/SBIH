@@ -25,7 +25,12 @@ const DashboardDrawer = () => {
         </DrawerContentScrollView>
       }
     >
-      <Drawer.Screen name="Smart Bintan in Hand" component={Dashboard} options={{}} />
+      <Drawer.Screen
+        name="Smart Bintan in Hand"
+        component={Dashboard}
+        options={{
+          headerTitleAlign: 'center',
+        }} />
     </Drawer.Navigator>
   )
 }
