@@ -26,10 +26,11 @@ const Index = () => {
                     style={styles.cardDashbord}
                     onPress={() => navigation.navigate('DetailDashboard')}
                 >
-                    <View style={{ flexDirection: 'row' }}>
+                    <View style={{ flexDirection: 'row', alignItems:'center' }}>
                         <Image source={pendudukmiskin} style={styles.iconImage} />
                         <View style={{ paddingHorizontal: 10, width: '82%' }}>
                             <Text style={styles.titleText}>Jumlah Penduduk Miskin</Text>
+                            <Text style={styles.subTitleText}>Tahun 2024</Text>
                             <Text style={styles.subTitleText}>15%</Text>
                         </View>
                     </View>
@@ -38,10 +39,11 @@ const Index = () => {
                     style={styles.cardDashbord}
                     onPress={() => navigation.navigate('DetailDashboard')}
                 >
-                    <View style={{ flexDirection: 'row' }}>
+                    <View style={{ flexDirection: 'row',  alignItems:'center', padding: 'auto'  }}>
                         <Image source={indexpembangunanmanusia} style={styles.iconImage} />
-                        <View style={{ paddingHorizontal: 10, width: '82%' }}>
-                            <Text style={styles.titleText}>Indeks Pembangunan Manusia</Text>
+                        <View style={{ paddingHorizontal: 10, width: '84%' }}>
+                            <Text numberOfLines={2} style={styles.titleText}>Indeks Pembangunan Manusia</Text>
+                            <Text style={styles.subTitleText}>Tahun 2024</Text>
                             <Text style={styles.subTitleText}>15%</Text>
                         </View>
                     </View>
@@ -156,7 +158,7 @@ const styles = StyleSheet.create({
     titleText: {
         fontWeight: 'bold',
         fontSize: 20,
-        color: 'white'
+        color: 'white',
     },
     subTitleText: {
         color: 'white'
