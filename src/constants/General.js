@@ -1,0 +1,1 @@
+export const baseURL = 'https://bih.bintankab.go.id/api/v1';
