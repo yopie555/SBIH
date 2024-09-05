@@ -5,9 +5,16 @@ import { createDrawerNavigator, DrawerContentScrollView } from '@react-navigatio
 import { createStackNavigator } from '@react-navigation/stack'
 
 import Dashboard from './src/screens/dashboard/Index'
-import DetailDashboard from './src/screens/dashboard/DetailDashboard'
-import DetailMasyMiskin from './src/screens/masyMiskin/DetailMasyMiskin';
-import GrafikMasyMiskin from './src/screens/masyMiskin/GrafikMasyMiskin';
+import DetailDashboard from './src/screens/DetailDashboard/DetailDashboard'
+import DetailIPMDashboard from './src/screens/DetailDashboard/DetailIPMDashboard';
+import DetailRLSDashboard from './src/screens/DetailDashboard/DetailRLSDashboard';
+import DetailIGDashboard from './src/screens/DetailDashboard/DetailIGDashboard';
+import DetailIDBDashboard from './src/screens/DetailDashboard/DetailIDBDashboard'
+import DetailPEDashboard from './src/screens/DetailDashboard/DetailPEDashboard';
+import DetailKWDashboard from './src/screens/DetailDashboard/DetailKWDashboard';
+import DetailPPDashboard from './src/screens/DetailDashboard/DetailPPDashboard.js';
+import DetailPJDDDashboard from './src/screens/DetailDashboard/DetailPJDDDashboard.js';
+import DetailPRTDashboard from './src/screens/DetailDashboard/DetailPRTDashboard.js';
 
 import DrawerContent from './src/components/DrawerContent'
 
@@ -50,13 +57,48 @@ const App = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="DetailMasyMiskin"
-          component={DetailMasyMiskin}
+          name="DetailIPMDashboard"
+          component={DetailIPMDashboard}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="GrafikMasyMiskin"
-          component={GrafikMasyMiskin}
+          name="DetailRLSDashboard"
+          component={DetailRLSDashboard}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DetailIGDashboard"
+          component={DetailIGDashboard}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DetailIDBDashboard"
+          component={DetailIDBDashboard}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DetailPEDashboard"
+          component={DetailPEDashboard}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DetailKWDashboard"
+          component={DetailKWDashboard}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DetailPPDashboard"
+          component={DetailPPDashboard}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DetailPJDDDashboard"
+          component={DetailPJDDDashboard}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DetailPRTDashboard"
+          component={DetailPRTDashboard}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

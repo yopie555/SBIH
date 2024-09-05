@@ -64,26 +64,26 @@ const DrawerContent = () => {
                 <List.Accordion
                     title="Pertanian dan Perikanan"
                     left={props => <List.Icon {...props} icon="folder" />}>
-                    <List.Item title="Produksi Perikanan Budidaya" />
-                    <List.Item title="Produksi Perikanan Tangkap" />
-                    <List.Item title="Capaikan Produksi Komoditi Unggulan Perkebunan" />
-                    <List.Item title="Capaikan Produksi Komoditi Hortikultura" />
-                    <List.Item title="Jumlah Produksi Peternakan" />
+                    <List.Item titleNumberOfLines={2} title="Produksi Perikanan Budidaya" />
+                    <List.Item titleNumberOfLines={2} title="Produksi Perikanan Tangkap" />
+                    <List.Item titleNumberOfLines={3} title="Capaikan Produksi Komoditi Unggulan Perkebunan" />
+                    <List.Item titleNumberOfLines={2} title="Capaikan Produksi Komoditi Hortikultura" />
+                    <List.Item titleNumberOfLines={2} title="Jumlah Produksi Peternakan" />
                 </List.Accordion>
                 <List.Accordion
                     title="Kependudukan"
                     left={props => <List.Icon {...props} icon="folder" />}>
-                    <List.Item title="Pertumbuhan Penduduk" />
-                    <List.Item title="Jumlah Penduduk" />
-                    <List.Item title="Jumlah Penduduk Berdasarkan Kelompok Umur" />
-                    <List.Item title="Jumlah Penduduk berdasarkan Kecamatan Tahun 2021" />
+                    <List.Item titleNumberOfLines={2} title="Pertumbuhan Penduduk" />
+                    <List.Item titleNumberOfLines={2} title="Jumlah Penduduk" />
+                    <List.Item titleNumberOfLines={3} title="Jumlah Penduduk Berdasarkan Kelompok Umur" />
+                    <List.Item titleNumberOfLines={3} title="Jumlah Penduduk berdasarkan Kecamatan Tahun 2021" />
                 </List.Accordion>
                 <List.Accordion
                     title="Infrastruktur"
                     left={props => <List.Icon {...props} icon="folder" />}>
-                    <List.Item title="Panjang Jalan yang Di Bangun dan Ditingkatkan" />
-                    <List.Item title="Persentase Rumah Tangga (RT) yang Menggunakan Air Bersih" />
-                    <List.Item title="Persentase Tingkat Kemantapan Jalan (Mantap Sempurna)" />
+                    <List.Item titleNumberOfLines={3} title="Panjang Jalan yang Di Bangun dan Ditingkatkan" />
+                    <List.Item titleNumberOfLines={3} title="Persentase Rumah Tangga (RT) yang Menggunakan Air Bersih" />
+                    <List.Item titleNumberOfLines={3} title="Persentase Tingkat Kemantapan Jalan (Mantap Sempurna)" />
                 </List.Accordion>
                 <List.Accordion
                     title="Video"

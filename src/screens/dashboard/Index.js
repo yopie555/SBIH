@@ -53,7 +53,7 @@ const Index = () => {
             setDataPJD(resPJD.data)
             setDataPAB(resPAB.data)
         } catch (error) {
-            console.log(error)
+            console.log("errror", error)
         }
     }
 
@@ -66,8 +66,8 @@ const Index = () => {
     //     if (dataJPM !== null && dataJPM !== undefined) {
     //         // console.log(JSON.stringify(dataJPM.last_data[0].tahun))
     //     }
-    // }, [dataJPM])
-    
+    // }, [dataJPM])x    
+
     return (
         <View style={styles.container}>
             <Image
@@ -77,7 +77,10 @@ const Index = () => {
             <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                 <TouchableOpacity
                     style={styles.cardDashbord}
-                    onPress={() => navigation.navigate('DetailDashboard')}
+                    onPress={() => navigation.navigate('DetailDashboard', {
+                        title: "Data Penduduk Miskin",
+                        data: dataJPM.result
+                    })}
                 >
                     <View style={styles.innerCard}>
                         <Image source={pendudukmiskin} style={styles.iconImage} />
@@ -97,7 +100,10 @@ const Index = () => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.cardDashbord}
-                    onPress={() => navigation.navigate('DetailDashboard')}
+                    onPress={() => navigation.navigate('DetailIPMDashboard', {
+                        title: "Indeks Pembangunan Manusia",
+                        data: dataIPM.result
+                    })}
                 >
                     <View style={styles.innerCard}>
                         <Image source={indexpembangunanmanusia} style={styles.iconImage} />
@@ -105,20 +111,23 @@ const Index = () => {
                             <Text numberOfLines={2} style={styles.titleText}>Indeks Pembangunan Manusia</Text>
                             {
                                 dataIPM !== null && dataIPM !== undefined ?
-                                <Text style={styles.subTitleText}>Tahun {dataIPM.last_data[0].tahun}</Text>
-                                : <ActivityIndicator size="small" color="#fff" />
+                                    <Text style={styles.subTitleText}>Tahun {dataIPM.last_data[0].tahun}</Text>
+                                    : <ActivityIndicator size="small" color="#fff" />
                             }
                             {
                                 dataIPM !== null && dataIPM !== undefined ?
-                            <Text style={styles.subTitleText}>{dataIPM.last_data[0].ipm} %</Text>
-                            : <ActivityIndicator size="small" color="#fff" />
+                                    <Text style={styles.subTitleText}>{dataIPM.last_data[0].ipm} %</Text>
+                                    : <ActivityIndicator size="small" color="#fff" />
                             }
                         </View>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.cardDashbord}
-                    onPress={() => navigation.navigate('DetailDashboard')}
+                    onPress={() => navigation.navigate('DetailRLSDashboard', {
+                        title: "Angka Rata-Rata Lama Sekolah",
+                        data: dataALS.result
+                    })}
                 >
                     <View style={styles.innerCard}>
                         <Image source={AngkaSekolah} style={styles.iconImage} />
@@ -137,7 +146,10 @@ const Index = () => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.cardDashbord}
-                    onPress={() => navigation.navigate('DetailDashboard')}
+                    onPress={() => navigation.navigate('DetailIGDashboard', {
+                        title: "Indeks Gini",
+                        data: dataIG.result
+                    })}
                 >
                     <View style={styles.innerCard}>
                         <Image source={indexGini} style={styles.iconImage} />
@@ -156,7 +168,11 @@ const Index = () => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.cardDashbord}
-                    onPress={() => navigation.navigate('DetailDashboard')}
+                    onPress={() => navigation.navigate('DetailIDBDashboard', {
+                        title: "Indeks Daya Beli",
+                        data: dataIDB.result
+                    }
+                    )}
                 >
                     <View style={styles.innerCard}>
                         <Image source={indexDayaBeli} style={styles.iconImage} />
@@ -175,7 +191,10 @@ const Index = () => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.cardDashbord}
-                    onPress={() => navigation.navigate('DetailDashboard')}
+                    onPress={() => navigation.navigate('DetailPEDashboard', {
+                        title: "Pertumbuhan Ekonomi",
+                        data: dataPE.result
+                    })}
                 >
                     <View style={styles.innerCard}>
                         <Image source={pertumbuhanEkonomi} style={styles.iconImage} />
@@ -183,20 +202,23 @@ const Index = () => {
                             <Text style={styles.titleText}>Pertumbuhan Ekonomi</Text>
                             {
                                 dataPE !== null && dataPE !== undefined ?
-                                <Text style={styles.subTitleText}>Tahun {dataPE.last_data[0].tahun}</Text>
-                                : <ActivityIndicator size="small" color="#fff" />
+                                    <Text style={styles.subTitleText}>Tahun {dataPE.last_data[0].tahun}</Text>
+                                    : <ActivityIndicator size="small" color="#fff" />
                             }
                             {
                                 dataPE !== null && dataPE !== undefined ?
-                                <Text style={styles.subTitleText}>{dataPE.last_data[0].pertumbuhan_ekonomi} %</Text>
-                                : <ActivityIndicator size="small" color="#fff" />
+                                    <Text style={styles.subTitleText}>{dataPE.last_data[0].pertumbuhan_ekonomi} %</Text>
+                                    : <ActivityIndicator size="small" color="#fff" />
                             }
                         </View>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.cardDashbord}
-                    onPress={() => navigation.navigate('DetailDashboard')}
+                    onPress={() => navigation.navigate('DetailKWDashboard', {
+                        title: "Kunjungan Wisata",
+                        data: dataKW.result
+                    })}
                 >
                     <View style={styles.innerCard}>
                         <Image source={kunjunganWisata} style={styles.iconImage} />
@@ -204,20 +226,23 @@ const Index = () => {
                             <Text style={styles.titleText}>Kunjungan Wisata</Text>
                             {
                                 dataKW !== null && dataKW !== undefined ?
-                                <Text style={styles.subTitleText}>Tahun {dataKW.last_data[0].tahun}</Text>
-                                : <ActivityIndicator size="small" color="#fff" />
+                                    <Text style={styles.subTitleText}>Tahun {dataKW.last_data[0].tahun}</Text>
+                                    : <ActivityIndicator size="small" color="#fff" />
                             }
                             {
                                 dataKW !== null && dataKW !== undefined ?
-                                <Text style={styles.subTitleText}>{dataKW.last_data[0].jumlah} Orang</Text>
-                                : <ActivityIndicator size="small" color="#fff" />
+                                    <Text style={styles.subTitleText}>{dataKW.last_data[0].jumlah} Orang</Text>
+                                    : <ActivityIndicator size="small" color="#fff" />
                             }
                         </View>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.cardDashbord}
-                    onPress={() => navigation.navigate('DetailDashboard')}
+                    onPress={() => navigation.navigate('DetailPPDashboard', {
+                        title: "Pertumbuhan Penduduk",
+                        data: dataPP.result
+                    })}
                 >
                     <View style={styles.innerCard}>
                         <Image source={pertumbuhanPenduduk} style={styles.iconImage} />
@@ -225,20 +250,23 @@ const Index = () => {
                             <Text style={styles.titleText}>Pertumbuhan Penduduk</Text>
                             {
                                 dataPP !== null && dataPP !== undefined ?
-                                <Text style={styles.subTitleText}>Tahun {dataPP.last_data[0].tahun}</Text>
-                                : <ActivityIndicator size="small" color="#fff" />
+                                    <Text style={styles.subTitleText}>Tahun {dataPP.last_data[0].tahun}</Text>
+                                    : <ActivityIndicator size="small" color="#fff" />
                             }
                             {
                                 dataPP !== null && dataPP !== undefined ?
-                                <Text style={styles.subTitleText}>{dataPP.last_data[0].laju} %</Text>
-                                : <ActivityIndicator size="small" color="#fff" />
+                                    <Text style={styles.subTitleText}>{dataPP.last_data[0].laju} %</Text>
+                                    : <ActivityIndicator size="small" color="#fff" />
                             }
                         </View>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.cardDashbord}
-                    onPress={() => navigation.navigate('DetailDashboard')}
+                    onPress={() => navigation.navigate('DetailPJDDDashboard',{
+                        title: "Panjang Jalan Dibangun",
+                        data: dataPJD.result
+                    })}
                 >
                     <View style={styles.innerCard}>
                         <Image source={panjangJalanDibangun} style={styles.iconImage} />
@@ -246,20 +274,25 @@ const Index = () => {
                             <Text style={styles.titleText}>Panjang Jalan Dibangun</Text>
                             {
                                 dataPJD !== null && dataPJD !== undefined ?
-                                <Text style={styles.subTitleText}>Tahun {dataPJD.last_data[0].tahun}</Text>
-                                : <ActivityIndicator size="small" color="#fff" />
+                                    <Text style={styles.subTitleText}>Tahun {dataPJD.last_data[0].tahun}</Text>
+                                    : <ActivityIndicator size="small" color="#fff" />
                             }
                             {
                                 dataPJD !== null && dataPJD !== undefined ?
-                                <Text style={styles.subTitleText}>{dataPJD.last_data[0].panjang} Km</Text>
-                                : <ActivityIndicator size="small" color="#fff" />
+                                    <Text style={styles.subTitleText}>{dataPJD.last_data[0].panjang} Km</Text>
+                                    : <ActivityIndicator size="small" color="#fff" />
                             }
                         </View>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.cardDashbord}
-                    onPress={() => navigation.navigate('DetailDashboard')}
+                    onPress={() => navigation.navigate('DetailPRTDashboard',
+                        {
+                            title: "Persentase Penggunaan Air Bersih",
+                            data: dataPAB.result
+                        }
+                    )}
                 >
                     <View style={styles.innerCard}>
                         <Image source={penggunaanAirBersih} style={styles.iconImage} />
@@ -267,13 +300,13 @@ const Index = () => {
                             <Text style={styles.titleText}>Persentase Penggunaan Air Bersih</Text>
                             {
                                 dataPAB !== null && dataPAB !== undefined ?
-                                <Text style={styles.subTitleText}>Tahun {dataPAB.last_data[0].tahun}</Text>
-                                : <ActivityIndicator size="small" color="#fff" />
+                                    <Text style={styles.subTitleText}>Tahun {dataPAB.last_data[0].tahun}</Text>
+                                    : <ActivityIndicator size="small" color="#fff" />
                             }
                             {
                                 dataPAB !== null && dataPAB !== undefined ?
-                                <Text style={styles.subTitleText}>{dataPAB.last_data[0].nilai} %</Text>
-                                : <ActivityIndicator size="small" color="#fff" />
+                                    <Text style={styles.subTitleText}>{dataPAB.last_data[0].nilai} %</Text>
+                                    : <ActivityIndicator size="small" color="#fff" />
                             }
                         </View>
                     </View>
@@ -289,7 +322,7 @@ const styles = StyleSheet.create({
     },
     cardDashbord: {
         width: '90%',
-        height: 100,
+        height: 'auto',
         backgroundColor: '#0074BD',
         padding: 10,
         marginHorizontal: '5%',
@@ -297,10 +330,10 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         marginVertical: 5
     },
-    innerCard:{ 
-        flexDirection: 'row', 
-        alignItems: 'center', 
-        padding: 'auto' 
+    innerCard: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingVertical: 5
     },
     iconImage: {
         height: 50,
