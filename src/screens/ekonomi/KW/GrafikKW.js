@@ -4,7 +4,7 @@ import {
   LineChart,
 } from "react-native-chart-kit";
 
-const GrafikPE = (props) => {
+const GrafikKW = (props) => {
   const data = props.route.params.data
   //mapping data tahun ganjil
   const dataTahunGanjil = data.filter((item, index) => index % 2 !== 0)
@@ -12,7 +12,7 @@ const GrafikPE = (props) => {
   return (
     <View style={{flex: 1 }}>
       <View style={{ padding: 10 }}>
-        <Text style={{ fontWeight: 'bold', fontSize: 20, textAlign: 'center' }}>{props.route.params.title}</Text>
+        <Text style={{ fontWeight: 'bold', fontSize: 20, textAlign: 'center', color: 'black'  }}>{props.route.params.title}</Text>
         <Text>Sumber Data: <Text style={{ color: 'red' }}>BPS</Text></Text>
       </View>
   <LineChart
@@ -62,4 +62,4 @@ const GrafikPE = (props) => {
   )
 }
 
-export default GrafikPE
+export default GrafikKW

@@ -1,11 +1,11 @@
 import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import React from 'react'
 
-const DetailIPM = (props) => {
+const DetailIDB = (props) => {
   return (
     <View style={{flex: 1}}>
       <View style={{ padding: 10 }}>
-        <Text style={{ fontWeight: 'bold', fontSize: 20, textAlign: 'center' }}>{props.route.params.title}</Text>
+        <Text style={{ fontWeight: 'bold', fontSize: 20, textAlign: 'center', color: 'black'  }}>{props.route.params.title}</Text>
         <Text>Sumber Data: <Text style={{ color: 'red' }}>BPS</Text></Text>
       </View>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -25,6 +25,6 @@ const DetailIPM = (props) => {
   )
 }
 
-export default DetailIPM
+export default DetailIDB
 
 const styles = StyleSheet.create({})

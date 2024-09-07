@@ -17,13 +17,13 @@ const DrawerContent = () => {
                 style={{ flexDirection: 'row', alignItems: 'center' }}
             >
                 <Icon name="home" size={30} color="black" style={{ marginVertical: 10, marginHorizontal: 10 }} />
-                <Text style={{ marginVertical: 10, marginHorizontal: 10 }}>Home</Text>
+                <Text style={{ marginVertical: 10, marginHorizontal: 10, color: 'black'  }}>Home</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 style={{ flexDirection: 'row', alignItems: 'center' }}
             >
                 <Icon2 name="setting" size={30} color="black" style={{ marginVertical: 10, marginHorizontal: 10 }} />
-                <Text style={{ marginVertical: 10, marginHorizontal: 10 }}>Tentang Kami</Text>
+                <Text style={{ marginVertical: 10, marginHorizontal: 10, color: 'black'  }}>Tentang Kami</Text>
             </TouchableOpacity>
             {/* separator */}
             <View style={{ borderBottomWidth: 1, borderBottomColor: 'black', marginVertical: 5 }}></View>
@@ -94,20 +94,20 @@ const DrawerContent = () => {
             {/* separator with text inline */}
             <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 5 }}>
                 <View style={{ borderBottomWidth: 1, borderBottomColor: 'black', flex: 1 }}></View>
-                <Text style={{ marginHorizontal: 5 }}>E-money</Text>
+                <Text style={{ marginHorizontal: 5, color: 'black'  }}>E-money</Text>
                 <View style={{ borderBottomWidth: 1, borderBottomColor: 'black', flex: 1 }}></View>
             </View>
             <TouchableOpacity
                 style={{ flexDirection: 'row', alignItems: 'center' }}
             >
-                <Icon name="chart-box" size={30} color="black" style={{ marginVertical: 10, marginHorizontal: 10 }} />
-                <Text style={{ marginVertical: 10, marginHorizontal: 10 }}>Anggaran Murni dan Perubahan</Text>
+                <Icon name="chart-box" size={30} color="black" style={{ marginVertical: 10, marginHorizontal: 10  }} />
+                <Text style={{ marginVertical: 10, marginHorizontal: 10, color: 'black'  }}>Anggaran Murni dan Perubahan</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 style={{ flexDirection: 'row', alignItems: 'center' }}
             >
                 <Icon name="chart-tree" size={30} color="black" style={{ marginVertical: 10, marginHorizontal: 10 }} />
-                <Text style={{ marginVertical: 10, marginHorizontal: 10 }}>Realisasi OPD</Text>
+                <Text style={{ marginVertical: 10, marginHorizontal: 10, color: 'black'  }}>Realisasi OPD</Text>
             </TouchableOpacity>
         </View>
     )
