@@ -1,8 +1,19 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native'
+import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, Alert } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import axios from 'axios'
 import { baseURL } from '../../constants/General'
+import { useQuery } from 'react-query'
+import { stateDataPenduduk } from '../../state/dataPenduduk'
+import { stateDataIPM } from '../../state/dataIPM'
+import { stateDataLamaSekolah } from '../../state/dataRLS'
+import { stateDataIndeksGini } from '../../state/dataIG'
+import { stateDataIndeksDayaBeli } from '../../state/dataIDB'
+import { stateDataPertumbuhanEkonomi } from '../../state/dataPE'
+import { stateDataKunjunganWisata } from '../../state/dataKW'
+import { stateDataPertumbuhanPenduduk } from '../../state/dataPP'
+import { stateDataPanjangJalanDibangun } from '../../state/dataPJD'
+import { stateDataPenggunaanAirBersih } from '../../state/dataPRT'
 
 import headerImage from '../../assets/1.png'
 import pendudukmiskin from '../../assets/pendudukmis.png'
@@ -18,55 +29,120 @@ import penggunaanAirBersih from '../../assets/PAB.png'
 
 const Index = () => {
     const navigation = useNavigation()
-    const [dataJPM, setDataJPM] = useState(null)
-    const [dataIPM, setDataIPM] = useState(null)
-    const [dataALS, setDataALS] = useState(null)
-    const [dataIG, setDataIG] = useState(null)
-    const [dataIDB, setDataIDB] = useState(null)
-    const [dataPE, setDataPE] = useState(null)
-    const [dataKW, setDataKW] = useState(null)
-    const [dataPP, setDataPP] = useState(null)
-    const [dataPJD, setDataPJD] = useState(null)
-    const [dataPAB, setDataPAB] = useState(null)
+    const { setDataPenduduk } = stateDataPenduduk()
+    const { setDataIPM } = stateDataIPM()
+    const { setDataLamaSekolah } = stateDataLamaSekolah()
+    const { setDataIndeksGini } = stateDataIndeksGini()
+    const { setDataIndeksDayaBeli } = stateDataIndeksDayaBeli()
+    const { setDataPertumbuhanEkonomi } = stateDataPertumbuhanEkonomi()
+    const { setDataKunjunganWisata } = stateDataKunjunganWisata()
+    const { setDataPertumbuhanPenduduk} = stateDataPertumbuhanPenduduk()
+    const { setDataPanjangJalanDibangun } = stateDataPanjangJalanDibangun()
+    const { setDataPenggunaanAirBersih } = stateDataPenggunaanAirBersih()
+    // console.log('state', state);
 
-    //get data multiple endpoint
-    const getData = async () => {
-        try {
-            const resJPM = await axios.get(`${baseURL}/sosial/ppm`)
-            const resIPM = await axios.get(`${baseURL}/sosial/ipm`)
-            const resALS = await axios.get(`${baseURL}/sosial/rls`)
-            const resIG = await axios.get(`${baseURL}/sosial/ig`)
-            const resIDB = await axios.get(`${baseURL}/sosial/idb`)
-            const resPE = await axios.get(`${baseURL}/ekonomi/pe`)
-            const resKW = await axios.get(`${baseURL}/ekonomi/kw`)
-            const resPP = await axios.get(`${baseURL}/kependudukan/pp`)
-            const resPJD = await axios.get(`${baseURL}/infrastruktur/pjdd`)
-            const resPAB = await axios.get(`${baseURL}/infrastruktur/prt`)
-            setDataJPM(resJPM.data)
-            setDataIPM(resIPM.data)
-            setDataALS(resALS.data)
-            setDataIG(resIG.data)
-            setDataIDB(resIDB.data)
-            setDataPE(resPE.data)
-            setDataKW(resKW.data)
-            setDataPP(resPP.data)
-            setDataPJD(resPJD.data)
-            setDataPAB(resPAB.data)
-        } catch (error) {
-            console.log("errror", error)
-        }
+    const datas = useQuery('dataJPM', async () => {
+        const res = await axios.get(`${baseURL}/sosial/ppm`)
+        setDataPenduduk(res?.data?.result)
+        return res.data
+    }, {
+        retry: 0,
+        keepPreviousData: true,
+    })
+
+    const dataIPM = useQuery('dataIPM', async () => {
+        const res = await axios.get(`${baseURL}/sosial/ipm`)
+        setDataIPM(res?.data?.result)
+        return res.data
+    }, {
+        retry: 0,
+        keepPreviousData: true,
+        enabled: datas.isSuccess
+    })
+
+    const dataALS = useQuery('dataALS', async () => {
+        const res = await axios.get(`${baseURL}/sosial/rls`)
+        setDataLamaSekolah(res?.data?.result)
+        return res.data
+    }, {
+        retry: 0,
+        keepPreviousData: true,
+        enabled: dataIPM.isSuccess
+    })
+
+    const dataIG = useQuery('dataIG', async () => {
+        const res = await axios.get(`${baseURL}/sosial/ig`)
+        setDataIndeksGini(res?.data?.result)
+        return res.data
     }
+        , {
+            retry: 0,
+            keepPreviousData: true,
+            enabled: dataALS.isSuccess
+        })
 
-    useEffect(() => {
-        getData()
-        return () => { }
-    }, [])
+    const dataIDB = useQuery('dataIdb', async () => {
+        const res = await axios.get(`${baseURL}/sosial/idb`)
+        setDataIndeksDayaBeli(res?.data?.result)
+        return res.data
+    }, {
+        retry: 0,
+        keepPreviousData: true,
+        enabled: dataIG.isSuccess
+    })
 
-    // useEffect(() => {
-    //     if (dataJPM !== null && dataJPM !== undefined) {
-    //         // console.log(JSON.stringify(dataJPM.last_data[0].tahun))
-    //     }
-    // }, [dataJPM])x    
+    const dataPE = useQuery('dataPE', async () => {
+        const res = await axios.get(`${baseURL}/ekonomi/pe`)
+        setDataPertumbuhanEkonomi(res?.data?.result)
+        return res.data
+    }, {
+        retry: 0,
+        keepPreviousData: true,
+        enabled: dataIDB.isSuccess
+    })
+
+    const dataKW = useQuery('dataKW', async () => {
+        const res = await axios.get(`${baseURL}/ekonomi/kw`)
+        setDataKunjunganWisata(res?.data?.result)
+        return res.data
+    }, {
+        retry: 0,
+        keepPreviousData: true,
+        enabled: dataPE.isSuccess
+    })
+
+    const dataPP = useQuery('dataPP', async () => {
+        const res = await axios.get(`${baseURL}/kependudukan/pp`)
+        setDataPertumbuhanPenduduk(res?.data?.result)
+        return res.data
+    }, {
+        retry: 0,
+        keepPreviousData: true,
+        enabled: dataKW.isSuccess
+    })
+
+    const dataPJD = useQuery('dataPJD', async () => {
+        const res = await axios.get(`${baseURL}/infrastruktur/pjdd`)
+        setDataPanjangJalanDibangun(res?.data?.result)
+        return res.data
+    }, {
+        retry: 0,
+        keepPreviousData: true,
+        enabled: dataPP.isSuccess
+    })
+
+    const dataPRT = useQuery('dataPRT', async () => {
+        const res = await axios.get(`${baseURL}/infrastruktur/prt`)
+        setDataPenggunaanAirBersih(res?.data?.result)
+        return res.data
+    }, {
+        retry: 0,
+        keepPreviousData: true,
+        enabled: dataPJD.isSuccess
+    })
+    console.log('dataPRT', dataPRT);
+
+
 
     return (
         <View style={styles.container}>
@@ -79,20 +155,21 @@ const Index = () => {
                     style={styles.cardDashbord}
                     onPress={() => navigation.navigate('DetailDashboard', {
                         title: "Data Penduduk Miskin",
-                        data: dataJPM.result
+                        // data: datas.data.last_data
                     })}
                 >
                     <View style={styles.innerCard}>
                         <Image source={pendudukmiskin} style={styles.iconImage} />
                         <View style={{ paddingHorizontal: 10, width: '82%' }}>
                             <Text style={styles.titleText}>Jumlah Penduduk Miskin</Text>
-                            {dataJPM !== null && dataJPM !== undefined ?
-                                <Text style={styles.subTitleText}>Tahun {dataJPM.last_data[0].tahun}</Text>
-                                : <ActivityIndicator size="small" color="#fff" />
+                            {
+                                datas.isLoading === false ?
+                                    <Text style={styles.subTitleText}>Tahun {datas?.data?.last_data[0].tahun}</Text>
+                                    : <ActivityIndicator size="small" color="#fff" />
                             }
                             {
-                                dataJPM !== null && dataJPM !== undefined ?
-                                    <Text style={styles.subTitleText}>{dataJPM.last_data[0].presentase} %</Text>
+                                datas.isLoading === false ?
+                                    <Text style={styles.subTitleText}>{datas?.data?.last_data[0].presentase} Orang</Text>
                                     : <ActivityIndicator size="small" color="#fff" />
                             }
                         </View>
@@ -102,22 +179,19 @@ const Index = () => {
                     style={styles.cardDashbord}
                     onPress={() => navigation.navigate('DetailIPMDashboard', {
                         title: "Indeks Pembangunan Manusia",
-                        data: dataIPM.result
                     })}
                 >
                     <View style={styles.innerCard}>
                         <Image source={indexpembangunanmanusia} style={styles.iconImage} />
                         <View style={{ paddingHorizontal: 10, width: '84%' }}>
                             <Text numberOfLines={2} style={styles.titleText}>Indeks Pembangunan Manusia</Text>
-                            {
-                                dataIPM !== null && dataIPM !== undefined ?
-                                    <Text style={styles.subTitleText}>Tahun {dataIPM.last_data[0].tahun}</Text>
-                                    : <ActivityIndicator size="small" color="#fff" />
+                            {dataIPM.isLoading === false ?
+                                <Text style={styles.subTitleText}>Tahun {dataIPM?.data?.last_data[0].tahun}</Text>
+                                : <ActivityIndicator size="small" color="#fff" />
                             }
-                            {
-                                dataIPM !== null && dataIPM !== undefined ?
-                                    <Text style={styles.subTitleText}>{dataIPM.last_data[0].ipm} %</Text>
-                                    : <ActivityIndicator size="small" color="#fff" />
+                            {dataIPM.isLoading === false ?
+                                <Text style={styles.subTitleText}>{dataIPM?.data?.last_data[0].ipm} %</Text>
+                                : <ActivityIndicator size="small" color="#fff" />
                             }
                         </View>
                     </View>
@@ -133,12 +207,12 @@ const Index = () => {
                         <Image source={AngkaSekolah} style={styles.iconImage} />
                         <View style={{ paddingHorizontal: 10, width: '82%' }}>
                             <Text style={styles.titleText}>Angka Rata-Rata Lama Sekolah</Text>
-                            {dataALS !== null && dataALS !== undefined ?
-                                <Text style={styles.subTitleText}>Tahun {dataALS.last_data[0].tahun}</Text>
+                            {dataALS.isLoading === false ?
+                                <Text style={styles.subTitleText}>Tahun {dataALS?.data?.last_data[0].tahun}</Text>
                                 : <ActivityIndicator size="small" color="#fff" />
                             }
-                            {dataALS !== null && dataALS !== undefined ?
-                                <Text style={styles.subTitleText}>{dataALS.last_data[0].rls} %</Text>
+                            {dataALS.isLoading === false ?
+                                <Text style={styles.subTitleText}>{dataALS?.data?.last_data[0].rls} Tahun</Text>
                                 : <ActivityIndicator size="small" color="#fff" />
                             }
                         </View>
@@ -148,19 +222,18 @@ const Index = () => {
                     style={styles.cardDashbord}
                     onPress={() => navigation.navigate('DetailIGDashboard', {
                         title: "Indeks Gini",
-                        data: dataIG.result
                     })}
                 >
                     <View style={styles.innerCard}>
                         <Image source={indexGini} style={styles.iconImage} />
                         <View style={{ paddingHorizontal: 10, width: '82%' }}>
                             <Text style={styles.titleText}>Indeks Gini</Text>
-                            {dataIG !== null && dataIG !== undefined ?
-                                <Text style={styles.subTitleText}>Tahun {dataIG.last_data[0].tahun}</Text>
+                            {dataIG.isLoading === false ?
+                                <Text style={styles.subTitleText}>Tahun {dataIG?.data?.last_data[0].tahun}</Text>
                                 : <ActivityIndicator size="small" color="#fff" />
                             }
-                            {dataIG !== null && dataIG !== undefined ?
-                                <Text style={styles.subTitleText}>{dataIG.last_data[0].gini_ratio} point</Text>
+                            {dataIG.isLoading === false ?
+                                <Text style={styles.subTitleText}>{dataIG?.data?.last_data[0].gini_ratio} Point</Text>
                                 : <ActivityIndicator size="small" color="#fff" />
                             }
                         </View>
@@ -169,8 +242,7 @@ const Index = () => {
                 <TouchableOpacity
                     style={styles.cardDashbord}
                     onPress={() => navigation.navigate('DetailIDBDashboard', {
-                        title: "Indeks Daya Beli",
-                        data: dataIDB.result
+                        title: "Indeks Daya Beli"
                     }
                     )}
                 >
@@ -178,13 +250,16 @@ const Index = () => {
                         <Image source={indexDayaBeli} style={styles.iconImage} />
                         <View style={{ paddingHorizontal: 10, width: '82%' }}>
                             <Text style={styles.titleText}>Indeks Daya Beli</Text>
-                            {dataIDB !== null && dataIDB !== undefined ?
-                                <Text style={styles.subTitleText}>Tahun {dataIDB.last_data[0].tahun}</Text>
-                                : <ActivityIndicator size="small" color="#fff" />
+
+                            {
+                                dataIDB.isLoading === false ?
+                                    <Text style={styles.subTitleText}>Tahun {dataIDB?.data?.last_data[0].tahun}</Text>
+                                    : <ActivityIndicator size="small" color="#fff" />
                             }
-                            {dataIDB !== null && dataIDB !== undefined ?
-                                <Text style={styles.subTitleText}>{dataIDB.last_data[0].daya_beli} Juta Rupiah</Text>
-                                : <ActivityIndicator size="small" color="#fff" />
+                            {
+                                dataIDB.isLoading === false ?
+                                    <Text style={styles.subTitleText}>{dataIDB?.data?.last_data[0].daya_beli} Juta Rupiah</Text>
+                                    : <ActivityIndicator size="small" color="#fff" />
                             }
                         </View>
                     </View>
@@ -193,7 +268,6 @@ const Index = () => {
                     style={styles.cardDashbord}
                     onPress={() => navigation.navigate('DetailPEDashboard', {
                         title: "Pertumbuhan Ekonomi",
-                        data: dataPE.result
                     })}
                 >
                     <View style={styles.innerCard}>
@@ -201,13 +275,13 @@ const Index = () => {
                         <View style={{ paddingHorizontal: 10, width: '82%' }}>
                             <Text style={styles.titleText}>Pertumbuhan Ekonomi</Text>
                             {
-                                dataPE !== null && dataPE !== undefined ?
-                                    <Text style={styles.subTitleText}>Tahun {dataPE.last_data[0].tahun}</Text>
+                                dataPE.isLoading === false ?
+                                    <Text style={styles.subTitleText}>Tahun {dataPE?.data?.last_data[0].tahun}</Text>
                                     : <ActivityIndicator size="small" color="#fff" />
                             }
                             {
-                                dataPE !== null && dataPE !== undefined ?
-                                    <Text style={styles.subTitleText}>{dataPE.last_data[0].pertumbuhan_ekonomi} %</Text>
+                                dataPE.isLoading === false ?
+                                    <Text style={styles.subTitleText}>{dataPE?.data?.last_data[0].pertumbuhan_ekonomi} %</Text>
                                     : <ActivityIndicator size="small" color="#fff" />
                             }
                         </View>
@@ -225,13 +299,13 @@ const Index = () => {
                         <View style={{ paddingHorizontal: 10, width: '82%' }}>
                             <Text style={styles.titleText}>Kunjungan Wisata</Text>
                             {
-                                dataKW !== null && dataKW !== undefined ?
-                                    <Text style={styles.subTitleText}>Tahun {dataKW.last_data[0].tahun}</Text>
+                                dataKW.isLoading === false ?
+                                    <Text style={styles.subTitleText}>Tahun {dataKW?.data?.last_data[0].tahun}</Text>
                                     : <ActivityIndicator size="small" color="#fff" />
                             }
                             {
-                                dataKW !== null && dataKW !== undefined ?
-                                    <Text style={styles.subTitleText}>{dataKW.last_data[0].jumlah} Orang</Text>
+                                dataKW.isLoading === false ?
+                                    <Text style={styles.subTitleText}>{dataKW?.data?.last_data[0].jumlah} Orang</Text>
                                     : <ActivityIndicator size="small" color="#fff" />
                             }
                         </View>
@@ -241,7 +315,6 @@ const Index = () => {
                     style={styles.cardDashbord}
                     onPress={() => navigation.navigate('DetailPPDashboard', {
                         title: "Pertumbuhan Penduduk",
-                        data: dataPP.result
                     })}
                 >
                     <View style={styles.innerCard}>
@@ -249,13 +322,13 @@ const Index = () => {
                         <View style={{ paddingHorizontal: 10, width: '82%' }}>
                             <Text style={styles.titleText}>Pertumbuhan Penduduk</Text>
                             {
-                                dataPP !== null && dataPP !== undefined ?
-                                    <Text style={styles.subTitleText}>Tahun {dataPP.last_data[0].tahun}</Text>
+                                dataPP.isLoading === false ?
+                                    <Text style={styles.subTitleText}>Tahun {dataPP?.data?.last_data[0].tahun}</Text>
                                     : <ActivityIndicator size="small" color="#fff" />
                             }
                             {
-                                dataPP !== null && dataPP !== undefined ?
-                                    <Text style={styles.subTitleText}>{dataPP.last_data[0].laju} %</Text>
+                                dataPP.isLoading === false ?
+                                    <Text style={styles.subTitleText}>{dataPP?.data?.last_data[0].laju} %</Text>
                                     : <ActivityIndicator size="small" color="#fff" />
                             }
                         </View>
@@ -265,7 +338,6 @@ const Index = () => {
                     style={styles.cardDashbord}
                     onPress={() => navigation.navigate('DetailPJDDDashboard',{
                         title: "Panjang Jalan Dibangun",
-                        data: dataPJD.result
                     })}
                 >
                     <View style={styles.innerCard}>
@@ -273,13 +345,13 @@ const Index = () => {
                         <View style={{ paddingHorizontal: 10, width: '82%' }}>
                             <Text style={styles.titleText}>Panjang Jalan Dibangun</Text>
                             {
-                                dataPJD !== null && dataPJD !== undefined ?
-                                    <Text style={styles.subTitleText}>Tahun {dataPJD.last_data[0].tahun}</Text>
+                                dataPJD.isLoading === false ?
+                                    <Text style={styles.subTitleText}>Tahun {dataPJD?.data?.last_data[0].tahun}</Text>
                                     : <ActivityIndicator size="small" color="#fff" />
                             }
                             {
-                                dataPJD !== null && dataPJD !== undefined ?
-                                    <Text style={styles.subTitleText}>{dataPJD.last_data[0].panjang} Km</Text>
+                                dataPJD.isLoading === false ?
+                                    <Text style={styles.subTitleText}>{dataPJD?.data?.last_data[0].panjang} Km</Text>
                                     : <ActivityIndicator size="small" color="#fff" />
                             }
                         </View>
@@ -290,7 +362,6 @@ const Index = () => {
                     onPress={() => navigation.navigate('DetailPRTDashboard',
                         {
                             title: "Persentase Penggunaan Air Bersih",
-                            data: dataPAB.result
                         }
                     )}
                 >
@@ -299,13 +370,13 @@ const Index = () => {
                         <View style={{ paddingHorizontal: 10, width: '82%' }}>
                             <Text style={styles.titleText}>Persentase Penggunaan Air Bersih</Text>
                             {
-                                dataPAB !== null && dataPAB !== undefined ?
-                                    <Text style={styles.subTitleText}>Tahun {dataPAB.last_data[0].tahun}</Text>
+                                dataPRT.isLoading === false ?
+                                    <Text style={styles.subTitleText}>Tahun {dataPRT?.data?.last_data[0].tahun}</Text>
                                     : <ActivityIndicator size="small" color="#fff" />
                             }
                             {
-                                dataPAB !== null && dataPAB !== undefined ?
-                                    <Text style={styles.subTitleText}>{dataPAB.last_data[0].nilai} %</Text>
+                                dataPRT.isLoading === false ?
+                                    <Text style={styles.subTitleText}>{dataPRT?.data?.last_data[0].nilai} %</Text>
                                     : <ActivityIndicator size="small" color="#fff" />
                             }
                         </View>

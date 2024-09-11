@@ -7,11 +7,10 @@ import GrafikMasyMiskin from '../sosial/masyMiskin/GrafikMasyMiskin'
 const Tab = createMaterialTopTabNavigator()
 
 const DetailDashboard = (props) => {
-  // console.log("propsi", props);
-  
+
   return (
     <Tab.Navigator
-    screenOptions={{
+      screenOptions={{
         tabBarActiveTintColor: '#0074BD',
         tabBarInactiveTintColor: '#979797',
         tabBarLabelStyle: {
@@ -20,16 +19,16 @@ const DetailDashboard = (props) => {
         },
       }}
     >
-        <Tab.Screen 
-        name="Detail Masyarakat Miskin" 
-        component={DetailMasyMiskin} 
-        initialParams={{ data: props.route.params.data, title: props.route.params.title }}
-        />
-        <Tab.Screen 
-        name="Grafik Masyarakat Miskin" 
-        component={GrafikMasyMiskin} 
-        initialParams={{ data: props.route.params.data, title: props.route.params.title }}
-        />
+      <Tab.Screen
+        name="Detail Masyarakat Miskin"
+        component={DetailMasyMiskin}
+        initialParams={{ title: "Data Penduduk Miskin" }}
+      />
+      <Tab.Screen
+        name="Grafik Masyarakat Miskin"
+        component={GrafikMasyMiskin}
+        initialParams={{ title: "Data Penduduk Miskin" }}
+      />
     </Tab.Navigator>
   )
 }

@@ -3,12 +3,16 @@ import React from 'react'
 import {
   LineChart,
 } from "react-native-chart-kit";
+import { stateDataIPM } from '../../../state/dataIPM';
 
 const GrafikIPM = (props) => {
-  const data = props.route.params.data
+  // const data = props.route.params.data
+  const {dataIPM} = stateDataIPM()
+  
   //mapping data tahun ganjil
-  const dataTahunGanjil = data.filter((item, index) => index % 2 !== 0)
+  const dataTahunGanjil = dataIPM.filter((item, index) => index % 2 !== 0)
   const dataPresentase = dataTahunGanjil.map(item => item.ipm)
+  
   return (
     <View style={{flex: 1 }}>
       <View style={{ padding: 10 }}>

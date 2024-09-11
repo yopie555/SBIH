@@ -23,12 +23,12 @@ const DetailPJDDDashboard = (props) => {
         <Tab.Screen 
         name="Detail Panjang Jalan yang Dibangun dan Ditingkatkan" 
         component={DetailPJDD} 
-        initialParams={{ data: props.route.params.data, title: props.route.params.title }}
+        initialParams={{  title: "Panjang Jalan Dibangun" }}
         />
         <Tab.Screen 
         name="Grafik PanjangnJalan yang Dibangun dan Ditingkatkan" 
         component={GrafikPJDD} 
-        initialParams={{ data: props.route.params.data, title: props.route.params.title }}
+        initialParams={{  title: "Panjang Jalan Dibangun" }}
         />
     </Tab.Navigator>
   )

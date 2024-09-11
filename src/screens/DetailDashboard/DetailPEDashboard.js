@@ -23,12 +23,12 @@ const DetailPEDashboard = (props) => {
         <Tab.Screen 
         name="Detail Pertumbuhan Ekonomi" 
         component={DetailPE} 
-        initialParams={{ data: props.route.params.data, title: props.route.params.title }}
+        initialParams={{ title: "Data Pertumbuhan Ekonomi" }}
         />
         <Tab.Screen 
         name="Grafik Pertumbuhan Ekonomi" 
         component={GrafikPE} 
-        initialParams={{ data: props.route.params.data, title: props.route.params.title }}
+        initialParams={{ title: "Data Pertumbuhan Ekonomi" }}
         />
     </Tab.Navigator>
   )

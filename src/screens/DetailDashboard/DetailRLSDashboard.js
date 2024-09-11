@@ -23,12 +23,12 @@ const DetailRLSDashboard = (props) => {
         <Tab.Screen 
         name="Detail Angka Rata-Rata Lama Sekolah" 
         component={DetailRLS} 
-        initialParams={{ data: props.route.params.data, title: props.route.params.title }}
+        initialParams={{  title: 'Angka Rata-Rata Lama Sekolah' }}
         />
         <Tab.Screen 
         name="Grafik Angka Rata-Rata Lama Sekolah" 
         component={GrafikRLS} 
-        initialParams={{ data: props.route.params.data, title: props.route.params.title }}
+        initialParams={{  title: 'Angka Rata-Rata Lama Sekolah' }}
         />
     </Tab.Navigator>
   )

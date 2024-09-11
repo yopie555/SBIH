@@ -1,7 +1,9 @@
 import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import React from 'react'
+import { stateDataPertumbuhanPenduduk } from '../../../state/dataPP'
 
 const DetailPP = (props) => {
+  const { dataPertumbuhanPenduduk } = stateDataPertumbuhanPenduduk()
   return (
     <View style={{flex: 1}}>
       <View style={{ padding: 10 }}>
@@ -10,7 +12,7 @@ const DetailPP = (props) => {
       </View>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         {
-          props.route.params.data.map((item, index) => {
+          dataPertumbuhanPenduduk.map((item, index) => {
             return (
               <View key={index} style={{ padding: 10, backgroundColor: '#c4c4c4', width: '90%', marginHorizontal: '5%', borderRadius: 10, marginVertical: 5 }}>
                 <Text style={{ fontWeight: 'bold', fontSize: 16 }}>Tahun {item.tahun}</Text>

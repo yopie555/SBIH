@@ -23,12 +23,12 @@ const DetailKWDashboard = (props) => {
         <Tab.Screen 
         name="Detail Kunjungan Wisata" 
         component={DetailKW} 
-        initialParams={{ data: props.route.params.data, title: props.route.params.title }}
+        initialParams={{  title: "Kunjungan Wisata" }}
         />
         <Tab.Screen 
         name="Grafik Kunjungan Wisata" 
         component={GrafikKW} 
-        initialParams={{ data: props.route.params.data, title: props.route.params.title }}
+        initialParams={{  title: "Kunjungan Wisata" }}
         />
     </Tab.Navigator>
   )

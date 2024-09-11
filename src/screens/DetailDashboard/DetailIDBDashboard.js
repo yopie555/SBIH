@@ -23,12 +23,12 @@ const DetailDashboard = (props) => {
         <Tab.Screen 
         name="Detail Indeks Daya Beli" 
         component={DetailIDB} 
-        initialParams={{ data: props.route.params.data, title: props.route.params.title }}
+        initialParams={{  title: "Indeks Daya Beli" }}
         />
         <Tab.Screen 
         name="Grafik Indeks Daya Beli" 
         component={GrafikIDB} 
-        initialParams={{ data: props.route.params.data, title: props.route.params.title }}
+        initialParams={{  title: "Indeks Daya Beli" }}
         />
     </Tab.Navigator>
   )

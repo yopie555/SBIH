@@ -3,11 +3,13 @@ import React from 'react'
 import {
   LineChart,
 } from "react-native-chart-kit";
+import { stateDataPanjangJalanDibangun } from '../../../state/dataPJD';
 
 const GrafikPJDD = (props) => {
   const data = props.route.params.data
+  const {dataPanjangJalanDibangun} = stateDataPanjangJalanDibangun()
   //mapping data tahun ganjil
-  const dataTahunGanjil = data.filter((item, index) => index % 2 !== 0)
+  const dataTahunGanjil = dataPanjangJalanDibangun.filter((item, index) => index % 2 !== 0)
   const dataPresentase = dataTahunGanjil.map(item => item.panjang)
   return (
     <View style={{flex: 1 }}>

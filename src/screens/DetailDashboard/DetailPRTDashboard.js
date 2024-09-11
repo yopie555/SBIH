@@ -23,12 +23,12 @@ const DetailPRTDashboard = (props) => {
         <Tab.Screen 
         name="Detail Penggunaan Air Bersih" 
         component={DetailPRT} 
-        initialParams={{ data: props.route.params.data, title: props.route.params.title }}
+        initialParams={{  title: "Persentase Penggunaan Air Bersih" }}
         />
         <Tab.Screen 
         name="Grafik Penggunaan Air Bersih" 
         component={GrafikPRT} 
-        initialParams={{ data: props.route.params.data, title: props.route.params.title }}
+        initialParams={{  title: "Persentase Penggunaan Air Bersih" }}
         />
     </Tab.Navigator>
   )

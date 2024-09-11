@@ -1,7 +1,9 @@
 import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import React from 'react'
+import { stateDataIndeksDayaBeli } from '../../../state/dataIDB'
 
 const DetailIDB = (props) => {
+  const {dataIndeksDayaBeli} = stateDataIndeksDayaBeli()
   return (
     <View style={{flex: 1}}>
       <View style={{ padding: 10 }}>
@@ -9,8 +11,9 @@ const DetailIDB = (props) => {
         <Text>Sumber Data: <Text style={{ color: 'red' }}>BPS</Text></Text>
       </View>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+  
         {
-          props.route.params.data.map((item, index) => {
+          dataIndeksDayaBeli?.map((item, index) => {
             return (
               <View key={index} style={{ padding: 10, backgroundColor: '#c4c4c4', width: '90%', marginHorizontal: '5%', borderRadius: 10, marginVertical: 5 }}>
                 <Text style={{ fontWeight: 'bold', fontSize: 16 }}>Tahun {item.tahun}</Text>

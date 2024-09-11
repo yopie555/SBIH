@@ -3,10 +3,12 @@ import * as React from 'react';
 import { List } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Icon2 from 'react-native-vector-icons/AntDesign'
+import { useNavigation } from '@react-navigation/native';
 
 import LogoBintan from '../assets/bintan.png'
 
 const DrawerContent = () => {
+    const navigation = useNavigation()
     return (
         <View style={styles.container}>
             <View style={styles.titleHeader}>
@@ -33,9 +35,9 @@ const DrawerContent = () => {
                 <List.Accordion
                     title="Sosial"
                     left={props => <List.Icon {...props} icon="folder" />}>
-                    <List.Item titleNumberOfLines={2} title="Persentase Penduduk Miskin" />
-                    <List.Item titleNumberOfLines={2} title="Index Pembangunan Manusia (IPM)" />
-                    <List.Item titleNumberOfLines={2} title="Angka Rata-Rata Lama Sekolah (RLS)" />
+                    <List.Item titleNumberOfLines={2} title="Persentase Penduduk Miskin" onPress={() => navigation.navigate('DetailDashboard')} />
+                    <List.Item titleNumberOfLines={2} title="Index Pembangunan Manusia (IPM)" onPress={() => navigation.navigate('DetailIPMDashboard')} />
+                    <List.Item titleNumberOfLines={2} title="Angka Rata-Rata Lama Sekolah (RLS)" onPress={() => navigation.navigate('DetailRLSDashboard')} />
                     <List.Item titleNumberOfLines={2} title="Angka Melek Huruf (AMH)" />
                     <List.Item titleNumberOfLines={2} title="Angka Haraoan Hidup (AHH)" />
                     <List.Item titleNumberOfLines={2} title="Angka Keberlangsungan Hidup Bayi (AKBH)" />
@@ -45,8 +47,8 @@ const DrawerContent = () => {
                     <List.Item titleNumberOfLines={2} title="Angka Partisipasi Kasar" />
                     <List.Item titleNumberOfLines={2} title="Angka Harapan Lama Sekolah (HLS)" />
                     <List.Item titleNumberOfLines={2} title="Jumlah Rumah Tidak Layak Huni yang Di Rehab" />
-                    <List.Item titleNumberOfLines={2} title="Index Gini" />
-                    <List.Item titleNumberOfLines={2} title="Index Daya Beli (Purchasing Power Parity)" />
+                    <List.Item titleNumberOfLines={2} title="Index Gini" onPress={() => navigation.navigate("DetailIGDashboard")} />
+                    <List.Item titleNumberOfLines={2} title="Index Daya Beli (Purchasing Power Parity)" onPress={() => navigation.navigate("DetailIDBDashboard")} />
                     <List.Item titleNumberOfLines={3} titleMaxFontSizeMultiplier={18} title="Persentase Penduduk Usia 15 Tahun Ke Atas Menurut Pendidikan yang Di Tamatkan" />
                     <List.Item titleNumberOfLines={2} title="Index pemberdayaan Gender" />
 
@@ -54,9 +56,9 @@ const DrawerContent = () => {
                 <List.Accordion
                     title="Ekonomi"
                     left={props => <List.Icon {...props} icon="folder" />}>
-                    <List.Item titleNumberOfLines={2} title="Pertumbuhan Ekonomi" />
+                    <List.Item titleNumberOfLines={2} title="Pertumbuhan Ekonomi" onPress={() => navigation.navigate("DetailPEDashboard")} />
                     <List.Item titleNumberOfLines={2} title="Laju Inflasi" />
-                    <List.Item titleNumberOfLines={2} title="Kunjungan Wisata" />
+                    <List.Item titleNumberOfLines={2} title="Kunjungan Wisata" onPress={() => navigation.navigate("DetailKWDashboard")} />
                     <List.Item titleNumberOfLines={2} title="Realisasi Investasi PMA/PMDN" />
                     <List.Item titleNumberOfLines={2} title="Distribusi PDRB Atas Dasar Harga Berlaku (ADHB)" />
                     <List.Item titleNumberOfLines={2} title="Distribusi PDRB Atas Dasar Harga Konstan (ADHK)" />
@@ -73,7 +75,7 @@ const DrawerContent = () => {
                 <List.Accordion
                     title="Kependudukan"
                     left={props => <List.Icon {...props} icon="folder" />}>
-                    <List.Item titleNumberOfLines={2} title="Pertumbuhan Penduduk" />
+                    <List.Item titleNumberOfLines={2} title="Pertumbuhan Penduduk"  onPress={() => navigation.navigate("DetailPPDashboard")}/>
                     <List.Item titleNumberOfLines={2} title="Jumlah Penduduk" />
                     <List.Item titleNumberOfLines={3} title="Jumlah Penduduk Berdasarkan Kelompok Umur" />
                     <List.Item titleNumberOfLines={3} title="Jumlah Penduduk berdasarkan Kecamatan Tahun 2021" />
@@ -81,8 +83,8 @@ const DrawerContent = () => {
                 <List.Accordion
                     title="Infrastruktur"
                     left={props => <List.Icon {...props} icon="folder" />}>
-                    <List.Item titleNumberOfLines={3} title="Panjang Jalan yang Di Bangun dan Ditingkatkan" />
-                    <List.Item titleNumberOfLines={3} title="Persentase Rumah Tangga (RT) yang Menggunakan Air Bersih" />
+                    <List.Item titleNumberOfLines={3} title="Panjang Jalan yang Di Bangun dan Ditingkatkan" onPress={() => navigation.navigate("DetailPJDDDashboard")} />
+                    <List.Item titleNumberOfLines={3} title="Persentase Rumah Tangga (RT) yang Menggunakan Air Bersih" onPress={() => navigation.navigate("DetailPRTDashboard")} />
                     <List.Item titleNumberOfLines={3} title="Persentase Tingkat Kemantapan Jalan (Mantap Sempurna)" />
                 </List.Accordion>
                 <List.Accordion

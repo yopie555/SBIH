@@ -3,11 +3,13 @@ import React from 'react'
 import {
   LineChart,
 } from "react-native-chart-kit";
+import { stateDataKunjunganWisata } from '../../../state/dataKW';
 
 const GrafikKW = (props) => {
   const data = props.route.params.data
-  //mapping data tahun ganjil
-  const dataTahunGanjil = data.filter((item, index) => index % 2 !== 0)
+  const { dataKunjunganWisata } = stateDataKunjunganWisata()
+    //mapping data tahun ganjil
+  const dataTahunGanjil = dataKunjunganWisata.filter((item, index) => index % 2 !== 0)
   const dataPresentase = dataTahunGanjil.map(item => item.jumlah)
   return (
     <View style={{flex: 1 }}>

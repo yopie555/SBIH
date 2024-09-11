@@ -3,11 +3,13 @@ import React from 'react'
 import {
   LineChart,
 } from "react-native-chart-kit";
+import { stateDataIndeksGini } from '../../../state/dataIG';
 
 const GrafikIG = (props) => {
+  const {dataIndeksGini} = stateDataIndeksGini()
   const data = props.route.params.data
   //mapping data tahun ganjil
-  const dataTahunGanjil = data.filter((item, index) => index % 2 !== 0)
+  const dataTahunGanjil = dataIndeksGini.filter((item, index) => index % 2 !== 0)
   const dataPresentase = dataTahunGanjil.map(item => item.gini_ratio)
   return (
     <View style={{flex: 1 }}>

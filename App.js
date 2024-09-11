@@ -1,8 +1,9 @@
 import { View, Text } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createDrawerNavigator, DrawerContentScrollView } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack'
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 import Dashboard from './src/screens/dashboard/Index'
 import DetailDashboard from './src/screens/DetailDashboard/DetailDashboard'
@@ -20,6 +21,8 @@ import DrawerContent from './src/components/DrawerContent'
 
 const Stack = createStackNavigator()
 const Drawer = createDrawerNavigator()
+
+const queryClient = new QueryClient()
 
 const DashboardDrawer = () => {
   return (
@@ -42,67 +45,71 @@ const DashboardDrawer = () => {
   )
 }
 
+
+
 const App = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Dashboard"
-          component={DashboardDrawer}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="DetailDashboard"
-          component={DetailDashboard}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="DetailIPMDashboard"
-          component={DetailIPMDashboard}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="DetailRLSDashboard"
-          component={DetailRLSDashboard}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="DetailIGDashboard"
-          component={DetailIGDashboard}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="DetailIDBDashboard"
-          component={DetailIDBDashboard}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="DetailPEDashboard"
-          component={DetailPEDashboard}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="DetailKWDashboard"
-          component={DetailKWDashboard}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="DetailPPDashboard"
-          component={DetailPPDashboard}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="DetailPJDDDashboard"
-          component={DetailPJDDDashboard}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="DetailPRTDashboard"
-          component={DetailPRTDashboard}
-          options={{ headerShown: false }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <QueryClientProvider client={queryClient}>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="Dashboard"
+            component={DashboardDrawer}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="DetailDashboard"
+            component={DetailDashboard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="DetailIPMDashboard"
+            component={DetailIPMDashboard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="DetailRLSDashboard"
+            component={DetailRLSDashboard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="DetailIGDashboard"
+            component={DetailIGDashboard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="DetailIDBDashboard"
+            component={DetailIDBDashboard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="DetailPEDashboard"
+            component={DetailPEDashboard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="DetailKWDashboard"
+            component={DetailKWDashboard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="DetailPPDashboard"
+            component={DetailPPDashboard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="DetailPJDDDashboard"
+            component={DetailPJDDDashboard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="DetailPRTDashboard"
+            component={DetailPRTDashboard}
+            options={{ headerShown: false }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </QueryClientProvider>
   )
 }
 
