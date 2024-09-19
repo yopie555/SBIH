@@ -4,6 +4,7 @@ import {
   LineChart,
 } from "react-native-chart-kit";
 import { stateDataIndeksDayaBeli } from '../../../state/dataIDB';
+import { color } from '../../../constants/Helper';
 
 const GrafikIDB = (props) => {
   const {dataIndeksDayaBeli} = stateDataIndeksDayaBeli()
@@ -14,7 +15,7 @@ const GrafikIDB = (props) => {
     <View style={{flex: 1 }}>
       <View style={{ padding: 10 }}>
         <Text style={{ fontWeight: 'bold', fontSize: 20, textAlign: 'center', color: 'black'  }}>{props.route.params.title}</Text>
-        <Text>Sumber Data: <Text style={{ color: 'red' }}>BPS</Text></Text>
+        <Text style={{color: color.black}}>Sumber Data: <Text style={{ color: 'red' }}>BPS</Text></Text>
       </View>
   <LineChart
     data={{

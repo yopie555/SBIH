@@ -14,6 +14,30 @@ import { stateDataKunjunganWisata } from '../../state/dataKW'
 import { stateDataPertumbuhanPenduduk } from '../../state/dataPP'
 import { stateDataPanjangJalanDibangun } from '../../state/dataPJD'
 import { stateDataPenggunaanAirBersih } from '../../state/dataPRT'
+import { stateDataAngkaMelekHuruf } from '../../state/dataAMH'
+import { stateDataAngkaHarapanHidup } from '../../state/dataAHH'
+import { stateDataAngkaKeberlangsunganHidupBayi } from '../../state/dataAKHB'
+import { stateDataAngkaKematianIbuMelahirkan } from '../../state/dataAKIM'
+import { stateDataPerkembanganKondisiKetenagakerjaan } from '../../state/dataPKK'
+import { stateDataIndeksPembangunanGender } from '../../state/dataIPG'
+import { stateDataAngkaPartisipasiKasar } from '../../state/dataAPK'
+import { stateDataAngkaPartisipasiMurni } from '../../state/dataAPM'
+import { stateDataAngkaHarapanLamaSekolah } from '../../state/dataHLS'
+import { stateDataJumlahRumahTidakLayakHuni } from '../../state/dataJRTLH'
+import { stateDataPersentasePendudukUsia } from '../../state/dataPPU'
+import { stateDataIndeksPemberdayaanGender } from '../../state/dataIPGG'
+import { stateDataLajuInflasi } from '../../state/dataLI'
+import { stateDataAtasDasarHargaBerlaku } from '../../state/dataADHB'
+import { stateDataPMA } from '../../state/dataPMA'
+import { stateDataProduksiPerikananBudidaya } from '../../state/dataPPB'
+import { stateDataProduksiPerikananTangkap } from '../../state/dataPPT'
+import { stateDataCapaianProduksiKomoditiUnggulanPerkebunan } from '../../state/dataCPKUP'
+import { stateDataCapaianProduksiKomoditiHortikultura } from '../../state/dataCPKH'
+import { stateDataJumlahProduksiPeternakan } from '../../state/dataJPP'
+import { stateDataJumlahPendudukBerdasarkanKecamatan } from '../../state/dataJBPK'
+import { stateDataJumlahPendudukBerdasarkanKelompokUmur } from '../../state/dataJPBKU'
+import { stateDataPersentaseTingkatKemantapanJalan } from '../../state/dataPTKJ'
+import { stateDataVideo } from '../../state/dataVideo'
 
 import headerImage from '../../assets/1.png'
 import pendudukmiskin from '../../assets/pendudukmis.png'
@@ -36,9 +60,33 @@ const Index = () => {
     const { setDataIndeksDayaBeli } = stateDataIndeksDayaBeli()
     const { setDataPertumbuhanEkonomi } = stateDataPertumbuhanEkonomi()
     const { setDataKunjunganWisata } = stateDataKunjunganWisata()
-    const { setDataPertumbuhanPenduduk} = stateDataPertumbuhanPenduduk()
+    const { setDataPertumbuhanPenduduk } = stateDataPertumbuhanPenduduk()
     const { setDataPanjangJalanDibangun } = stateDataPanjangJalanDibangun()
     const { setDataPenggunaanAirBersih } = stateDataPenggunaanAirBersih()
+    const { setDataAngkaMelekHuruf } = stateDataAngkaMelekHuruf()
+    const { setDataAngkaHarapanHidup } = stateDataAngkaHarapanHidup()
+    const { setDataAngkaKeberlangsunganHidupBayi } = stateDataAngkaKeberlangsunganHidupBayi()
+    const { setDataAngkaKematianIbuMelahirkan } = stateDataAngkaKematianIbuMelahirkan()
+    const { setDataPerkembanganKondisiKetenagakerjaan } = stateDataPerkembanganKondisiKetenagakerjaan()
+    const { setDataIndeksPembangunanGender } = stateDataIndeksPembangunanGender()
+    const { setDataAngkaPartisipasiKasar } = stateDataAngkaPartisipasiKasar()
+    const { setDataAngkaPartisipasiMurni } = stateDataAngkaPartisipasiMurni()
+    const { setDataAngkaHarapanLamaSekolah } = stateDataAngkaHarapanLamaSekolah()
+    const { setDataJumlahRumahTidakLayakHuni } = stateDataJumlahRumahTidakLayakHuni()
+    const { setDataPersentasePendudukUsia } = stateDataPersentasePendudukUsia()
+    const { setDataIndeksPemberdayaanGender } = stateDataIndeksPemberdayaanGender()
+    const { setDataLajuInflasi } = stateDataLajuInflasi()
+    const { setDataAtasDasarHargaBerlaku } = stateDataAtasDasarHargaBerlaku()
+    const { setDataPMA } = stateDataPMA()
+    const { setDataProduksiPerikananBudidaya } = stateDataProduksiPerikananBudidaya()
+    const { setDataProduksiPerikananTangkap } = stateDataProduksiPerikananTangkap()
+    const { setDataCapaianProduksiKomoditiUnggulanPerkebunan } = stateDataCapaianProduksiKomoditiUnggulanPerkebunan()
+    const { setDataCapaianProduksiKomoditiHortikultura } = stateDataCapaianProduksiKomoditiHortikultura()
+    const { setDataJumlahProduksiPeternakan } = stateDataJumlahProduksiPeternakan()
+    const { setDataJumlahPendudukBerdasarkanKecamatan } = stateDataJumlahPendudukBerdasarkanKecamatan()
+    const { setDataJumlahPendudukBerdasarkanKelompokUmur } = stateDataJumlahPendudukBerdasarkanKelompokUmur()
+    const { setDataPersentaseTingkatKemantapanJalan } = stateDataPersentaseTingkatKemantapanJalan()
+    const { setDataVideo } = stateDataVideo()
     // console.log('state', state);
 
     const datas = useQuery('dataJPM', async () => {
@@ -140,8 +188,236 @@ const Index = () => {
         keepPreviousData: true,
         enabled: dataPJD.isSuccess
     })
-    console.log('dataPRT', dataPRT);
 
+    const dataAMH = useQuery('dataAMH', async () => {
+        const res = await axios.get(`${baseURL}/sosial/amh`)
+        setDataAngkaMelekHuruf(res?.data?.result)
+        return res.data
+    }, {
+        retry: 0,
+        keepPreviousData: true,
+        enabled: dataPJD.isSuccess
+    })
+
+    const dataAHH = useQuery('dataAHH', async () => {
+        const res = await axios.get(`${baseURL}/sosial/ahh`)
+        setDataAngkaHarapanHidup(res?.data?.result)
+        return res.data
+    }, {
+        retry: 0,
+        keepPreviousData: true,
+        enabled: dataAMH.isSuccess
+    })
+
+    const dataAKHB = useQuery('dataAKHB', async () => {
+        const res = await axios.get(`${baseURL}/sosial/akhb`)
+        setDataAngkaKeberlangsunganHidupBayi(res?.data?.result)
+        return res.data
+    }, {
+        retry: 0,
+        keepPreviousData: true,
+        enabled: dataAHH.isSuccess
+    })
+
+    const dataAKIM = useQuery('dataAKIM', async () => {
+        const res = await axios.get(`${baseURL}/sosial/akim`)
+        setDataAngkaKematianIbuMelahirkan(res?.data?.result)
+        return res.data
+    }, {
+        retry: 0,
+        keepPreviousData: true,
+        enabled: dataAKHB.isSuccess
+    })
+
+    const dataPKK = useQuery('dataPKK', async () => {
+        const res = await axios.get(`${baseURL}/sosial/pkk`)
+        setDataPerkembanganKondisiKetenagakerjaan(res?.data?.result)
+        return res.data
+    }, {
+        retry: 0,
+        keepPreviousData: true,
+        enabled: dataAKIM.isSuccess
+    })
+
+    const dataIPG = useQuery('dataIPG', async () => {
+        const res = await axios.get(`${baseURL}/sosial/ipg`)
+        setDataIndeksPembangunanGender(res?.data?.result)
+        return res.data
+    }, {
+        retry: 0,
+        keepPreviousData: true,
+        enabled: dataPKK.isSuccess
+    })
+
+    const dataAPK = useQuery('dataAPK', async () => {
+        const res = await axios.get(`${baseURL}/sosial/apk`)
+        setDataAngkaPartisipasiKasar(res?.data?.result)
+        return res.data
+    }, {
+        retry: 0,
+        keepPreviousData: true,
+        enabled: dataIPG.isSuccess
+    })
+
+    const dataAPM = useQuery('dataAPM', async () => {
+        const res = await axios.get(`${baseURL}/sosial/apm`)
+        setDataAngkaPartisipasiMurni(res?.data?.result)
+        return res.data
+    }, {
+        retry: 0,
+        keepPreviousData: true,
+        enabled: dataAPK.isSuccess
+    })
+
+    const dataHLS = useQuery('dataHLS', async () => {
+        const res = await axios.get(`${baseURL}/sosial/hls`)
+        setDataAngkaHarapanLamaSekolah(res?.data?.result)
+        return res.data
+    }, {
+        retry: 0,
+        keepPreviousData: true,
+        enabled: dataAPM.isSuccess
+    })
+
+    const dataJRTLH = useQuery('dataJRTLH', async () => {
+        const res = await axios.get(`${baseURL}/sosial/jrtlh`)
+        setDataJumlahRumahTidakLayakHuni(res?.data?.result)
+        return res.data
+    }, {
+        retry: 0,
+        keepPreviousData: true,
+        enabled: dataHLS.isSuccess
+    })
+
+    const dataPPU = useQuery('dataPPU', async () => {
+        const res = await axios.get(`${baseURL}/sosial/ppu`)
+        setDataPersentasePendudukUsia(res?.data?.result)
+        return res.data
+    }, {
+        retry: 0,
+        keepPreviousData: true,
+        enabled: dataJRTLH.isSuccess
+    })
+
+    const dataIPGG = useQuery('dataIPGG', async () => {
+        const res = await axios.get(`${baseURL}/sosial/ipgg`)
+        setDataIndeksPemberdayaanGender(res?.data?.result)
+        return res.data
+    }, {
+        retry: 0,
+        keepPreviousData: true,
+        enabled: dataPPU.isSuccess
+    })
+
+    const dataLI = useQuery('dataLI', async () => {
+        const res = await axios.get(`${baseURL}/ekonomi/li`)
+        setDataLajuInflasi(res?.data?.result)
+        return res.data
+    }, {
+        retry: 0,
+        keepPreviousData: true,
+        enabled: dataIPGG.isSuccess
+    })
+
+    const dataPMA = useQuery('dataPMA', async () => {
+        const res = await axios.get(`${baseURL}/ekonomi/pma`)
+        setDataPMA(res?.data?.result)
+        return res.data
+    }, {
+        retry: 0,
+        keepPreviousData: true,
+        enabled: dataLI.isSuccess
+    })
+
+    const dataPPB = useQuery('dataPPB', async () => {
+        const res = await axios.get(`${baseURL}/pertanian/ppb`)
+        setDataProduksiPerikananBudidaya(res?.data?.result)
+        return res.data
+    }, {
+        retry: 0,
+        keepPreviousData: true,
+        enabled: dataPMA.isSuccess
+    })
+
+    const dataPPT = useQuery('dataPPT', async () => {
+        const res = await axios.get(`${baseURL}/pertanian/ppt`)
+        setDataProduksiPerikananTangkap(res?.data?.result)
+        return res.data
+    }, {
+        retry: 0,
+        keepPreviousData: true,
+        enabled: dataPPB.isSuccess
+    })
+
+    const dataCPKUP = useQuery('dataCPKUP', async () => {
+        const res = await axios.get(`${baseURL}/pertanian/cpkup`)
+        setDataCapaianProduksiKomoditiUnggulanPerkebunan(res?.data?.result)
+        return res.data
+    }, {
+        retry: 0,
+        keepPreviousData: true,
+        enabled: dataPPT.isSuccess
+    })
+
+    const dataCPKH = useQuery('dataCPKH', async () => {
+        const res = await axios.get(`${baseURL}/pertanian/cpkh`)
+        setDataCapaianProduksiKomoditiHortikultura(res?.data?.result)
+        return res.data
+    }, {
+        retry: 0,
+        keepPreviousData: true,
+        enabled: dataCPKUP.isSuccess
+    })
+
+    const dataJPP = useQuery('dataJPP', async () => {
+        const res = await axios.get(`${baseURL}/pertanian/jpp`)
+        setDataJumlahProduksiPeternakan(res?.data?.result)
+        return res.data
+    }, {
+        retry: 0,
+        keepPreviousData: true,
+        enabled: dataCPKH.isSuccess
+    })
+
+    const dataJBPK = useQuery('dataJBPK', async () => {
+        const res = await axios.get(`${baseURL}/kependudukan/jpbk`)
+        setDataJumlahPendudukBerdasarkanKecamatan(res?.data?.result)
+        return res.data
+    }, {
+        retry: 0,
+        keepPreviousData: true,
+        enabled: dataJPP.isSuccess
+    })
+
+    const dataJPBKU = useQuery('dataJPBKU', async () => {
+        const res = await axios.get(`${baseURL}/kependudukan/jpbku`)
+        setDataJumlahPendudukBerdasarkanKelompokUmur(res?.data?.result)
+        return res.data
+    }, {
+        retry: 0,
+        keepPreviousData: true,
+        enabled: dataJBPK.isSuccess
+    })
+
+    const dataPTKJ = useQuery('dataPTKJ', async () => {
+        const res = await axios.get(`${baseURL}/infrastruktur/ptkj`)
+        setDataPersentaseTingkatKemantapanJalan(res?.data?.result)
+        return res.data
+    }, {
+        retry: 0,
+        keepPreviousData: true,
+        enabled: dataJPBKU.isSuccess
+    })
+
+    const dataVideo = useQuery('dataVideo', async () => {
+        const res = await axios.get(`${baseURL}/video`)
+        setDataVideo(res?.data?.result)
+        return res.data
+    }, {
+        retry: 0,
+        keepPreviousData: true,
+        enabled: dataPTKJ.isSuccess
+    })
 
 
     return (
@@ -336,7 +612,7 @@ const Index = () => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.cardDashbord}
-                    onPress={() => navigation.navigate('DetailPJDDDashboard',{
+                    onPress={() => navigation.navigate('DetailPJDDDashboard', {
                         title: "Panjang Jalan Dibangun",
                     })}
                 >

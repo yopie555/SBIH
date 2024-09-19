@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import React from 'react'
 import { stateDataPenggunaanAirBersih } from '../../../state/dataPRT'
+import { color } from '../../../constants/Helper'
 
 const DetailPRT = (props) => {
   const {dataPenggunaanAirBersih} = stateDataPenggunaanAirBersih()
@@ -11,24 +12,13 @@ const DetailPRT = (props) => {
         <Text>Sumber Data: <Text style={{ color: 'red' }}>BPS</Text></Text>
       </View>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        {/* {
-          props.route.params.data.map((item, index) => {
-            return (
-              <View key={index} style={{ padding: 10, backgroundColor: '#c4c4c4', width: '90%', marginHorizontal: '5%', borderRadius: 10, marginVertical: 5 }}>
-                <Text style={{ fontWeight: 'bold', fontSize: 16 }}>Tahun {item.tahun}</Text>
-                <Text>Nilai : {item.nilai} %</Text>
-                <Text>Status Data : {item.status_data}</Text>
-              </View>
-            )
-          })
-        } */}
         {
           dataPenggunaanAirBersih.map((item, index) => {
             return (
               <View key={index} style={{ padding: 10, backgroundColor: '#c4c4c4', width: '90%', marginHorizontal: '5%', borderRadius: 10, marginVertical: 5 }}>
-                <Text style={{ fontWeight: 'bold', fontSize: 16 }}>Tahun {item.tahun}</Text>
-                <Text>Nilai : {item.nilai} %</Text>
-                <Text>Status Data : {item.status_data}</Text>
+                <Text style={{ fontWeight: 'bold', fontSize: 16, color: color.black }}>Tahun {item.tahun}</Text>
+                <Text style={{color: color.black}}>Nilai : {item.nilai} %</Text>
+                <Text style={{color: color.black}}>Status Data : {item.status_data}</Text>
               </View>
             )
           })
