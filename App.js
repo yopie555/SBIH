@@ -16,6 +16,18 @@ import DetailKWDashboard from './src/screens/DetailDashboard/DetailKWDashboard';
 import DetailPPDashboard from './src/screens/DetailDashboard/DetailPPDashboard.js';
 import DetailPJDDDashboard from './src/screens/DetailDashboard/DetailPJDDDashboard.js';
 import DetailPRTDashboard from './src/screens/DetailDashboard/DetailPRTDashboard.js';
+import DetailAMHDashboard from './src/screens/DetailDashboard/DetailAMHDashboard.js';
+import DetailAHHDashboard from './src/screens/DetailDashboard/DetailAHHDashboard.js';
+import DetailAKHBDashboard from './src/screens/DetailDashboard/DetailAKHBDashboard.js';
+import DetailAKIMDashboard from './src/screens/DetailDashboard/DetailAKIMDashboard.js';
+import DetailPKKDashboard from './src/screens/DetailDashboard/DetailPKKDashboard.js';
+import DetailIPGDashboard from './src/screens/DetailDashboard/DetailIPGDashboard.js';
+import DetailAPKDashboard from './src/screens/DetailDashboard/DetailAPKDashboard.js';
+import DetailAPmDashboard from './src/screens/DetailDashboard/DetailAPMDashboard.js';
+import DetailHLSDashboard from './src/screens/DetailDashboard/DetailHLSDashboard.js';
+import DetailJRTLHDashboard from './src/screens/DetailDashboard/detailJRTLHDashboard.js';
+import DetailPPUDashboard from './src/screens/DetailDashboard/DetailPPUDashboard.js';
+import DetailIPGGDashboard from './src/screens/DetailDashboard/DetailIPGGDashboard.js';
 
 import DrawerContent from './src/components/DrawerContent'
 
@@ -105,6 +117,66 @@ const App = () => {
           <Stack.Screen
             name="DetailPRTDashboard"
             component={DetailPRTDashboard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="DetailAMHDashboard"
+            component={DetailAMHDashboard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="DetailAHHDashboard"
+            component={DetailAHHDashboard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="DetailAKHBDashboard"
+            component={DetailAKHBDashboard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="DetailAKIMDashboard"
+            component={DetailAKIMDashboard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="DetailPKKDashboard"
+            component={DetailPKKDashboard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="DetailIPGDashboard"
+            component={DetailIPGDashboard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="DetailAPKDashboard"
+            component={DetailAPKDashboard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="DetailAPMDashboard"
+            component={DetailAPmDashboard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="DetailHLSDashboard"
+            component={DetailHLSDashboard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="DetailJRTLHDashboard"
+            component={DetailJRTLHDashboard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="DetailPPUDashboard"
+            component={DetailPPUDashboard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="DetailIPGGDashboard"
+            component={DetailIPGGDashboard}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

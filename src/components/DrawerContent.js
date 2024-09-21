@@ -38,19 +38,20 @@ const DrawerContent = () => {
                     <List.Item titleNumberOfLines={2} title="Persentase Penduduk Miskin" onPress={() => navigation.navigate('DetailDashboard')} />
                     <List.Item titleNumberOfLines={2} title="Index Pembangunan Manusia (IPM)" onPress={() => navigation.navigate('DetailIPMDashboard')} />
                     <List.Item titleNumberOfLines={2} title="Angka Rata-Rata Lama Sekolah (RLS)" onPress={() => navigation.navigate('DetailRLSDashboard')} />
-                    <List.Item titleNumberOfLines={2} title="Angka Melek Huruf (AMH)" />
-                    <List.Item titleNumberOfLines={2} title="Angka Haraoan Hidup (AHH)" />
-                    <List.Item titleNumberOfLines={2} title="Angka Keberlangsungan Hidup Bayi (AKBH)" />
-                    <List.Item titleNumberOfLines={3} titleMaxFontSizeMultiplier={18} title="Angka Kematian Ibu Melahirkan per 100.000 kelahiran hidup" />
-                    <List.Item titleNumberOfLines={2} title="Perkembangan Kondisi Ketenagakerjaan di Kabupaten Bintan" />
-                    <List.Item titleNumberOfLines={2} title="Index Pembangunan Gender" />
-                    <List.Item titleNumberOfLines={2} title="Angka Partisipasi Kasar" />
-                    <List.Item titleNumberOfLines={2} title="Angka Harapan Lama Sekolah (HLS)" />
-                    <List.Item titleNumberOfLines={2} title="Jumlah Rumah Tidak Layak Huni yang Di Rehab" />
+                    <List.Item titleNumberOfLines={2} title="Angka Melek Huruf (AMH)" onPress={() => navigation.navigate('DetailAMHDashboard')} />
+                    <List.Item titleNumberOfLines={2} title="Angka Harapan Hidup (AHH)" onPress={() => navigation.navigate('DetailAHHDashboard')} />
+                    <List.Item titleNumberOfLines={2} title="Angka Keberlangsungan Hidup Bayi (AKHB)" onPress={() => navigation.navigate('DetailAKHBDashboard')}/>
+                    <List.Item titleNumberOfLines={3} titleMaxFontSizeMultiplier={18} title="Angka Kematian Ibu Melahirkan (AKIM)" onPress={() => navigation.navigate('DetailAKIMDashboard')}/>
+                    <List.Item titleNumberOfLines={2} title="Perkembangan Kondisi Ketenagakerjaan di Kabupaten Bintan" onPress={() => navigation.navigate('DetailPKKDashboard')}/>
+                    <List.Item titleNumberOfLines={2} title="Index Pembangunan Gender" onPress={() => navigation.navigate('DetailIPGDashboard')} />
+                    <List.Item titleNumberOfLines={2} title="Angka Partisipasi Kasar" onPress={() => navigation.navigate('DetailAPKDashboard')}  />
+                    <List.Item titleNumberOfLines={2} title="Angka Partisipasi Murni" onPress={() => navigation.navigate('DetailAPMDashboard')}  />
+                    <List.Item titleNumberOfLines={2} title="Angka Harapan Lama Sekolah (HLS)" onPress={() => navigation.navigate('DetailHLSDashboard')} />
+                    <List.Item titleNumberOfLines={2} title="Jumlah Rumah Tidak Layak Huni yang Di Rehab" onPress={() => navigation.navigate('DetailJRTLHDashboard')} />
                     <List.Item titleNumberOfLines={2} title="Index Gini" onPress={() => navigation.navigate("DetailIGDashboard")} />
                     <List.Item titleNumberOfLines={2} title="Index Daya Beli (Purchasing Power Parity)" onPress={() => navigation.navigate("DetailIDBDashboard")} />
-                    <List.Item titleNumberOfLines={3} titleMaxFontSizeMultiplier={18} title="Persentase Penduduk Usia 15 Tahun Ke Atas Menurut Pendidikan yang Di Tamatkan" />
-                    <List.Item titleNumberOfLines={2} title="Index pemberdayaan Gender" />
+                    <List.Item titleNumberOfLines={3} titleMaxFontSizeMultiplier={18} title="Persentase Penduduk Usia 15 Tahun Ke Atas Menurut Pendidikan yang Di Tamatkan" onPress={() => navigation.navigate("DetailPPUDashboard")}/>
+                    <List.Item titleNumberOfLines={2} title="Index pemberdayaan Gender" onPress={() => navigation.navigate("DetailIPGGDashboard")}/>
 
                 </List.Accordion>
                 <List.Accordion
