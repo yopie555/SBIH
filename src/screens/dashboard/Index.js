@@ -1,7 +1,7 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, Alert } from 'react-native'
+import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, ImageBackground, RefreshControl } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import { baseURL } from '../../constants/General'
 import { useQuery } from 'react-query'
 import { stateDataPenduduk } from '../../state/dataPenduduk'
@@ -38,6 +38,7 @@ import { stateDataJumlahPendudukBerdasarkanKecamatan } from '../../state/dataJBP
 import { stateDataJumlahPendudukBerdasarkanKelompokUmur } from '../../state/dataJPBKU'
 import { stateDataPersentaseTingkatKemantapanJalan } from '../../state/dataPTKJ'
 import { stateDataVideo } from '../../state/dataVideo'
+import { stateDataJumlahPenduduk } from '../../state/dataJP'
 
 import headerImage from '../../assets/1.png'
 import pendudukmiskin from '../../assets/pendudukmis.png'
@@ -87,6 +88,9 @@ const Index = () => {
     const { setDataJumlahPendudukBerdasarkanKelompokUmur } = stateDataJumlahPendudukBerdasarkanKelompokUmur()
     const { setDataPersentaseTingkatKemantapanJalan } = stateDataPersentaseTingkatKemantapanJalan()
     const { setDataVideo } = stateDataVideo()
+    const { setDataJumlahPenduduk } = stateDataJumlahPenduduk()
+
+    const [refreshing, setRefreshing] = React.useState(false);
     // console.log('state', state);
 
     const datas = useQuery('dataJPM', async () => {
@@ -419,33 +423,94 @@ const Index = () => {
         enabled: dataPTKJ.isSuccess
     })
 
+    const dataJP = useQuery('dataJP', async () => {
+        const res = await axios.get(`${baseURL}/kependudukan/jp`)
+        setDataJumlahPenduduk(res?.data?.result)
+        return res.data
+    }, {
+        retry: 0,
+        keepPreviousData: true,
+        enabled: dataVideo.isSuccess
+    })
 
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        datas.refetch()
+        dataIPM.refetch()
+        dataALS.refetch()
+        dataIG.refetch()
+        dataIDB.refetch()
+        dataPE.refetch()
+        dataKW.refetch()
+        dataPP.refetch()
+        dataPJD.refetch()
+        dataPRT.refetch()
+        dataAMH.refetch()
+        dataAHH.refetch()
+        dataAKHB.refetch()
+        dataAKIM.refetch()
+        dataPKK.refetch()
+        dataIPG.refetch()
+        dataAPK.refetch()
+        dataAPM.refetch()
+        dataHLS.refetch()
+        dataJRTLH.refetch()
+        dataPPU.refetch()
+        dataIPGG.refetch()
+        dataLI.refetch()
+        dataPMA.refetch()
+        dataPPB.refetch()
+        dataPPT.refetch()
+        dataCPKUP.refetch()
+        dataCPKH.refetch()
+        dataJPP.refetch()
+        dataJBPK.refetch()
+        dataJPBKU.refetch()
+        dataPTKJ.refetch()
+        dataVideo.refetch()
+        dataJP.refetch()
+        setRefreshing(false);
+    }
+        , [refreshing]);
+    
     return (
         <View style={styles.container}>
-            <Image
+            <ImageBackground
                 source={headerImage}
                 style={{ width: '100%', height: 180 }}
-            />
-            <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                />
+                {
+                    dataJP.isFetched  ?
+                        <View style={{ position: 'absolute', top: 10, right: 10, height:20, width:20, backgroundColor: 'blue', borderRadius: 50  }}></View>
+                        : <View style={{ position: 'absolute', top: 10, right: 10, height:20, width:20, backgroundColor: 'red', borderRadius: 50  }}></View>
+                }
+            <ScrollView 
+                contentContainerStyle={{ flexGrow: 1 }}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />
+                }
+                >
                 <TouchableOpacity
                     style={styles.cardDashbord}
-                    onPress={() => navigation.navigate('DetailDashboard', {
-                        title: "Data Penduduk Miskin",
-                        // data: datas.data.last_data
+                    onPress={() => navigation.navigate('DetailPEDashboard', {
+                        title: "Pertumbuhan Ekonomi",
                     })}
                 >
                     <View style={styles.innerCard}>
-                        <Image source={pendudukmiskin} style={styles.iconImage} />
+                        <Image source={pertumbuhanEkonomi} style={styles.iconImage} />
                         <View style={{ paddingHorizontal: 10, width: '82%' }}>
-                            <Text style={styles.titleText}>Jumlah Penduduk Miskin</Text>
+                            <Text style={styles.titleText}>Pertumbuhan Ekonomi</Text>
                             {
-                                datas.isLoading === false ?
-                                    <Text style={styles.subTitleText}>Tahun {datas?.data?.last_data[0].tahun}</Text>
+                                dataPE.isLoading === false ?
+                                    <Text style={styles.subTitleText}>Tahun {dataPE?.data?.last_data[0].tahun}</Text>
                                     : <ActivityIndicator size="small" color="#fff" />
                             }
                             {
-                                datas.isLoading === false ?
-                                    <Text style={styles.subTitleText}>{datas?.data?.last_data[0].presentase} Orang</Text>
+                                dataPE.isLoading === false ?
+                                    <Text style={styles.subTitleText}>{dataPE?.data?.last_data[0].pertumbuhan_ekonomi} %</Text>
                                     : <ActivityIndicator size="small" color="#fff" />
                             }
                         </View>
@@ -474,21 +539,73 @@ const Index = () => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.cardDashbord}
-                    onPress={() => navigation.navigate('DetailRLSDashboard', {
-                        title: "Angka Rata-Rata Lama Sekolah",
+                    onPress={() => navigation.navigate('DetailDashboard', {
+                        title: "Data Penduduk Miskin",
+                        // data: datas.data.last_data
+                    })}
+                >
+                    <View style={styles.innerCard}>
+                        <Image source={pendudukmiskin} style={styles.iconImage} />
+                        <View style={{ paddingHorizontal: 10, width: '82%' }}>
+                            <Text style={styles.titleText}>Jumlah Penduduk Miskin</Text>
+                            {
+                                datas.isLoading === false ?
+                                    <Text style={styles.subTitleText}>Tahun {datas?.data?.last_data[0].tahun}</Text>
+                                    : <ActivityIndicator size="small" color="#fff" />
+                            }
+                            {
+                                datas.isLoading === false ?
+                                    <Text style={styles.subTitleText}>{datas?.data?.last_data[0].presentase} Orang</Text>
+                                    : <ActivityIndicator size="small" color="#fff" />
+                            }
+                        </View>
+                    </View>
+                </TouchableOpacity>               
+                <TouchableOpacity
+                    style={styles.cardDashbord}
+                    onPress={() => navigation.navigate('DetailLIDashboard', {
+                        title: "Laju Inflasi",
                         data: dataALS.result
                     })}
                 >
                     <View style={styles.innerCard}>
                         <Image source={AngkaSekolah} style={styles.iconImage} />
                         <View style={{ paddingHorizontal: 10, width: '82%' }}>
-                            <Text style={styles.titleText}>Angka Rata-Rata Lama Sekolah</Text>
-                            {dataALS.isLoading === false ?
-                                <Text style={styles.subTitleText}>Tahun {dataALS?.data?.last_data[0].tahun}</Text>
+                            <Text style={styles.titleText}>Laju Inflasi</Text>
+                            {dataLI.isLoading === false ?
+                                <Text style={styles.subTitleText}>Tahun {dataLI?.data?.last_data[0].tahun}</Text>
                                 : <ActivityIndicator size="small" color="#fff" />
                             }
-                            {dataALS.isLoading === false ?
-                                <Text style={styles.subTitleText}>{dataALS?.data?.last_data[0].rls} Tahun</Text>
+                            {dataLI.isLoading === false ?
+                                <Text style={styles.subTitleText}>Umum: {dataLI?.data?.last_data[0].umum} %</Text>
+                                : <ActivityIndicator size="small" color="#fff" />
+                            }
+                            {dataLI.isLoading === false ?
+                                <Text style={styles.subTitleText}>Bahan Makanan: {dataLI?.data?.last_data[0].bahan_makanan} %</Text>
+                                : <ActivityIndicator size="small" color="#fff" />
+                            }
+                            {dataLI.isLoading === false ?
+                                <Text style={styles.subTitleText}>Makanan Jadi: {dataLI?.data?.last_data[0].makanan_jadi} %</Text>
+                                : <ActivityIndicator size="small" color="#fff" />
+                            }
+                            {dataLI.isLoading === false ?
+                                <Text style={styles.subTitleText}>Perumahan: {dataLI?.data?.last_data[0].perumahan} %</Text>
+                                : <ActivityIndicator size="small" color="#fff" />
+                            }
+                            {dataLI.isLoading === false ?
+                                <Text style={styles.subTitleText}>Sandang: {dataLI?.data?.last_data[0].sandang} %</Text>
+                                : <ActivityIndicator size="small" color="#fff" />
+                            }
+                            {dataLI.isLoading === false ?
+                                <Text style={styles.subTitleText}>Kesehatan: {dataLI?.data?.last_data[0].kesehatan} %</Text>
+                                : <ActivityIndicator size="small" color="#fff" />
+                            }
+                            {dataLI.isLoading === false ?
+                                <Text style={styles.subTitleText}>Pendidikan: {dataLI?.data?.last_data[0].pendidikan} %</Text>
+                                : <ActivityIndicator size="small" color="#fff" />
+                            }
+                            {dataLI.isLoading === false ?
+                                <Text style={styles.subTitleText}>Transportasi: {dataLI?.data?.last_data[0].transportasi} %</Text>
                                 : <ActivityIndicator size="small" color="#fff" />
                             }
                         </View>
@@ -496,163 +613,32 @@ const Index = () => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.cardDashbord}
-                    onPress={() => navigation.navigate('DetailIGDashboard', {
-                        title: "Indeks Gini",
-                    })}
-                >
-                    <View style={styles.innerCard}>
-                        <Image source={indexGini} style={styles.iconImage} />
-                        <View style={{ paddingHorizontal: 10, width: '82%' }}>
-                            <Text style={styles.titleText}>Indeks Gini</Text>
-                            {dataIG.isLoading === false ?
-                                <Text style={styles.subTitleText}>Tahun {dataIG?.data?.last_data[0].tahun}</Text>
-                                : <ActivityIndicator size="small" color="#fff" />
-                            }
-                            {dataIG.isLoading === false ?
-                                <Text style={styles.subTitleText}>{dataIG?.data?.last_data[0].gini_ratio} Point</Text>
-                                : <ActivityIndicator size="small" color="#fff" />
-                            }
-                        </View>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.cardDashbord}
-                    onPress={() => navigation.navigate('DetailIDBDashboard', {
-                        title: "Indeks Daya Beli"
-                    }
-                    )}
-                >
-                    <View style={styles.innerCard}>
-                        <Image source={indexDayaBeli} style={styles.iconImage} />
-                        <View style={{ paddingHorizontal: 10, width: '82%' }}>
-                            <Text style={styles.titleText}>Indeks Daya Beli</Text>
-
-                            {
-                                dataIDB.isLoading === false ?
-                                    <Text style={styles.subTitleText}>Tahun {dataIDB?.data?.last_data[0].tahun}</Text>
-                                    : <ActivityIndicator size="small" color="#fff" />
-                            }
-                            {
-                                dataIDB.isLoading === false ?
-                                    <Text style={styles.subTitleText}>{dataIDB?.data?.last_data[0].daya_beli} Juta Rupiah</Text>
-                                    : <ActivityIndicator size="small" color="#fff" />
-                            }
-                        </View>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.cardDashbord}
-                    onPress={() => navigation.navigate('DetailPEDashboard', {
-                        title: "Pertumbuhan Ekonomi",
-                    })}
-                >
-                    <View style={styles.innerCard}>
-                        <Image source={pertumbuhanEkonomi} style={styles.iconImage} />
-                        <View style={{ paddingHorizontal: 10, width: '82%' }}>
-                            <Text style={styles.titleText}>Pertumbuhan Ekonomi</Text>
-                            {
-                                dataPE.isLoading === false ?
-                                    <Text style={styles.subTitleText}>Tahun {dataPE?.data?.last_data[0].tahun}</Text>
-                                    : <ActivityIndicator size="small" color="#fff" />
-                            }
-                            {
-                                dataPE.isLoading === false ?
-                                    <Text style={styles.subTitleText}>{dataPE?.data?.last_data[0].pertumbuhan_ekonomi} %</Text>
-                                    : <ActivityIndicator size="small" color="#fff" />
-                            }
-                        </View>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.cardDashbord}
-                    onPress={() => navigation.navigate('DetailKWDashboard', {
-                        title: "Kunjungan Wisata",
-                        data: dataKW.result
-                    })}
-                >
-                    <View style={styles.innerCard}>
-                        <Image source={kunjunganWisata} style={styles.iconImage} />
-                        <View style={{ paddingHorizontal: 10, width: '82%' }}>
-                            <Text style={styles.titleText}>Kunjungan Wisata</Text>
-                            {
-                                dataKW.isLoading === false ?
-                                    <Text style={styles.subTitleText}>Tahun {dataKW?.data?.last_data[0].tahun}</Text>
-                                    : <ActivityIndicator size="small" color="#fff" />
-                            }
-                            {
-                                dataKW.isLoading === false ?
-                                    <Text style={styles.subTitleText}>{dataKW?.data?.last_data[0].jumlah} Orang</Text>
-                                    : <ActivityIndicator size="small" color="#fff" />
-                            }
-                        </View>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.cardDashbord}
-                    onPress={() => navigation.navigate('DetailPPDashboard', {
-                        title: "Pertumbuhan Penduduk",
+                    onPress={() => navigation.navigate('DetailJPDashboard', {
+                        title: "Jumlah Penduduk",
                     })}
                 >
                     <View style={styles.innerCard}>
                         <Image source={pertumbuhanPenduduk} style={styles.iconImage} />
                         <View style={{ paddingHorizontal: 10, width: '82%' }}>
-                            <Text style={styles.titleText}>Pertumbuhan Penduduk</Text>
+                            <Text style={styles.titleText}>Jumlah Penduduk</Text>
                             {
-                                dataPP.isLoading === false ?
-                                    <Text style={styles.subTitleText}>Tahun {dataPP?.data?.last_data[0].tahun}</Text>
+                                dataJP.isLoading === false ?
+                                    <Text style={styles.subTitleText}>Tahun {dataJP?.data?.last_data[0].tahun}</Text>
                                     : <ActivityIndicator size="small" color="#fff" />
                             }
                             {
-                                dataPP.isLoading === false ?
-                                    <Text style={styles.subTitleText}>{dataPP?.data?.last_data[0].laju} %</Text>
-                                    : <ActivityIndicator size="small" color="#fff" />
-                            }
-                        </View>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.cardDashbord}
-                    onPress={() => navigation.navigate('DetailPJDDDashboard', {
-                        title: "Panjang Jalan Dibangun",
-                    })}
-                >
-                    <View style={styles.innerCard}>
-                        <Image source={panjangJalanDibangun} style={styles.iconImage} />
-                        <View style={{ paddingHorizontal: 10, width: '82%' }}>
-                            <Text style={styles.titleText}>Panjang Jalan Dibangun</Text>
-                            {
-                                dataPJD.isLoading === false ?
-                                    <Text style={styles.subTitleText}>Tahun {dataPJD?.data?.last_data[0].tahun}</Text>
+                                dataJP.isLoading === false ?
+                                    <Text style={styles.subTitleText}>Laki: {dataJP?.data?.last_data[0].laki} Orang</Text>
                                     : <ActivityIndicator size="small" color="#fff" />
                             }
                             {
-                                dataPJD.isLoading === false ?
-                                    <Text style={styles.subTitleText}>{dataPJD?.data?.last_data[0].panjang} Km</Text>
-                                    : <ActivityIndicator size="small" color="#fff" />
-                            }
-                        </View>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.cardDashbord}
-                    onPress={() => navigation.navigate('DetailPRTDashboard',
-                        {
-                            title: "Persentase Penggunaan Air Bersih",
-                        }
-                    )}
-                >
-                    <View style={styles.innerCard}>
-                        <Image source={penggunaanAirBersih} style={styles.iconImage} />
-                        <View style={{ paddingHorizontal: 10, width: '82%' }}>
-                            <Text style={styles.titleText}>Persentase Penggunaan Air Bersih</Text>
-                            {
-                                dataPRT.isLoading === false ?
-                                    <Text style={styles.subTitleText}>Tahun {dataPRT?.data?.last_data[0].tahun}</Text>
+                                dataJP.isLoading === false ?
+                                    <Text style={styles.subTitleText}>Perempuan: {dataJP?.data?.last_data[0].perempuan} Orang</Text>
                                     : <ActivityIndicator size="small" color="#fff" />
                             }
                             {
-                                dataPRT.isLoading === false ?
-                                    <Text style={styles.subTitleText}>{dataPRT?.data?.last_data[0].nilai} %</Text>
+                                dataJP.isLoading === false ?
+                                    <Text style={styles.subTitleText}>Total: {dataJP?.data?.last_data[0].total} Orang</Text>
                                     : <ActivityIndicator size="small" color="#fff" />
                             }
                         </View>

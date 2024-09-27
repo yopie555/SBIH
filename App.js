@@ -28,6 +28,18 @@ import DetailHLSDashboard from './src/screens/DetailDashboard/DetailHLSDashboard
 import DetailJRTLHDashboard from './src/screens/DetailDashboard/detailJRTLHDashboard.js';
 import DetailPPUDashboard from './src/screens/DetailDashboard/DetailPPUDashboard.js';
 import DetailIPGGDashboard from './src/screens/DetailDashboard/DetailIPGGDashboard.js';
+import DetailLIDashboard from './src/screens/DetailDashboard/DetailLIDashboard.js';
+import DetailPMADashboard from './src/screens/DetailDashboard/DetailPMADashboard.js'
+import DetailPPBDashboard from './src/screens/DetailDashboard/DetailPPBDashboard.js';
+import DetailPPTDashboard from './src/screens/DetailDashboard/DetailPPTDashboard.js';
+import DetailCPKUPDashboard from './src/screens/DetailDashboard/DetailCPKUPDashboard.js';
+import DetailCPKHDashboard from './src/screens/DetailDashboard/DetailCPKHDashboard.js';
+import DetailJPPDashboard from './src/screens/DetailDashboard/DetailJPPDashboard.js';
+import DetailJPDashboard from './src/screens/DetailDashboard/DetailJPDashboard.js';
+import DetailJPBKDashboard from './src/screens/DetailDashboard/DetailJPBKDashboard.js';
+import DetailJPBKUDashboard from './src/screens/DetailDashboard/DetailJPBKUDashboard.js';
+import DetailPTKJDashboard from './src/screens/DetailDashboard/DetailPTKJDashboard.js';
+import DetailVideoDashboard from './src/screens/DetailDashboard/DetailVideoDashboard.js';
 
 import DrawerContent from './src/components/DrawerContent'
 
@@ -177,6 +189,66 @@ const App = () => {
           <Stack.Screen
             name="DetailIPGGDashboard"
             component={DetailIPGGDashboard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name='DetailLIDashboard'
+            component={DetailLIDashboard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name='DetailPMADashboard'
+            component={DetailPMADashboard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name='DetailPPBDashboard'
+            component={DetailPPBDashboard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name='DetailPPTDashboard'
+            component={DetailPPTDashboard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name='DetailCPKUPDashboard'
+            component={DetailCPKUPDashboard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name='DetailCPKHDashboard'
+            component={DetailCPKHDashboard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name='DetailJPPDashboard'
+            component={DetailJPPDashboard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name='DetailJPDashboard'
+            component={DetailJPDashboard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name='DetailJPBKDashboard'
+            component={DetailJPBKDashboard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name='DetailJPBKUDashboard'
+            component={DetailJPBKUDashboard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name='DetailPTKJDashboard'
+            component={DetailPTKJDashboard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name='DetailVideoDashboard'
+            component={DetailVideoDashboard}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

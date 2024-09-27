@@ -58,40 +58,40 @@ const DrawerContent = () => {
                     title="Ekonomi"
                     left={props => <List.Icon {...props} icon="folder" />}>
                     <List.Item titleNumberOfLines={2} title="Pertumbuhan Ekonomi" onPress={() => navigation.navigate("DetailPEDashboard")} />
-                    <List.Item titleNumberOfLines={2} title="Laju Inflasi" />
+                    <List.Item titleNumberOfLines={2} title="Laju Inflasi" onPress={() => navigation.navigate("DetailLIDashboard")} />
                     <List.Item titleNumberOfLines={2} title="Kunjungan Wisata" onPress={() => navigation.navigate("DetailKWDashboard")} />
-                    <List.Item titleNumberOfLines={2} title="Realisasi Investasi PMA/PMDN" />
+                    <List.Item titleNumberOfLines={2} title="Realisasi Investasi PMA / PMDN" onPress={() => navigation.navigate("DetailPMADashboard")}/>
                     <List.Item titleNumberOfLines={2} title="Distribusi PDRB Atas Dasar Harga Berlaku (ADHB)" />
                     <List.Item titleNumberOfLines={2} title="Distribusi PDRB Atas Dasar Harga Konstan (ADHK)" />
                 </List.Accordion>
                 <List.Accordion
                     title="Pertanian dan Perikanan"
                     left={props => <List.Icon {...props} icon="folder" />}>
-                    <List.Item titleNumberOfLines={2} title="Produksi Perikanan Budidaya" />
-                    <List.Item titleNumberOfLines={2} title="Produksi Perikanan Tangkap" />
-                    <List.Item titleNumberOfLines={3} title="Capaikan Produksi Komoditi Unggulan Perkebunan" />
-                    <List.Item titleNumberOfLines={2} title="Capaikan Produksi Komoditi Hortikultura" />
-                    <List.Item titleNumberOfLines={2} title="Jumlah Produksi Peternakan" />
+                    <List.Item titleNumberOfLines={2} title="Produksi Perikanan Budidaya" onPress={() => navigation.navigate("DetailPPBDashboard")}/>
+                    <List.Item titleNumberOfLines={2} title="Produksi Perikanan Tangkap" onPress={() => navigation.navigate("DetailPPTDashboard")}/>
+                    <List.Item titleNumberOfLines={3} title="Capaikan Produksi Komoditi Unggulan Perkebunan" onPress={() => navigation.navigate("DetailCPKUPDashboard")} />
+                    <List.Item titleNumberOfLines={2} title="Capaikan Produksi Komoditi Hortikultura" onPress={() => navigation.navigate("DetailCPKHDashboard")} />
+                    <List.Item titleNumberOfLines={2} title="Jumlah Produksi Peternakan" onPress={() => navigation.navigate("DetailJPPDashboard")}/>
                 </List.Accordion>
                 <List.Accordion
                     title="Kependudukan"
                     left={props => <List.Icon {...props} icon="folder" />}>
                     <List.Item titleNumberOfLines={2} title="Pertumbuhan Penduduk"  onPress={() => navigation.navigate("DetailPPDashboard")}/>
-                    <List.Item titleNumberOfLines={2} title="Jumlah Penduduk" />
-                    <List.Item titleNumberOfLines={3} title="Jumlah Penduduk Berdasarkan Kelompok Umur" />
-                    <List.Item titleNumberOfLines={3} title="Jumlah Penduduk berdasarkan Kecamatan Tahun 2021" />
+                    <List.Item titleNumberOfLines={2} title="Jumlah Penduduk" onPress={() => navigation.navigate("DetailJPDashboard")}/>
+                    <List.Item titleNumberOfLines={3} title="Jumlah Penduduk Berdasarkan Kelompok Umur" onPress={() => navigation.navigate("DetailJPBKUDashboard")}/>
+                    <List.Item titleNumberOfLines={3} title="Jumlah Penduduk berdasarkan Kecamatan Tahun 2021" onPress={() => navigation.navigate("DetailJPBKDashboard")}/>
                 </List.Accordion>
                 <List.Accordion
                     title="Infrastruktur"
                     left={props => <List.Icon {...props} icon="folder" />}>
                     <List.Item titleNumberOfLines={3} title="Panjang Jalan yang Di Bangun dan Ditingkatkan" onPress={() => navigation.navigate("DetailPJDDDashboard")} />
                     <List.Item titleNumberOfLines={3} title="Persentase Rumah Tangga (RT) yang Menggunakan Air Bersih" onPress={() => navigation.navigate("DetailPRTDashboard")} />
-                    <List.Item titleNumberOfLines={3} title="Persentase Tingkat Kemantapan Jalan (Mantap Sempurna)" />
+                    <List.Item titleNumberOfLines={3} title="Persentase Tingkat Kemantapan Jalan (Mantap Sempurna)" onPress={() => navigation.navigate("DetailPTKJDashboard")} />
                 </List.Accordion>
                 <List.Accordion
                     title="Video"
                     left={props => <List.Icon {...props} icon="folder" />}>
-                    <List.Item title="List Video" />
+                    <List.Item title="List Video" onPress={() => navigation.navigate("DetailVideoDashboard")} />
                 </List.Accordion>
             </List.Section>
             {/* separator with text inline */}
