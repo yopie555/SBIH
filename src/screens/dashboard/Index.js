@@ -1,4 +1,4 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, ImageBackground, RefreshControl } from 'react-native'
+import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, ImageBackground, RefreshControl, Alert } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import axios, { AxiosError } from 'axios'
@@ -44,13 +44,8 @@ import headerImage from '../../assets/1.png'
 import pendudukmiskin from '../../assets/pendudukmis.png'
 import indexpembangunanmanusia from '../../assets/IPM.png'
 import AngkaSekolah from '../../assets/ALS.png'
-import indexGini from '../../assets/IG.png'
-import indexDayaBeli from '../../assets/IDB.png'
 import pertumbuhanEkonomi from '../../assets/PE.png'
-import kunjunganWisata from '../../assets/KW.png'
 import pertumbuhanPenduduk from '../../assets/PP.png'
-import panjangJalanDibangun from '../../assets/PJD.png'
-import penggunaanAirBersih from '../../assets/PAB.png'
 
 const Index = () => {
     const navigation = useNavigation()
@@ -495,9 +490,16 @@ const Index = () => {
                 >
                 <TouchableOpacity
                     style={styles.cardDashbord}
-                    onPress={() => navigation.navigate('DetailPEDashboard', {
-                        title: "Pertumbuhan Ekonomi",
-                    })}
+                    onPress={() => {
+                        if (dataPE.isFetched) {
+                            navigation.navigate('DetailPEDashboard', {
+                                title: "Pertumbuhan Ekonomi",
+                            })
+                        }
+                        else {
+                            Alert.alert('Data belum tersedia')
+                        }
+                    }}
                 >
                     <View style={styles.innerCard}>
                         <Image source={pertumbuhanEkonomi} style={styles.iconImage} />
@@ -518,9 +520,16 @@ const Index = () => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.cardDashbord}
-                    onPress={() => navigation.navigate('DetailIPMDashboard', {
-                        title: "Indeks Pembangunan Manusia",
-                    })}
+                    onPress={() => {
+                        if (dataIPM.isFetched) {
+                            navigation.navigate('DetailIPMDashboard', {
+                                title: "Indeks Pembangunan Manusia",
+                            })
+                        }
+                        else {
+                            Alert.alert('Data belum tersedia')
+                        }
+                    }}
                 >
                     <View style={styles.innerCard}>
                         <Image source={indexpembangunanmanusia} style={styles.iconImage} />
@@ -539,10 +548,16 @@ const Index = () => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.cardDashbord}
-                    onPress={() => navigation.navigate('DetailDashboard', {
-                        title: "Data Penduduk Miskin",
-                        // data: datas.data.last_data
-                    })}
+                    onPress={() => {
+                        if (datas.isFetched) {
+                            navigation.navigate('DetailDashboard', {
+                                title: "Data Penduduk Miskin",
+                            })
+                        }
+                        else {
+                            Alert.alert('Data belum tersedia')
+                        }
+                    }}
                 >
                     <View style={styles.innerCard}>
                         <Image source={pendudukmiskin} style={styles.iconImage} />
@@ -563,10 +578,16 @@ const Index = () => {
                 </TouchableOpacity>               
                 <TouchableOpacity
                     style={styles.cardDashbord}
-                    onPress={() => navigation.navigate('DetailLIDashboard', {
-                        title: "Laju Inflasi",
-                        data: dataALS.result
-                    })}
+                    onPress={() => {
+                        if (dataLI.isFetched) {
+                            navigation.navigate('DetailLIDashboard', {
+                                title: "Laju Inflasi",
+                            })
+                        }
+                        else {
+                            Alert.alert('Data belum tersedia')
+                        }
+                    }}
                 >
                     <View style={styles.innerCard}>
                         <Image source={AngkaSekolah} style={styles.iconImage} />
@@ -613,9 +634,16 @@ const Index = () => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.cardDashbord}
-                    onPress={() => navigation.navigate('DetailJPDashboard', {
-                        title: "Jumlah Penduduk",
-                    })}
+                    onPress={() => {
+                        if (dataJP.isFetched) {
+                            navigation.navigate('DetailJPDashboard', {
+                                title: "Jumlah Penduduk",
+                            })
+                        }
+                        else {
+                            Alert.alert('Data belum tersedia')
+                        }
+                    }}
                 >
                     <View style={styles.innerCard}>
                         <Image source={pertumbuhanPenduduk} style={styles.iconImage} />

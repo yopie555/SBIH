@@ -6,6 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 import Dashboard from './src/screens/dashboard/Index'
+import TentangKami from './src/screens/dashboard/TentangKami.js';
 import DetailDashboard from './src/screens/DetailDashboard/DetailDashboard'
 import DetailIPMDashboard from './src/screens/DetailDashboard/DetailIPMDashboard';
 import DetailRLSDashboard from './src/screens/DetailDashboard/DetailRLSDashboard';
@@ -80,6 +81,11 @@ const App = () => {
             name="Dashboard"
             component={DashboardDrawer}
             options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name='TentangKami'
+            component={TentangKami}
+            options={{headerShown: false}}
           />
           <Stack.Screen
             name="DetailDashboard"

@@ -4,6 +4,7 @@ import { List } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Icon2 from 'react-native-vector-icons/AntDesign'
 import { useNavigation } from '@react-navigation/native';
+import { DrawerActions } from '@react-navigation/native';
 
 import LogoBintan from '../assets/bintan.png'
 
@@ -17,14 +18,16 @@ const DrawerContent = () => {
             </View>
             <TouchableOpacity
                 style={{ flexDirection: 'row', alignItems: 'center' }}
+                onPress={() => navigation.dispatch(DrawerActions.closeDrawer())}
             >
                 <Icon name="home" size={30} color="black" style={{ marginVertical: 10, marginHorizontal: 10 }} />
                 <Text style={{ marginVertical: 10, marginHorizontal: 10, color: 'black'  }}>Home</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 style={{ flexDirection: 'row', alignItems: 'center' }}
+                onPress={()=> navigation.navigate('TentangKami')}
             >
-                <Icon2 name="setting" size={30} color="black" style={{ marginVertical: 10, marginHorizontal: 10 }} />
+                <Icon2 name="infocirlce" size={26} color="black" style={{ marginVertical: 10, marginHorizontal: 10 }} />
                 <Text style={{ marginVertical: 10, marginHorizontal: 10, color: 'black'  }}>Tentang Kami</Text>
             </TouchableOpacity>
             {/* separator */}
@@ -91,7 +94,7 @@ const DrawerContent = () => {
                 <List.Accordion
                     title="Video"
                     left={props => <List.Icon {...props} icon="folder" />}>
-                    <List.Item title="List Video" onPress={() => navigation.navigate("DetailVideoDashboard")} />
+                    <List.Item titleNumberOfLines={2} title="Video" onPress={() => navigation.navigate('DetailVideoDashboard')} />
                 </List.Accordion>
             </List.Section>
             {/* separator with text inline */}

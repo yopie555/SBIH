@@ -21,6 +21,7 @@ const DetailVideoDashboard = () => {
     return (
         // <View style={{flex:1}}>
         <ScrollView  contentContainerStyle={{ flexGrow: 1 }}>
+            
         {
             dataVideo.map((item, index) => {
                 return (
