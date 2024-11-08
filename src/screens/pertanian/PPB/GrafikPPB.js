@@ -33,9 +33,9 @@ const GrafikAHH = (props) => {
     fromNumber={68.6}
     verticalLabelRotation={40}
     chartConfig={{
-      backgroundColor: "#e26a00",
-      backgroundGradientFrom: "#fb8c00",
-      backgroundGradientTo: "#ffa726",
+      backgroundColor: color.graph1,
+      backgroundGradientFrom: color.graph2,
+      backgroundGradientTo: color.graph3,
       decimalPlaces: 1, // optional, defaults to 2dp
       color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
       labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
@@ -49,7 +49,7 @@ const GrafikAHH = (props) => {
       propsForDots: {
         r: "6",
         strokeWidth: "2",
-        stroke: "#ffa726"
+        stroke: color.graph4
       },
       propsForBackgroundLines: {
         stroke: 'blue'

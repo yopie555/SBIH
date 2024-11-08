@@ -8,7 +8,7 @@ export const stateDataIndeksGini = create(
             setDataIndeksGini: (dataFetch) => set({ dataIndeksGini: dataFetch }),
         }),
         {
-            name: 'dataPenduduk', // name of the item in the storage (must be unique)
+            name: 'dataIndeksGini', // name of the item in the storage (must be unique)
             storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
         },
     ),

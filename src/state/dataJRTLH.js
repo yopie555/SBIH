@@ -8,7 +8,7 @@ export const stateDataJumlahRumahTidakLayakHuni = create(
             setDataJumlahRumahTidakLayakHuni: (dataFetch) => set({ dataJumlahRumahTidakLayakHuni: dataFetch }),
         }),
         {
-            name: 'dataPenduduk', // name of the item in the storage (must be unique)
+            name: 'dataJumlahRumahTidakLayakHuni', // name of the item in the storage (must be unique)
             storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
         },
     ),

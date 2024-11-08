@@ -8,7 +8,7 @@ export const stateDataJumlahPendudukBerdasarkanKecamatan = create(
             setDataJumlahPendudukBerdasarkanKecamatan: (dataFetch) => set({ dataJumlahPendudukBerdasarkanKecamatan: dataFetch }),
         }),
         {
-            name: 'dataPenduduk', // name of the item in the storage (must be unique)
+            name: 'dataJumlahPendudukBerdasarkanKecamatan', // name of the item in the storage (must be unique)
             storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
         },
     ),

@@ -8,7 +8,7 @@ export const stateDataPanjangJalanDibangun = create(
             setDataPanjangJalanDibangun: (dataFetch) => set({ dataPanjangJalanDibangun: dataFetch }),
         }),
         {
-            name: 'dataPenduduk', // name of the item in the storage (must be unique)
+            name: 'dataPanjangJalanDibangun', // name of the item in the storage (must be unique)
             storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
         },
     ),

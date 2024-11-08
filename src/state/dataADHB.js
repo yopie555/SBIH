@@ -8,7 +8,7 @@ export const stateDataAtasDasarHargaBerlaku = create(
             setDataAtasDasarHargaBerlaku: (dataFetch) => set({ dataAtasDasarHargaBerlaku: dataFetch }),
         }),
         {
-            name: 'dataPenduduk', // name of the item in the storage (must be unique)
+            name: 'dataAtasDasarHargaBerlaku', // name of the item in the storage (must be unique)
             storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
         },
     ),

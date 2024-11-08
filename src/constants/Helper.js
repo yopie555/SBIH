@@ -9,4 +9,8 @@ export const color = {
     light: '#f8f9fa',
     dark: '#343a40',
     black: '#000000',
+    graph1: '#002034',
+    graph2: '#00446f',
+    graph3: "#5bc0ff",
+    graph4: "#0098f8"
 };

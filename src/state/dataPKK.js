@@ -8,7 +8,7 @@ export const stateDataPerkembanganKondisiKetenagakerjaan = create(
             setDataPerkembanganKondisiKetenagakerjaan: (dataFetch) => set({ dataPerkembanganKondisiKetenagakerjaan: dataFetch }),
         }),
         {
-            name: 'dataPenduduk', // name of the item in the storage (must be unique)
+            name: 'dataPerkembanganKondisiKetenagakerjaan', // name of the item in the storage (must be unique)
             storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
         },
     ),

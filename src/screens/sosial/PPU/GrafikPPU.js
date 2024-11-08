@@ -4,6 +4,7 @@ import {
   LineChart,
 } from "react-native-chart-kit";
 import { stateDataPersentasePendudukUsia } from '../../../state/dataPPU';
+import { color } from '../../../constants/Helper';
 
 const GrafikHLS = (props) => {
   const {dataPersentasePendudukUsia} = stateDataPersentasePendudukUsia()
@@ -36,9 +37,9 @@ const GrafikHLS = (props) => {
     verticalLabelRotation={20}
     // fromNumber={5}
     chartConfig={{
-      backgroundColor: "#e26a00",
-      backgroundGradientFrom: "#fb8c00",
-      backgroundGradientTo: "#ffa726",
+      backgroundColor: color.graph1,
+      backgroundGradientFrom: color.graph2,
+      backgroundGradientTo: color.graph3,
       decimalPlaces: 1, // optional, defaults to 2dp
       color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
       labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
@@ -52,7 +53,7 @@ const GrafikHLS = (props) => {
       propsForDots: {
         r: "6",
         strokeWidth: "2",
-        stroke: "#ffa726"
+        stroke: color.graph4
       },
       propsForBackgroundLines: {
         stroke: 'blue'

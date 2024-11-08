@@ -4,6 +4,7 @@ import {
   LineChart,
 } from "react-native-chart-kit";
 import { stateDataIndeksGini } from '../../../state/dataIG';
+import { color } from '../../../constants/Helper';
 
 const GrafikIG = (props) => {
   const {dataIndeksGini} = stateDataIndeksGini()
@@ -31,9 +32,9 @@ const GrafikIG = (props) => {
     yAxisInterval={1} // optional, defaults to 1
     fromZero={true}
     chartConfig={{
-      backgroundColor: "#e26a00",
-      backgroundGradientFrom: "#fb8c00",
-      backgroundGradientTo: "#ffa726",
+      backgroundColor: color.graph1,
+      backgroundGradientFrom: color.graph2,
+      backgroundGradientTo: color.graph3,
       decimalPlaces: 1, // optional, defaults to 2dp
       color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
       labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
@@ -47,7 +48,7 @@ const GrafikIG = (props) => {
       propsForDots: {
         r: "6",
         strokeWidth: "2",
-        stroke: "#ffa726"
+        stroke: color.graph4
       },
       propsForBackgroundLines: {
         stroke: 'blue'

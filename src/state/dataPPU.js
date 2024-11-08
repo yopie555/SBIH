@@ -8,7 +8,7 @@ export const stateDataPersentasePendudukUsia = create(
             setDataPersentasePendudukUsia: (dataFetch) => set({ dataPersentasePendudukUsia: dataFetch }),
         }),
         {
-            name: 'dataPenduduk', // name of the item in the storage (must be unique)
+            name: 'dataPersentasePendudukUsia', // name of the item in the storage (must be unique)
             storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
         },
     ),
