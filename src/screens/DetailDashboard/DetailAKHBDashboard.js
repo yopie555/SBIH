@@ -1,13 +1,12 @@
-import React from 'react'
+import React from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
-import DetailAKHB from '../sosial/AKHB/DetailAKHB'
-import GrafikAKHB from '../sosial/AKHB/GrafikAKHB'
+import DetailAKHB from '../sosial/AKHB/DetailAKHB';
+import GrafikAKHB from '../sosial/AKHB/GrafikAKHB';
 
-const Tab = createMaterialTopTabNavigator()
+const Tab = createMaterialTopTabNavigator();
 
-const DetailAKHBDashboard = (props) => {
-
+const DetailAKHBDashboard = () => {
   return (
     <Tab.Navigator
       screenOptions={{
@@ -30,7 +29,7 @@ const DetailAKHBDashboard = (props) => {
         initialParams={{ title: "Data Angka Keberlangsungan Hidup Bayi" }}
       />
     </Tab.Navigator>
-  )
-}
+  );
+};
 
-export default DetailAKHBDashboard
+export default DetailAKHBDashboard;

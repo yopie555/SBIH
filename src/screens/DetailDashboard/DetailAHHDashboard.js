@@ -1,13 +1,12 @@
-import React from 'react'
+import React from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
-import DetailAHH from '../sosial/AHH/DetailAHH'
-import GrafikAHH from '../sosial/AHH/GrafikAHH'
+import DetailAHH from '../sosial/AHH/DetailAHH';
+import GrafikAHH from '../sosial/AHH/GrafikAHH';
 
-const Tab = createMaterialTopTabNavigator()
+const Tab = createMaterialTopTabNavigator();
 
-const DetailAHHDashboard = (props) => {
-
+const DetailAHHDashboard = () => {
   return (
     <Tab.Navigator
       screenOptions={{
@@ -30,7 +29,7 @@ const DetailAHHDashboard = (props) => {
         initialParams={{ title: "Data Angka Harapan Hidup" }}
       />
     </Tab.Navigator>
-  )
-}
+  );
+};
 
-export default DetailAHHDashboard
+export default DetailAHHDashboard;

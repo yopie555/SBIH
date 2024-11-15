@@ -105,6 +105,7 @@ const DrawerContent = () => {
             </View>
             <TouchableOpacity
                 style={{ flexDirection: 'row', alignItems: 'center' }}
+                onPress={() => navigation.navigate('DashboardAnggaranMurni')}
             >
                 <Icon name="chart-box" size={30} color="black" style={{ marginVertical: 10, marginHorizontal: 10  }} />
                 <Text style={{ marginVertical: 10, marginHorizontal: 10, color: 'black'  }}>Anggaran Murni dan Perubahan</Text>
