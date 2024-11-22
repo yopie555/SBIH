@@ -110,12 +110,12 @@ const DrawerContent = () => {
                 <Icon name="chart-box" size={30} color="black" style={{ marginVertical: 10, marginHorizontal: 10  }} />
                 <Text style={{ marginVertical: 10, marginHorizontal: 10, color: 'black'  }}>Anggaran Murni dan Perubahan</Text>
             </TouchableOpacity>
-            <TouchableOpacity
+            {/* <TouchableOpacity
                 style={{ flexDirection: 'row', alignItems: 'center' }}
             >
                 <Icon name="chart-tree" size={30} color="black" style={{ marginVertical: 10, marginHorizontal: 10 }} />
                 <Text style={{ marginVertical: 10, marginHorizontal: 10, color: 'black'  }}>Realisasi OPD</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
         </View>
     )
 }
