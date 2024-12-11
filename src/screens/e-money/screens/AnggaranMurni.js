@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import { useFocusEffect } from '@react-navigation/native';
 import { stateDataAnggaran } from '../../../state/dataAnggaran';
 
-const AnggaranMurni = ({ route, navigation }) => {
+const AnggaranMurni = () => {
   const { dataAnggaran } = stateDataAnggaran();
   const data = dataAnggaran?.statistik1_murni; // Access params safely
   

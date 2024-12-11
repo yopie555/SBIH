@@ -1,4 +1,4 @@
-package com.sbih
+package com.smartbintandroid
 
 import android.app.Application
 import com.facebook.react.PackageList

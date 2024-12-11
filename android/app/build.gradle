@@ -77,12 +77,12 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.sbih"
+    namespace "com.smartbintandroid"
     defaultConfig {
-        applicationId "com.sbih"
+        applicationId "com.smartbintandroid"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 4
+        versionCode 3
         versionName "1.3"
     }
     signingConfigs {

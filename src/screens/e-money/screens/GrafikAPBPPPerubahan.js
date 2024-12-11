@@ -1,29 +1,93 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
-import { WebView } from 'react-native-webview';
-import { stateDataTahun } from '../../../state/dataTahun';
+import React from 'react';
+import { View, Text, ActivityIndicator, StyleSheet, Dimensions } from 'react-native';
+import { stateDataAnggaran } from '../../../state/dataAnggaran';
+import {
+    LineChart,
+  } from "react-native-chart-kit";
+  import { color } from '../../../constants/Helper';
 
-const GrafikAPBPPPerubahan = ({ route }) => {
-    const {dataTahun} = stateDataTahun()
+const GrafikAPBPPPerubahan = () => {
+    const {dataAnggaran} = stateDataAnggaran()
+    const data = dataAnggaran?.chart_keuangan_perubahan?.[0] || []; // Fallback to a default array  
+    const data1 = dataAnggaran?.chart_keuangan_perubahan?.[1] || []; // Fallback to a default array  
+    const isDataReady = Array.isArray(data) && Array.isArray(data1) && data.length > 0 && data1.length > 0; // Check if both datasets are available  
 
-    const [loading, setLoading] = useState(true);
-    const url = `https://simonev21.bintankab.go.id/mobile/chartperubahan/keuangan/${dataTahun}/08`;  // Gunakan tahun yang dipilih
-
+    console.log('dataAnggaran', dataAnggaran);
+    
     return (
-        <View style={{ flex: 1 }}>
-            {loading && (
-                <View style={styles.loaderContainer}>
-                    <ActivityIndicator size="large" color="#0074BD" />
-                    <Text>Loading Grafik...</Text>
-                </View>
-            )}
-            
-            <WebView
-                source={{ uri: url }}
-                onLoad={() => setLoading(false)}
-                style={{ flex: 1 }}
-            />
-        </View>
+      <View style={{ flex: 1 }}>  
+      {isDataReady ? (  
+          <LineChart  
+              data={{  
+                  labels: [  
+                      "Jan",  
+                      "Feb",  
+                      "Mar",  
+                      "Apr",  
+                      "Mei",  
+                      "Jun",  
+                      "Jul",  
+                      "Agu",  
+                      "Sep",  
+                      "Okt",  
+                      "Nov",  
+                      "Des"  
+                  ],  
+                  datasets: [  
+                      {  
+                          data: data,  
+                          color: (opacity = 1) => `green`, // Optional  
+                          strokeWidth: 2 // Optional  
+                      },  
+                      {  
+                          data: data1,  
+                          color: (opacity = 1) => `yellow`, // Optional  
+                          strokeWidth: 2 // Optional  
+                      }  
+                  ],  
+                  legend: ["Target", "Realisasi"]
+              }}  
+              width={Dimensions.get("window").width} // from react-native  
+              height={300}  
+              yAxisInterval={1} // Optional, defaults to 1  
+              chartConfig={{  
+                  backgroundColor: color.graph1,  
+                  backgroundGradientFrom: color.graph2,  
+                  backgroundGradientTo: color.graph3,  
+                  decimalPlaces: 1, // Optional, defaults to 2dp  
+                  color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,  
+                  labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,  
+                  style: {  
+                      borderRadius: 16,  
+                      paddingVertical: 20,  
+                      padding: 10  
+                  },  
+                  propsForLabels: {  
+                      fontSize: 10  
+                  },  
+                  propsForDots: {  
+                      r: "6",  
+                      strokeWidth: "2",  
+                      stroke: color.graph4  
+                  },  
+                  propsForBackgroundLines: {  
+                      stroke: 'blue'  
+                  },  
+              }}  
+              bezier  
+              style={{  
+                  marginVertical: 8,  
+                  borderRadius: 16,  
+                  paddingVertical: 10  
+              }}  
+          />  
+      ) : (  
+          <View style={styles.loaderContainer}>  
+              <ActivityIndicator size="large" color="blue" />  
+              <Text style={{ color: 'blue' }}>Loading data...</Text>  
+          </View>  
+      )}  
+  </View>  
     );
 };
 

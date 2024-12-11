@@ -1,4 +1,4 @@
-package com.sbih
+package com.smartbintandroid
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
