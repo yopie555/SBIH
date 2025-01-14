@@ -22,12 +22,12 @@ const DetailJPPDashboard = (props) => {
       <Tab.Screen
         name="Detail Jumlah Produksi Peternakan (JPP) "
         component={DetailJPP}
-        initialParams={{ title: "Data Jumlah Produksi Peternakan (JPP) " }}
+        initialParams={{ title: "Data Jumlah Produksi Peternakan (Ton) " }}
       />
       <Tab.Screen
         name="Grafik Jumlah Produksi Peternakan (JPP) "
         component={GrafikJPP}
-        initialParams={{ title: "Data Jumlah Produksi Peternakan (JPP) " }}
+        initialParams={{ title: "Data Jumlah Produksi Peternakan (Ton)" }}
       />
     </Tab.Navigator>
   )

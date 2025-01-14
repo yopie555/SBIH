@@ -19,14 +19,14 @@ const DetailIPGGDashboard = (props) => {
       }}
     >
       <Tab.Screen
-        name="Detail Indeks Pembangunan Gender"
+        name="Detail Indeks Pemberdayaan Gender"
         component={DetailIPGG}
-        initialParams={{ title: "Data Indeks Pembangunan Gender" }}
+        initialParams={{ title: "Data Indeks Pemberdayaan Gender" }}
       />
       <Tab.Screen
-        name="Grafik Indeks Pembangunan Gender"
+        name="Grafik Indeks Pemberdayaan Gender"
         component={GrafikIPGG}
-        initialParams={{ title: "Data Indeks Pembangunan Gender" }}
+        initialParams={{ title: "Data Indeks Pemberdayaan Gender" }}
       />
     </Tab.Navigator>
   )

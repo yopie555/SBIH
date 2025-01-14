@@ -551,7 +551,7 @@ const Index = () => {
                     onPress={() => {
                         if (datas.isFetched) {
                             navigation.navigate('DetailDashboard', {
-                                title: "Data Penduduk Miskin",
+                                title: "Data Tingkat Kemiskinan",
                             })
                         }
                         else {
@@ -562,7 +562,7 @@ const Index = () => {
                     <View style={styles.innerCard}>
                         <Image source={pendudukmiskin} style={styles.iconImage} />
                         <View style={{ paddingHorizontal: 10, width: '82%' }}>
-                            <Text style={styles.titleText}>Jumlah Penduduk Miskin</Text>
+                            <Text style={styles.titleText}>Tingkat Kemiskinan</Text>
                             {
                                 datas.isLoading === false ?
                                     <Text style={styles.subTitleText}>Tahun {datas?.data?.last_data[0].tahun}</Text>
@@ -570,7 +570,7 @@ const Index = () => {
                             }
                             {
                                 datas.isLoading === false ?
-                                    <Text style={styles.subTitleText}>{datas?.data?.last_data[0].presentase} Orang</Text>
+                                    <Text style={styles.subTitleText}>{datas?.data?.last_data[0].presentase} %</Text>
                                     : <ActivityIndicator size="small" color="#fff" />
                             }
                         </View>
@@ -592,41 +592,13 @@ const Index = () => {
                     <View style={styles.innerCard}>
                         <Image source={AngkaSekolah} style={styles.iconImage} />
                         <View style={{ paddingHorizontal: 10, width: '82%' }}>
-                            <Text style={styles.titleText}>Laju Inflasi</Text>
+                            <Text style={styles.titleText}>Tingkat Inflasi</Text>
                             {dataLI.isLoading === false ?
                                 <Text style={styles.subTitleText}>Tahun {dataLI?.data?.last_data[0].tahun}</Text>
                                 : <ActivityIndicator size="small" color="#fff" />
                             }
                             {dataLI.isLoading === false ?
-                                <Text style={styles.subTitleText}>Umum: {dataLI?.data?.last_data[0].umum} %</Text>
-                                : <ActivityIndicator size="small" color="#fff" />
-                            }
-                            {dataLI.isLoading === false ?
-                                <Text style={styles.subTitleText}>Bahan Makanan: {dataLI?.data?.last_data[0].bahan_makanan} %</Text>
-                                : <ActivityIndicator size="small" color="#fff" />
-                            }
-                            {dataLI.isLoading === false ?
-                                <Text style={styles.subTitleText}>Makanan Jadi: {dataLI?.data?.last_data[0].makanan_jadi} %</Text>
-                                : <ActivityIndicator size="small" color="#fff" />
-                            }
-                            {dataLI.isLoading === false ?
-                                <Text style={styles.subTitleText}>Perumahan: {dataLI?.data?.last_data[0].perumahan} %</Text>
-                                : <ActivityIndicator size="small" color="#fff" />
-                            }
-                            {dataLI.isLoading === false ?
-                                <Text style={styles.subTitleText}>Sandang: {dataLI?.data?.last_data[0].sandang} %</Text>
-                                : <ActivityIndicator size="small" color="#fff" />
-                            }
-                            {dataLI.isLoading === false ?
-                                <Text style={styles.subTitleText}>Kesehatan: {dataLI?.data?.last_data[0].kesehatan} %</Text>
-                                : <ActivityIndicator size="small" color="#fff" />
-                            }
-                            {dataLI.isLoading === false ?
-                                <Text style={styles.subTitleText}>Pendidikan: {dataLI?.data?.last_data[0].pendidikan} %</Text>
-                                : <ActivityIndicator size="small" color="#fff" />
-                            }
-                            {dataLI.isLoading === false ?
-                                <Text style={styles.subTitleText}>Transportasi: {dataLI?.data?.last_data[0].transportasi} %</Text>
+                                <Text style={styles.subTitleText}>{dataLI?.data?.last_data[0].umum} %</Text>
                                 : <ActivityIndicator size="small" color="#fff" />
                             }
                         </View>

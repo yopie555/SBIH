@@ -20,14 +20,14 @@ const DetailLIDashboard = (props) => {
       }}
     >
       <Tab.Screen
-        name="Detail Laju Inflasi"
+        name="Detail Tingkat Inflasi"
         component={DetailLI}
-        initialParams={{ title: "Data Laju Inflasi" }}
+        initialParams={{ title: "Data Tingkat Inflasi" }}
       />
       <Tab.Screen
-        name="Grafik Laju Inflasi"
+        name="Grafik Tingkat Inflasi"
         component={GrafikLI}
-        initialParams={{ title: "Data Laju Inflasi" }}
+        initialParams={{ title: "Data Tingkat Inflasi" }}
       />
     </Tab.Navigator>
   )

@@ -7,19 +7,10 @@ import GrafikPE from '../ekonomi/PE/GrafikPE';
 
 const Tab = createMaterialTopTabNavigator();
 
-// Create custom header
-const YourCustomHeaderBar = () => {
-  return (
-    <View>
-      <Text>Custom Header</Text>
-    </View>
-  );
-};
 
 const DetailPEDashboard = () => {
   return (
     <>
-      <YourCustomHeaderBar />
       <Tab.Navigator
         screenOptions={{
           tabBarActiveTintColor: '#0074BD',

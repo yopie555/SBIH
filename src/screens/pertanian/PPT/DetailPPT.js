@@ -9,7 +9,7 @@ const DetailAHH = (props) => {
     <View style={{flex: 1}}>
       <View style={{ padding: 10 }}>
         <Text style={{ fontWeight: 'bold', fontSize: 20, textAlign: 'center', color: 'black'  }}>{props.route.params.title}</Text>
-        <Text style={{color: color.black}}>Sumber Data: <Text style={{ color: 'red' }}>BPS</Text></Text>
+        <Text style={{color: color.black}}>Sumber Data: <Text style={{ color: 'red' }}>Dinas Perikanan Kabupaten Bintan</Text></Text>
       </View>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
   

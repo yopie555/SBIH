@@ -42,6 +42,7 @@ import DetailJPBKUDashboard from './src/screens/DetailDashboard/DetailJPBKUDashb
 import DetailPTKJDashboard from './src/screens/DetailDashboard/DetailPTKJDashboard.js';
 import DetailVideoDashboard from './src/screens/DetailDashboard/DetailVideoDashboard.js';
 import DashboardAnggaranMurni from './src/screens/e-money/DashboardAnggaranMurni.js';
+import DetailADHBDashboard from './src/screens/DetailDashboard/DetailADHBDashboard.js';
 
 import DrawerContent from './src/components/DrawerContent'
 
@@ -261,6 +262,11 @@ const App = () => {
           <Stack.Screen
             name='DashboardAnggaranMurni'
             component={DashboardAnggaranMurni}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name='DetailADHBDashboard'
+            component={DetailADHBDashboard}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

@@ -22,12 +22,12 @@ const DetailAKIMDashboard = (props) => {
       <Tab.Screen
         name="Detail Angka Kematian Ibu Melahirkan"
         component={DetailAKIM}
-        initialParams={{ title: "Data Angka Kematian Ibu Melahirkan" }}
+        initialParams={{ title: "Data Angka Kematian Ibu Melahirkan \n per 100.000 kelahiran hidup" }}
       />
       <Tab.Screen
         name="Grafik Angka Kematian Ibu Melahirkan"
         component={GrafikAKIM}
-        initialParams={{ title: "Data Angka Kematian Ibu Melahirkan" }}
+        initialParams={{ title: "Data Angka Kematian Ibu Melahirkan \n per 100.000 kelahiran hidup" }}
       />
     </Tab.Navigator>
   )

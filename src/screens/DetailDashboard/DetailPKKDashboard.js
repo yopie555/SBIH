@@ -27,7 +27,7 @@ const DetailPKKDashboard = (props) => {
       <Tab.Screen
         name="Grafik Perkembangan Kondisi ketenagakerjaan"
         component={GrafikPKK}
-        initialParams={{ title: "Data Perkembangan Kondisi ketenagakerjaan" }}
+        initialParams={{ title: "Data Perkembangan Kondisi ketenagakerjaan \n (Tingkat Pengangguran Terbuka)" }}
       />
     </Tab.Navigator>
   )

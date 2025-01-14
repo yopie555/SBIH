@@ -61,20 +61,20 @@ const DrawerContent = () => {
                     title="Ekonomi"
                     left={props => <List.Icon {...props} icon="folder" />}>
                     <List.Item titleNumberOfLines={2} title="Pertumbuhan Ekonomi" onPress={() => navigation.navigate("DetailPEDashboard")} />
-                    <List.Item titleNumberOfLines={2} title="Laju Inflasi" onPress={() => navigation.navigate("DetailLIDashboard")} />
+                    <List.Item titleNumberOfLines={2} title="Tingkat Inflasi" onPress={() => navigation.navigate("DetailLIDashboard")} />
                     <List.Item titleNumberOfLines={2} title="Kunjungan Wisata" onPress={() => navigation.navigate("DetailKWDashboard")} />
                     <List.Item titleNumberOfLines={2} title="Realisasi Investasi PMA / PMDN" onPress={() => navigation.navigate("DetailPMADashboard")}/>
-                    {/* <List.Item titleNumberOfLines={2} title="Distribusi PDRB Atas Dasar Harga Berlaku (ADHB)" />
-                    <List.Item titleNumberOfLines={2} title="Distribusi PDRB Atas Dasar Harga Konstan (ADHK)" /> */}
+                    <List.Item titleNumberOfLines={2} title="Distribusi PDRB Atas Dasar Harga Berlaku (ADHB)" onPress={() => navigation.navigate("DetailADHBDashboard")} />
+                    {/* <List.Item titleNumberOfLines={2} title="Distribusi PDRB Atas Dasar Harga Konstan (ADHK)" /> */}
                 </List.Accordion>
                 <List.Accordion
                     title="Pertanian dan Perikanan"
                     left={props => <List.Icon {...props} icon="folder" />}>
-                    <List.Item titleNumberOfLines={2} title="Produksi Perikanan Budidaya" onPress={() => navigation.navigate("DetailPPBDashboard")}/>
+                    <List.Item titleNumberOfLines={2} title="Produksi Perikanan Budidaya (PBB)" onPress={() => navigation.navigate("DetailPPBDashboard")}/>
                     <List.Item titleNumberOfLines={2} title="Produksi Perikanan Tangkap" onPress={() => navigation.navigate("DetailPPTDashboard")}/>
-                    <List.Item titleNumberOfLines={3} title="Capaikan Produksi Komoditi Unggulan Perkebunan" onPress={() => navigation.navigate("DetailCPKUPDashboard")} />
-                    <List.Item titleNumberOfLines={2} title="Capaikan Produksi Komoditi Hortikultura" onPress={() => navigation.navigate("DetailCPKHDashboard")} />
-                    <List.Item titleNumberOfLines={2} title="Jumlah Produksi Peternakan" onPress={() => navigation.navigate("DetailJPPDashboard")}/>
+                    <List.Item titleNumberOfLines={3} title="Capaian Produksi Komoditi Unggulan Perkebunan (Ton)" onPress={() => navigation.navigate("DetailCPKUPDashboard")} />
+                    <List.Item titleNumberOfLines={2} title="Capaian Produksi Komoditi Hortikultura (Ton/ha)" onPress={() => navigation.navigate("DetailCPKHDashboard")} />
+                    <List.Item titleNumberOfLines={2} title="Jumlah Produksi Peternakan (Ton)" onPress={() => navigation.navigate("DetailJPPDashboard")}/>
                 </List.Accordion>
                 <List.Accordion
                     title="Kependudukan"

@@ -20,14 +20,14 @@ const DetailPPBDashboard = (props) => {
       }}
     >
       <Tab.Screen
-        name="Detail Produksi Perikanan Budidaya (PPB)"
+        name="Detail Produksi Perikanan Budidaya (Ton)"
         component={DetailPPB}
-        initialParams={{ title: "Data Produksi Perikanan Budidaya (PPB)" }}
+        initialParams={{ title: "Data Produksi Perikanan Budidaya (Ton)" }}
       />
       <Tab.Screen
-        name="Grafik Produksi Perikanan Budidaya (PPB)"
+        name="Grafik Produksi Perikanan Budidaya (Ton)"
         component={GrafikPPB}
-        initialParams={{ title: "Data Produksi Perikanan Budidaya (PPB)" }}
+        initialParams={{ title: "Data Produksi Perikanan Budidaya (Ton)" }}
       />
     </Tab.Navigator>
   )

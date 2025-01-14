@@ -10,7 +10,7 @@ const GrafikPKK = (props) => {
   const {dataPerkembanganKondisiKetenagakerjaan} = stateDataPerkembanganKondisiKetenagakerjaan()
   //mapping data tahun ganjil
   const dataTahunGanjil = dataPerkembanganKondisiKetenagakerjaan.filter((item, index) => index % 2 == 0)
-  const dataPresentase = dataTahunGanjil.map(item => item.penduduk_usia_kerja) 
+  const dataPresentase = dataTahunGanjil.map(item => item.tingkat_pengangguran) 
   return (
     <View style={{flex: 1 }}>
       <View style={{ padding: 10 }}>
@@ -29,8 +29,8 @@ const GrafikPKK = (props) => {
     width={Dimensions.get("window").width} // from react-native
     height={300}
     yAxisInterval={1} // optional, defaults to 1
-    // fromZero={true}
-    fromNumber={100000}
+    fromZero={true}
+    // fromNumber={100000}
     chartConfig={{
       backgroundColor: color.graph1,
       backgroundGradientFrom: color.graph2,

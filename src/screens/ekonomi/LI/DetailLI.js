@@ -17,15 +17,16 @@ const DetailLI = (props) => {
             return (
               <View key={index} style={{ padding: 10, backgroundColor: '#c4c4c4', width: '90%', marginHorizontal: '5%', borderRadius: 10, marginVertical: 5 }}>
                 <Text style={{ fontWeight: 'bold', fontSize: 16, color: color.black }}>Tahun {item.tahun}</Text>
-                <Text style={{color: color.black}}>Umum : {item.umum} %</Text>
-                <Text style={{color: color.black}}>Bahan Makanan : {item.bahan_makanan} %</Text>
+                <Text style={{color: color.black}}>Presentase : {item.umum} %</Text>
+                <Text style={{color: color.black}}>Status Data : {item.status_data}</Text>
+                {/* <Text style={{color: color.black}}>Bahan Makanan : {item.bahan_makanan} %</Text>
                 <Text style={{color: color.black}}>Makanan Jadi : {item.makanan_jadi} %</Text>
                 <Text style={{color: color.black}}>Perumahan : {item.perumahan} %</Text>
                 <Text style={{color: color.black}}>Sandang : {item.sandang} %</Text>
                 <Text style={{color: color.black}}>Kesehatan : {item.kesehatan} %</Text>
                 <Text style={{color: color.black}}>Pendidikan : {item.pendidikan} %</Text>
                 <Text style={{color: color.black}}>Transportasi : {item.transportasi} %</Text>
-                <Text style={{color: color.black}}>Status Data : {item.status_data}</Text>
+                <Text style={{color: color.black}}>Status Data : {item.status_data}</Text> */}
               </View>
             )
           })

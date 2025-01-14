@@ -5,6 +5,7 @@ import { color } from '../../../constants/Helper'
 
 const DetailIPG = (props) => {
   const {dataIndeksPembangunanGender} = stateDataIndeksPembangunanGender()
+  
   return (
     <View style={{flex: 1}}>
       <View style={{ padding: 10 }}>

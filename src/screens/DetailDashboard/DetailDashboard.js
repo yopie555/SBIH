@@ -20,14 +20,14 @@ const DetailDashboard = (props) => {
       }}
     >
       <Tab.Screen
-        name="Detail Masyarakat Miskin"
+        name="Detail Tingkat Kemiskinan"
         component={DetailMasyMiskin}
-        initialParams={{ title: "Data Penduduk Miskin" }}
+        initialParams={{ title: "Data Tingkat Kemiskinan" }}
       />
       <Tab.Screen
-        name="Grafik Masyarakat Miskin"
+        name="Grafik Tingkat Kemiskinan"
         component={GrafikMasyMiskin}
-        initialParams={{ title: "Data Penduduk Miskin" }}
+        initialParams={{ title: "Data Tingkat Kemiskinan" }}
       />
     </Tab.Navigator>
   )

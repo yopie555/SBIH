@@ -17,7 +17,6 @@ const Tab = createMaterialTopTabNavigator();
 const DashboardAnggaranMurni = ({ navigation }) => {
     const [tahun, setTahun] = useState(new Date().getFullYear());
     const [modalVisible, setModalVisible] = useState(false);
-    // const [dataAnggaran, setDataAnggaran] = useState(null);
     const {setDataAnggaran} = stateDataAnggaran();
     const {setDataTahuns} = stateDataTahun();
 
@@ -31,7 +30,6 @@ const DashboardAnggaranMurni = ({ navigation }) => {
     const selectYear = (year) => {
         setTahun(year);
         setModalVisible(false);
-        // navigation.navigate('Grafik Anggaran Murni', { tahun: year }); 
         setDataTahuns(year);
     };
 

@@ -22,12 +22,12 @@ const DetailPPTDashboard = (props) => {
       <Tab.Screen
         name="Detail Produksi Perikanan Tangkap (PPT)"
         component={DetailPPT}
-        initialParams={{ title: "Data Produksi Perikanan Tangkap (PPT)" }}
+        initialParams={{ title: "Data Produksi Perikanan Tangkap (Ton)" }}
       />
       <Tab.Screen
         name="Grafik Produksi Perikanan Tangkap (PPT)"
         component={GrafikPPT}
-        initialParams={{ title: "Data Produksi Perikanan Tangkap (PPT)" }}
+        initialParams={{ title: "Data Produksi Perikanan Tangkap (Ton)" }}
       />
     </Tab.Navigator>
   )

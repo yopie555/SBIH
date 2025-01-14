@@ -21,12 +21,12 @@ const DetailAKHBDashboard = () => {
       <Tab.Screen
         name="Detail Angka Keberlangsungan Hidup Bayi"
         component={DetailAKHB}
-        initialParams={{ title: "Data Angka Keberlangsungan Hidup Bayi" }}
+        initialParams={{ title: "Data Angka Keberlangsungan Hidup Bayi"}}
       />
       <Tab.Screen
         name="Grafik Angka Keberlangsungan Hidup Bayi"
         component={GrafikAKHB}
-        initialParams={{ title: "Data Angka Keberlangsungan Hidup Bayi" }}
+        initialParams={{ title: "Data Angka Keberlangsungan Hidup Bayi"}}
       />
     </Tab.Navigator>
   );
