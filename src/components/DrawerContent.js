@@ -65,7 +65,7 @@ const DrawerContent = () => {
                     <List.Item titleNumberOfLines={2} title="Kunjungan Wisata" onPress={() => navigation.navigate("DetailKWDashboard")} />
                     <List.Item titleNumberOfLines={2} title="Realisasi Investasi PMA / PMDN" onPress={() => navigation.navigate("DetailPMADashboard")}/>
                     <List.Item titleNumberOfLines={2} title="Distribusi PDRB Atas Dasar Harga Berlaku (ADHB)" onPress={() => navigation.navigate("DetailADHBDashboard")} />
-                    {/* <List.Item titleNumberOfLines={2} title="Distribusi PDRB Atas Dasar Harga Konstan (ADHK)" /> */}
+                    <List.Item titleNumberOfLines={2} title="Distribusi PDRB Atas Dasar Harga Konstan (ADHK)" onPress={() => navigation.navigate("DetailADHKDashboard")}/>
                 </List.Accordion>
                 <List.Accordion
                     title="Pertanian dan Perikanan"

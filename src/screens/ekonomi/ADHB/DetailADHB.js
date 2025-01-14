@@ -4,12 +4,7 @@ import {
   Text,
   View,
   ScrollView,
-  Modal,
-  TouchableOpacity,
-  ActivityIndicator
 } from 'react-native';
-import { useMutation } from 'react-query';
-import axios from 'axios';
 import CategoryStore from '../../../components/CategoryStore';
 
 // Import constants  
@@ -41,7 +36,7 @@ const DetailADHB = (props) => {
                   <Text style={{ color: color.black }}>Tahun {item?.tahun}</Text>
                   <Text style={{ color: color.black }}>Uraian {item?.uraian}</Text>
                   <Text style={{ color: color.black }}>Jumlah: {item?.jumlah}</Text>
-                  <Text style={{ color: color.black }}>Harga Berlaku: {item?.status_data}</Text>
+                  <Text style={{ color: color.black }}>Status Data: {item?.status_data}</Text>
                 </View>
               </View>
             )
