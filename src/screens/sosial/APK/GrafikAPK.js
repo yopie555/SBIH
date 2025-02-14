@@ -13,7 +13,7 @@ const GrafikPKK = (props) => {
   const handlePress = () => setExpanded(!expanded);
   const [dataFiltered, setDataFiltered] = React.useState(dataAngkaPartisipasiKasar.filter(item => item.no === 1))
   //mapping data tahun ganjil
-  const dataTahunGanjil = dataFiltered.filter((item, index) => index % 2 == 0)
+  // const dataTahunGanjil = dataFiltered.filter((item, index) => index % 2 == 0)
   const [titleList, setTitleList] = React.useState('SD')
 
   return (
@@ -41,10 +41,10 @@ const GrafikPKK = (props) => {
       </List.Section>
   <LineChart
     data={{
-      labels: dataTahunGanjil && dataTahunGanjil.map(item => item.tahun),
+      labels: dataFiltered.map(item => item.tahun),
       datasets: [
         {
-          data: dataTahunGanjil && dataTahunGanjil.map(item => item.apk),
+          data: dataFiltered.map(item => item.apk),
         },
       ]
     }}
@@ -52,6 +52,7 @@ const GrafikPKK = (props) => {
     height={300}
     yAxisInterval={1} // optional, defaults to 1
     fromZero={true}
+    verticalLabelRotation={50}
     // fromNumber={9}
     chartConfig={{
       backgroundColor: color.graph1,

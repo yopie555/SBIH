@@ -20,14 +20,14 @@ const DetailPPUDashboard = (props) => {
       }}
     >
       <Tab.Screen
-        name="Detail Jumlah Rumah Tidak Layak Huni Yang Direhab"
+        name="Detail Persentase penduduk Usia 15 Tahun Ke Atas Menurut Pendidikan yang Di Tamatkan"
         component={DetailPPU}
-        initialParams={{ title: "Data Jumlah Rumah Tidak Layak Huni Yang Direhab" }}
+        initialParams={{ title: "Data Persentase penduduk Usia 15 Tahun Ke Atas Menurut Pendidikan yang Di Tamatkan" }}
       />
       <Tab.Screen
-        name="Grafik Jumlah Rumah Tidak Layak Huni Yang Direhab"
+        name="Grafik Persentase penduduk Usia 15 Tahun Ke Atas Menurut Pendidikan yang Di Tamatkan"
         component={GrafikPPU}
-        initialParams={{ title: "Data Jumlah Rumah Tidak Layak Huni Yang Direhab" }}
+        initialParams={{ title: "Data Persentase penduduk Usia 15 Tahun Ke Atas Menurut Pendidikan yang Di Tamatkan" }}
       />
     </Tab.Navigator>
   )

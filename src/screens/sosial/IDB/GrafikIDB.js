@@ -9,8 +9,8 @@ import { color } from '../../../constants/Helper';
 const GrafikIDB = (props) => {
   const {dataIndeksDayaBeli} = stateDataIndeksDayaBeli()
   //mapping data tahun ganjil
-  const dataTahunGanjil = dataIndeksDayaBeli.filter((item, index) => index % 2 !== 0)
-  const dataPresentase = dataTahunGanjil.map(item => item.daya_beli) 
+  // const dataTahunGanjil = dataIndeksDayaBeli.filter((item, index) => index % 2 !== 0)
+  // const dataPresentase = dataTahunGanjil.map(item => item.daya_beli) 
   return (
     <View style={{flex: 1 }}>
       <View style={{ padding: 10 }}>
@@ -19,16 +19,17 @@ const GrafikIDB = (props) => {
       </View>
   <LineChart
     data={{
-      labels: dataTahunGanjil && dataTahunGanjil.map(item => item.tahun),
+      labels: dataIndeksDayaBeli.map(item => item.tahun),
       datasets: [
         {
-          data: dataPresentase
+          data: dataIndeksDayaBeli.map(item => item.daya_beli)
         }
       ]
     }}
     width={Dimensions.get("window").width} // from react-native
     height={300}
     yAxisInterval={1} // optional, defaults to 1
+    verticalLabelRotation={50}
     fromZero={true}
     chartConfig={{
       backgroundColor: color.graph1,

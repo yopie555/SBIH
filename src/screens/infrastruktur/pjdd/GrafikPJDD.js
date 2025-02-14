@@ -10,8 +10,8 @@ const GrafikPJDD = (props) => {
   const data = props.route.params.data
   const {dataPanjangJalanDibangun} = stateDataPanjangJalanDibangun()
   //mapping data tahun ganjil
-  const dataTahunGanjil = dataPanjangJalanDibangun.filter((item, index) => index % 2 !== 0)
-  const dataPresentase = dataTahunGanjil.map(item => item.panjang)
+  // const dataTahunGanjil = dataPanjangJalanDibangun.filter((item, index) => index % 2 !== 0)
+  // const dataPresentase = dataTahunGanjil.map(item => item.panjang)
   return (
     <View style={{flex: 1 }}>
       <View style={{ padding: 10 }}>
@@ -20,16 +20,17 @@ const GrafikPJDD = (props) => {
       </View>
   <LineChart
     data={{
-      labels: dataTahunGanjil && dataTahunGanjil.map(item => item.tahun),
+      labels: dataPanjangJalanDibangun.map(item => item.tahun),
       datasets: [
         {
-          data: dataPresentase
+          data: dataPanjangJalanDibangun.map(item => item.panjang)
         }
       ]
     }}
     width={Dimensions.get("window").width} // from react-native
     height={300}
     yAxisInterval={1} // optional, defaults to 1
+    verticalLabelRotation={50}
     chartConfig={{
       backgroundColor: color.graph1,
       backgroundGradientFrom: color.graph2,

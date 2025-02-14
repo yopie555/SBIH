@@ -44,6 +44,7 @@ import DetailVideoDashboard from './src/screens/DetailDashboard/DetailVideoDashb
 import DashboardAnggaranMurni from './src/screens/e-money/DashboardAnggaranMurni.js';
 import DetailADHBDashboard from './src/screens/DetailDashboard/DetailADHBDashboard.js';
 import DetailADHKDashboard from './src/screens/DetailDashboard/DetailADHKDashboard.js';
+import DetailPSDashboard from './src/screens/DetailDashboard/DetailPSDashboard.js';
 
 import DrawerContent from './src/components/DrawerContent'
 
@@ -273,6 +274,11 @@ const App = () => {
           <Stack.Screen
             name='DetailADHKDashboard'
             component={DetailADHKDashboard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name='DetailPSDashboard'
+            component={DetailPSDashboard}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

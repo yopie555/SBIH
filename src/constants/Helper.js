@@ -14,3 +14,19 @@ export const color = {
     graph3: "#5bc0ff",
     graph4: "#0098f8"
 };
+
+export const dataPS = [
+    {
+        id: 1,
+        tahun: 2023,
+        PS: 3.49,
+        status_data: "Data Sementara"
+    },
+    {
+        id: 2,
+        tahun: 2022,
+        PS: 3.41,
+        status_data: "Data Sementara"
+    }
+
+]

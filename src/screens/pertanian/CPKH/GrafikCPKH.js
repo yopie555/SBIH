@@ -32,7 +32,7 @@ const GrafikAHH = (props) => {
     fromZero={true}
     onDataPointClick={({value, index}) => alert(`Jumlah : ${value}`)}
     // fromNumber={68.6}
-    verticalLabelRotation={40}
+    verticalLabelRotation={50}
     chartConfig={{
       backgroundColor: color.graph1,
       backgroundGradientFrom: color.graph2,

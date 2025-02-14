@@ -31,7 +31,7 @@ const GrafikIPGG = (props) => {
     yAxisInterval={1} // optional, defaults to 1
     // fromZero={true}
     fromNumber={90}
-    // verticalLabelRotation={20}
+    verticalLabelRotation={20}
     chartConfig={{
       backgroundColor: color.graph1,
       backgroundGradientFrom: color.graph2,

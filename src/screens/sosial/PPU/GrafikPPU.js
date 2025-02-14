@@ -34,7 +34,7 @@ const GrafikHLS = (props) => {
     height={300}
     yAxisInterval={1} // optional, defaults to 1
     fromZero={true}
-    verticalLabelRotation={20}
+    verticalLabelRotation={18}
     // fromNumber={5}
     chartConfig={{
       backgroundColor: color.graph1,

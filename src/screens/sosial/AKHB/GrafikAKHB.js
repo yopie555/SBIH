@@ -9,8 +9,8 @@ import { color } from '../../../constants/Helper';
 const GrafikAKHB = (props) => {
   const {dataAngkaKeberlangsunganHidupBayi} = stateDataAngkaKeberlangsunganHidupBayi()
   //mapping data tahun ganjil
-  const dataTahunGanjil = dataAngkaKeberlangsunganHidupBayi.filter((item, index) => index % 2 == 0)
-  const dataPresentase = dataTahunGanjil.map(item => item.pres_akhb) 
+  // const dataTahunGanjil = dataAngkaKeberlangsunganHidupBayi.filter((item, index) => index % 2 == 0)
+  // const dataPresentase = dataTahunGanjil.map(item => item.pres_akhb) 
   return (
     <View style={{flex: 1 }}>
       <View style={{ padding: 10 }}>
@@ -19,16 +19,17 @@ const GrafikAKHB = (props) => {
       </View>
   <LineChart
     data={{
-      labels: dataTahunGanjil && dataTahunGanjil.map(item => item.tahun),
+      labels: dataAngkaKeberlangsunganHidupBayi.map(item => item.tahun),
       datasets: [
         {
-          data: dataPresentase
+          data: dataAngkaKeberlangsunganHidupBayi.map(item => item.pres_akhb)
         }
       ]
     }}
     width={Dimensions.get("window").width} // from react-native
     height={300}
     yAxisInterval={1} // optional, defaults to 1
+    verticalLabelRotation={50}
     // fromZero={true}
     fromNumber={98}
     chartConfig={{

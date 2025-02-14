@@ -46,6 +46,8 @@ import indexpembangunanmanusia from '../../assets/IPM.png'
 import AngkaSekolah from '../../assets/ALS.png'
 import pertumbuhanEkonomi from '../../assets/PE.png'
 import pertumbuhanPenduduk from '../../assets/PP.png'
+import privalensiStunting from '../../assets/PS.png'
+import tingkatPengangguran from '../../assets/TPT.png'
 
 const Index = () => {
     const navigation = useNavigation()
@@ -467,19 +469,19 @@ const Index = () => {
         setRefreshing(false);
     }
         , [refreshing]);
-    
+
     return (
         <View style={styles.container}>
             <ImageBackground
                 source={headerImage}
                 style={{ width: '100%', height: 180 }}
-                />
-                {
-                    dataJP.isFetched  ?
-                        <View style={{ position: 'absolute', top: 10, right: 10, height:20, width:20, backgroundColor: 'blue', borderRadius: 50  }}></View>
-                        : <View style={{ position: 'absolute', top: 10, right: 10, height:20, width:20, backgroundColor: 'red', borderRadius: 50  }}></View>
-                }
-            <ScrollView 
+            />
+            {
+                dataJP.isFetched ?
+                    <View style={{ position: 'absolute', top: 10, right: 10, height: 20, width: 20, backgroundColor: 'blue', borderRadius: 50 }}></View>
+                    : <View style={{ position: 'absolute', top: 10, right: 10, height: 20, width: 20, backgroundColor: 'red', borderRadius: 50 }}></View>
+            }
+            <ScrollView
                 contentContainerStyle={{ flexGrow: 1 }}
                 refreshControl={
                     <RefreshControl
@@ -487,7 +489,7 @@ const Index = () => {
                         onRefresh={onRefresh}
                     />
                 }
-                >
+            >
                 <TouchableOpacity
                     style={styles.cardDashbord}
                     onPress={() => {
@@ -575,7 +577,40 @@ const Index = () => {
                             }
                         </View>
                     </View>
-                </TouchableOpacity>               
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.cardDashbord}
+                    onPress={() => {
+                        navigation.navigate('DetailPSDashboard')
+                        // if (datas.isFetched) {
+                        //     navigation.navigate('DetailDashboard', {
+                        //         title: "Data Tingkat Kemiskinan",
+                        //     })
+                        // }
+                        // else {
+                        //     Alert.alert('Data belum tersedia')
+                        // }
+                    }}
+                >
+                    <View style={styles.innerCard}>
+                        <Image source={privalensiStunting} style={styles.iconImage} />
+                        <View style={{ paddingHorizontal: 10, width: '82%' }}>
+                            <Text style={styles.titleText}>Privalensi Stunting</Text>
+                            {/* {
+                                datas.isLoading === false ?
+                                    <Text style={styles.subTitleText}>Tahun {datas?.data?.last_data[0].tahun}</Text>
+                                    : <ActivityIndicator size="small" color="#fff" />
+                                    }
+                                    {
+                                        datas.isLoading === false ?
+                                        <Text style={styles.subTitleText}>{datas?.data?.last_data[0].presentase} %</Text>
+                                        : <ActivityIndicator size="small" color="#fff" />
+                                        } */}
+                            <Text style={styles.subTitleText}>Tahun 2023</Text>
+                            <Text style={styles.subTitleText}>3.49 %</Text>
+                        </View>
+                    </View>
+                </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.cardDashbord}
                     onPress={() => {
@@ -599,6 +634,34 @@ const Index = () => {
                             }
                             {dataLI.isLoading === false ?
                                 <Text style={styles.subTitleText}>{dataLI?.data?.last_data[0].umum} %</Text>
+                                : <ActivityIndicator size="small" color="#fff" />
+                            }
+                        </View>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.cardDashbord}
+                    onPress={() => {
+                        if (dataPKK.isFetched) {
+                            navigation.navigate('DetailPKKDashboard', {
+                                title: "Tingkat Pengangguran Terbuka",
+                            })
+                        }
+                        else {
+                            Alert.alert('Data belum tersedia')
+                        }
+                    }}
+                >
+                    <View style={styles.innerCard}>
+                        <Image source={tingkatPengangguran} style={styles.iconImage} />
+                        <View style={{ paddingHorizontal: 10, width: '82%' }}>
+                            <Text style={styles.titleText}>Tingkat Pengangguran Terbuka</Text>
+                            {dataPKK.isLoading === false ?
+                                <Text style={styles.subTitleText}>Tahun {dataPKK?.data?.last_data[0].tahun}</Text>
+                                : <ActivityIndicator size="small" color="#fff" />
+                            }
+                            {dataPKK.isLoading === false ?
+                                <Text style={styles.subTitleText}>{dataPKK?.data?.last_data[0].tingkat_pengangguran} %</Text>
                                 : <ActivityIndicator size="small" color="#fff" />
                             }
                         </View>

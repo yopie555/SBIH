@@ -20,14 +20,14 @@ const DetailJPBKDashboard = (props) => {
       }}
     >
       <Tab.Screen
-        name="Detail Jumlah Penduduk Berdasarkan Kecamatan Tahun 2021 (JPBK) "
+        name="Detail Jumlah Penduduk Berdasarkan Kecamatan (JPBK) "
         component={DetailJPBK}
-        initialParams={{ title: "Data Jumlah Penduduk Berdasarkan Kecamatan Tahun 2021 (JPBK) " }}
+        initialParams={{ title: "Data Jumlah Penduduk Berdasarkan Kecamatan (JPBK) " }}
       />
       <Tab.Screen
-        name="Grafik Jumlah Penduduk Berdasarkan Kecamatan Tahun 2021 (JPBK) "
+        name="Grafik Jumlah Penduduk Berdasarkan Kecamatan (JPBK) "
         component={GrafikJPBK}
-        initialParams={{ title: "Data Jumlah Penduduk Berdasarkan Kecamatan Tahun 2021 (JPBK) " }}
+        initialParams={{ title: "Data Jumlah Penduduk Berdasarkan Kecamatan (JPBK) " }}
       />
     </Tab.Navigator>
   )

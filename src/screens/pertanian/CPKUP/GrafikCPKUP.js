@@ -31,7 +31,7 @@ const GrafikAHH = (props) => {
     yAxisInterval={1} // optional, defaults to 1
     // fromZero={true}
     fromNumber={68.6}
-    verticalLabelRotation={40}
+    verticalLabelRotation={50}
     chartConfig={{
       backgroundColor: color.graph1,
       backgroundGradientFrom: color.graph2,

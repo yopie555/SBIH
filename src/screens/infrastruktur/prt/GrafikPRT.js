@@ -10,8 +10,8 @@ const GrafikPRT = (props) => {
   const data = props.route.params.data
   const {dataPenggunaanAirBersih} = stateDataPenggunaanAirBersih()
   //mapping data tahun ganjil
-  const dataTahunGanjil = dataPenggunaanAirBersih.filter((item, index) => index % 2 !== 0)
-  const dataPresentase = dataTahunGanjil.map(item => item.nilai)
+  // const dataTahunGanjil = dataPenggunaanAirBersih.filter((item, index) => index % 2 !== 0)
+  // const dataPresentase = dataTahunGanjil.map(item => item.nilai)
   return (
     <View style={{flex: 1 }}>
       <View style={{ padding: 10 }}>
@@ -20,16 +20,17 @@ const GrafikPRT = (props) => {
       </View>
   <LineChart
     data={{
-      labels: dataTahunGanjil && dataTahunGanjil.map(item => item.tahun),
+      labels: dataPenggunaanAirBersih.map(item => item.tahun),
       datasets: [
         {
-          data: dataPresentase
+          data: dataPenggunaanAirBersih.map(item => item.nilai)
         }
       ]
     }}
     width={Dimensions.get("window").width} // from react-native
     height={300}
     yAxisInterval={1} // optional, defaults to 1
+    verticalLabelRotation={50}
     chartConfig={{
       backgroundColor: color.graph1,
       backgroundGradientFrom: color.graph2,

@@ -9,9 +9,6 @@ import { color } from '../../../constants/Helper';
 const GrafikKW = (props) => {
   const data = props.route.params.data
   const { dataKunjunganWisata } = stateDataKunjunganWisata()
-    //mapping data tahun ganjil
-  const dataTahunGanjil = dataKunjunganWisata.filter((item, index) => index % 2 !== 0)
-  const dataPresentase = dataTahunGanjil.map(item => item.jumlah)
   return (
     <View style={{flex: 1 }}>
       <View style={{ padding: 10 }}>
@@ -20,15 +17,16 @@ const GrafikKW = (props) => {
       </View>
   <LineChart
     data={{
-      labels: dataTahunGanjil && dataTahunGanjil.map(item => item.tahun),
+      labels: dataKunjunganWisata.map(item => item.tahun),
       datasets: [
         {
-          data: dataPresentase
+          data: dataKunjunganWisata.map(item => item.jumlah)
         }
       ]
     }}
     width={Dimensions.get("window").width} // from react-native
     height={300}
+    verticalLabelRotation={50}
     yAxisInterval={1} // optional, defaults to 1
     chartConfig={{
       backgroundColor: color.graph1,

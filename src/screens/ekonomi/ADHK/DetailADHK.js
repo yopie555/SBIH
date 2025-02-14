@@ -14,7 +14,8 @@ import { stateDataAtasDasarHargaKonstan } from '../../../state/dataADHK';
 const DetailADHK = (props) => {  
   const [selectedCategoryId, setSelectedCategoryId] = useState(1);  
   const { dataAtasDasarHargaKonstan } = stateDataAtasDasarHargaKonstan();  
-
+  // console.log('dataAtasDasarHargan', dataAtasDasarHargaKonstan);
+  
   return (  
     <View style={{ flex: 1 }}>  
       <View style={{ padding: 10 }}>  

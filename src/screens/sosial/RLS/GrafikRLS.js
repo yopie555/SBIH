@@ -10,8 +10,8 @@ const GrafikIPM = (props) => {
   const data = props.route.params.data
   const {dataLamaSekolah} = stateDataLamaSekolah()
   //mapping data tahun ganjil
-  const dataTahunGanjil = dataLamaSekolah.filter((item, index) => index % 2 !== 0)
-  const dataPresentase = dataTahunGanjil.map(item => item.rls)
+  // const dataTahunGanjil = dataLamaSekolah.filter((item, index) => index % 2 !== 0)
+  // const dataPresentase = dataTahunGanjil.map(item => item.rls)
   return (
     <View style={{flex: 1 }}>
       <View style={{ padding: 10 }}>
@@ -20,16 +20,17 @@ const GrafikIPM = (props) => {
       </View>
   <LineChart
     data={{
-      labels: dataTahunGanjil && dataTahunGanjil.map(item => item.tahun),
+      labels: dataLamaSekolah.map(item => item.tahun),
       datasets: [
         {
-          data: dataPresentase
+          data: dataLamaSekolah.map(item => item.rls)
         }
       ]
     }}
     width={Dimensions.get("window").width} // from react-native
     height={300}
     yAxisInterval={1} // optional, defaults to 1
+    verticalLabelRotation={50}
     chartConfig={{
       backgroundColor: color.graph1,
       backgroundGradientFrom: color.graph2,

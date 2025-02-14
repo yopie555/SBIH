@@ -8,24 +8,24 @@ import {
 import { LineChart } from "react-native-chart-kit";  
 import CategoryStore from '../../../components/CategoryStore';  
 import { color } from '../../../constants/Helper';  
-import { stateDataAtasDasarHargakonstan } from '../../../state/dataADHK';  
+import { stateDataAtasDasarHargaBerlaku } from '../../../state/dataADHB';  
 
 const GrafikADHB = (props) => {  
     const [selectedCategoryId, setSelectedCategoryId] = useState(1);  
-    const dataAtasDasarHargakonstan = stateDataAtasDasarHargakonstan();  
+    const dataAtasDasarHargaBerlaku = stateDataAtasDasarHargaBerlaku();  
     
     // Filter data berdasarkan kategori yang dipilih dan tahun ganjil  
     const processGraphData = () => {  
         // Filter data sesuai kategori  
-        const filteredData = dataAtasDasarHargakonstan?.dataAtasDasarHargakonstan  
+        const filteredData = dataAtasDasarHargaBerlaku?.dataAtasDasarHargaBerlaku  
             ?.filter(item => item.id === selectedCategoryId)  
             // Filter tahun ganjil  
-            .filter(item => {  
-                const tahun = parseInt(item.tahun);  
-                return tahun % 2 !== 0; // Hanya tahun ganjil  
-            })  
+            // .filter(item => {  
+            //     const tahun = parseInt(item.tahun);  
+            //     return tahun % 2 !== 0; // Hanya tahun ganjil  
+            // })  
             // Urutkan dari tahun terbesar ke terkecil  
-            .sort((a, b) => parseInt(b.tahun) - parseInt(a.tahun));  
+            // .sort((a, b) => parseInt(b.tahun) - parseInt(a.tahun));  
 
         // Jika tidak ada data  
         if (!filteredData || filteredData.length === 0) {  
@@ -73,6 +73,7 @@ const GrafikADHB = (props) => {
                     width={Dimensions.get("window").width}  
                     height={300}  
                     yAxisInterval={1}  
+                    verticalLabelRotation={50}
                     fromZero={true}  
                     chartConfig={{  
                         backgroundColor: color.graph1,  

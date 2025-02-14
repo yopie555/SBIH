@@ -9,8 +9,8 @@ import { color } from '../../../constants/Helper';
 const GrafikPKK = (props) => {
   const {dataPerkembanganKondisiKetenagakerjaan} = stateDataPerkembanganKondisiKetenagakerjaan()
   //mapping data tahun ganjil
-  const dataTahunGanjil = dataPerkembanganKondisiKetenagakerjaan.filter((item, index) => index % 2 == 0)
-  const dataPresentase = dataTahunGanjil.map(item => item.tingkat_pengangguran) 
+  // const dataTahunGanjil = dataPerkembanganKondisiKetenagakerjaan.filter((item, index) => index % 2 == 0)
+  // const dataPresentase = dataTahunGanjil.map(item => item.tingkat_pengangguran) 
   return (
     <View style={{flex: 1 }}>
       <View style={{ padding: 10 }}>
@@ -19,10 +19,10 @@ const GrafikPKK = (props) => {
       </View>
   <LineChart
     data={{
-      labels: dataTahunGanjil && dataTahunGanjil.map(item => item.tahun),
+      labels: dataPerkembanganKondisiKetenagakerjaan.map(item => item.tahun),
       datasets: [
         {
-          data: dataPresentase
+          data: dataPerkembanganKondisiKetenagakerjaan.map(item => item.tingkat_pengangguran)
         }
       ]
     }}
@@ -30,6 +30,7 @@ const GrafikPKK = (props) => {
     height={300}
     yAxisInterval={1} // optional, defaults to 1
     fromZero={true}
+    verticalLabelRotation={50}
     // fromNumber={100000}
     chartConfig={{
       backgroundColor: color.graph1,

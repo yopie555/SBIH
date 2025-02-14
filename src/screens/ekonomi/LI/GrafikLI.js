@@ -17,7 +17,7 @@ const GrafikLI = (props) => {
         <Text style={{ fontWeight: 'bold', fontSize: 20, textAlign: 'center', color: 'black' }}>{props.route.params.title}</Text>
         <Text style={{ color: color.black }}>Sumber Data: <Text style={{ color: 'red' }}>BPS</Text></Text>
       </View>
-      <Modal
+      {/* <Modal
         animationType="slide"
         transparent={true}
         visible={modalVisible}
@@ -51,10 +51,10 @@ const GrafikLI = (props) => {
             <Text style={{padding: 10, backgroundColor: "#d5d5d5", fontSize: 18, fontWeight: 'bold'}}>Transportasi</Text>
           </TouchableOpacity>
         </View>
-      </Modal>
-      <TouchableOpacity onPress={() => setModalVisible(true)} style={{alignItems: 'center', justifyContent: 'center', paddingVertical: 10, backgroundColor: '#d5d5d5'}}>
+      </Modal> */}
+      {/* <TouchableOpacity onPress={() => setModalVisible(true)} style={{alignItems: 'center', justifyContent: 'center', paddingVertical: 10, backgroundColor: '#d5d5d5'}}>
         <Text style={{ color: color.black, fontWeight: 'bold', fontSize: 18 }}>{titleList} </Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <LineChart
         data={{
           labels: dataFiltered && dataFiltered.map(item => item.tahun),
@@ -66,6 +66,7 @@ const GrafikLI = (props) => {
         }}
         width={Dimensions.get("window").width} // from react-native
         height={300}
+        verticalLabelRotation={50}
         yAxisInterval={1} // optional, defaults to 1
         chartConfig={{
           backgroundColor: color.graph1,

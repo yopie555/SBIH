@@ -9,8 +9,8 @@ import { color } from '../../../constants/Helper';
 const GrafikAHH = (props) => {
   const {dataAngkaHarapanHidup} = stateDataAngkaHarapanHidup()
   //mapping data tahun ganjil
-  const dataTahunGanjil = dataAngkaHarapanHidup.filter((item, index) => index % 2 == 0)
-  const dataPresentase = dataTahunGanjil.map(item => item.ahh) 
+  // const dataTahunGanjil = dataAngkaHarapanHidup.filter((item, index) => index % 2 == 0)
+  // const dataPresentase = dataTahunGanjil.map(item => item.ahh) 
   return (
     <View style={{flex: 1 }}>
       <View style={{ padding: 10 }}>
@@ -19,10 +19,10 @@ const GrafikAHH = (props) => {
       </View>
   <LineChart
     data={{
-      labels: dataTahunGanjil && dataTahunGanjil.map(item => item.tahun),
+      labels: dataAngkaHarapanHidup.map(item => item.tahun),
       datasets: [
         {
-          data: dataPresentase
+          data: dataAngkaHarapanHidup.map(item => item.ahh)
         }
       ]
     }}
@@ -30,6 +30,7 @@ const GrafikAHH = (props) => {
     height={300}
     yAxisInterval={1} // optional, defaults to 1
     // fromZero={true}
+    verticalLabelRotation={50}
     fromNumber={68.6}
     chartConfig={{
       backgroundColor: color.graph1,

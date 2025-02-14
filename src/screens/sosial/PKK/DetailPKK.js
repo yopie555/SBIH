@@ -22,8 +22,8 @@ const DetailPKK = (props) => {
                 <Text style={{color: color.black}}>Angkatan Kerja : {item.angkatan_kerja} Orang </Text>
                 <Text style={{color: color.black}}>Bekerja : {item.bekerja} Orang </Text>
                 <Text style={{color: color.black}}>Mencari Pekerjaan : {item.mencari_pekerjaan} Orang </Text>
-                <Text style={{color: color.black}}>Tingkat Partisipasi Angkatan Kerja (TPAK) : {item.tingkat_partisipasi} Orang </Text>
-                <Text style={{color: color.black}}>Tingkat Pengangguran Terbuka : {item.tingkat_pengangguran} Orang </Text>
+                <Text style={{color: color.black}}>Tingkat Partisipasi Angkatan Kerja (TPAK) : {item.tingkat_partisipasi} % </Text>
+                <Text style={{color: color.black}}>Tingkat Pengangguran Terbuka : {item.tingkat_pengangguran} % </Text>
                 <Text style={{color: color.black}}>Status Data : {item.status_data}</Text>
               </View>
             )

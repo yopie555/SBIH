@@ -16,10 +16,10 @@ const DetailPP = (props) => {
           dataJumlahPendudukBerdasarkanKecamatan.map((item, index) => {
             return (
               <View key={index} style={{ padding: 10, backgroundColor: '#c4c4c4', width: '90%', marginHorizontal: '5%', borderRadius: 10, marginVertical: 5 }}>
-                <Text style={{ fontWeight: 'bold', fontSize: 16, color: color.black }}>Tahun {item.tahun}</Text>
+                {/* <Text style={{ fontWeight: 'bold', fontSize: 16, color: color.black }}>Tahun {item.tahun}</Text> */}
                 <Text style={{color: color.black}}>Kecamatan : {item.kecamatan} </Text>
-                <Text style={{color: color.black}}>Laki : {item.laki} %</Text>
-                <Text style={{color: color.black}}>Perempuan : {item.perempuan} %</Text>
+                <Text style={{color: color.black}}>Laki : {item.laki} orang</Text>
+                <Text style={{color: color.black}}>Perempuan : {item.perempuan} orang</Text>
                 <Text style={{color: color.black}}>Status Data : {item.status_data}</Text>
               </View>
             )

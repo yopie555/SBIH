@@ -9,9 +9,9 @@ import { color } from '../../../constants/Helper';
 const GrafikPKK = (props) => {
   const {dataIndeksPembangunanGender} = stateDataIndeksPembangunanGender()
   //mapping data tahun ganjil
-  const dataTahunGanjil = dataIndeksPembangunanGender.filter((item, index) => index % 2 == 0)
-  const dataLaki = dataTahunGanjil.map(item => item.laki)
-  const dataPerempuan = dataTahunGanjil.map(item => item.perempuan)
+  // const dataTahunGanjil = dataIndeksPembangunanGender.filter((item, index) => index % 2 == 0)
+  const dataLaki = dataIndeksPembangunanGender.map(item => item.laki)
+  const dataPerempuan = dataIndeksPembangunanGender.map(item => item.perempuan)
 
   return (
     <View style={{flex: 1 }}>
@@ -21,7 +21,7 @@ const GrafikPKK = (props) => {
       </View>
   <LineChart
     data={{
-      labels: dataTahunGanjil && dataTahunGanjil.map(item => item.tahun),
+      labels: dataIndeksPembangunanGender.map(item => item.tahun),
       datasets: [
         {
           data: dataLaki,
@@ -39,6 +39,7 @@ const GrafikPKK = (props) => {
     width={Dimensions.get("window").width} // from react-native
     height={300}
     yAxisInterval={1} // optional, defaults to 1
+    verticalLabelRotation={50}
     fromZero={true}
     // fromNumber={9}
     chartConfig={{

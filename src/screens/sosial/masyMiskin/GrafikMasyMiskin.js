@@ -9,9 +9,9 @@ import { color } from '../../../constants/Helper';
 const GrafikMasyMiskin = (props) => {
   const {dataPenduduk} = stateDataPenduduk()
   // const data = props.route.params.data
-  // //mapping data tahun ganjil]
-  const dataTahunGanjil = dataPenduduk.filter((item, index) => index % 2 !== 0)
-  const dataPresentase = dataTahunGanjil.map(item => item.presentase)
+  // // //mapping data tahun ganjil]
+  // const dataTahunGanjil = dataPenduduk.filter((item, index) => index % 2 !== 0)
+  // const dataPresentase = dataTahunGanjil.map(item => item.presentase)
 
   return (
     <View style={{flex: 1 }}>
@@ -21,16 +21,17 @@ const GrafikMasyMiskin = (props) => {
       </View>
   <LineChart
     data={{
-      labels: dataTahunGanjil && dataTahunGanjil.map(item => item.tahun),
+      labels: dataPenduduk.map(item => item.tahun),
       datasets: [
         {
-          data: dataPresentase
+          data: dataPenduduk.map(item => item.presentase)
         }
       ]
     }}
     width={Dimensions.get("window").width} // from react-native
     height={300}
-    yAxisInterval={1} // optional, defaults to 1
+    yAxisInterval={0.5} // optional, defaults to 1
+    verticalLabelRotation={50}
     chartConfig={{
       backgroundColor: color.graph1,
       backgroundGradientFrom: color.graph2,

@@ -7,11 +7,10 @@ import { stateDataPertumbuhanPenduduk } from '../../../state/dataPP';
 import { color } from '../../../constants/Helper';
 
 const GrafikPP = (props) => {
-  const data = props.route.params.data
   const { dataPertumbuhanPenduduk } = stateDataPertumbuhanPenduduk()
   //mapping data tahun ganjil
-  const dataTahunGanjil = dataPertumbuhanPenduduk.filter((item, index) => index % 2 !== 0)
-  const dataPresentase = dataTahunGanjil.map(item => item.laju)
+  // const dataTahunGanjil = dataPertumbuhanPenduduk.filter((item, index) => index % 2 !== 0)
+  // const dataPresentase = dataTahunGanjil.map(item => item.laju)
   return (
     <View style={{flex: 1 }}>
       <View style={{ padding: 10 }}>
@@ -20,16 +19,17 @@ const GrafikPP = (props) => {
       </View>
   <LineChart
     data={{
-      labels: dataTahunGanjil && dataTahunGanjil.map(item => item.tahun),
+      labels: dataPertumbuhanPenduduk.map(item => item.tahun),
       datasets: [
         {
-          data: dataPresentase
+          data: dataPertumbuhanPenduduk.map(item => item.laju)
         }
       ]
     }}
     width={Dimensions.get("window").width} // from react-native
     height={300}
     yAxisInterval={1} // optional, defaults to 1
+    verticalLabelRotation={50}
     chartConfig={{
       backgroundColor: color.graph1,
       backgroundGradientFrom: color.graph2,

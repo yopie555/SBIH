@@ -3,16 +3,15 @@ import React from 'react'
 import {
   LineChart,
 } from "react-native-chart-kit";
-import { stateDataIPM } from '../../../state/dataIPM';
-import { color } from '../../../constants/Helper';
+import { stateDataLamaSekolah } from '../../../state/dataRLS'
+import { color, dataPS } from '../../../constants/Helper';
 
 const GrafikIPM = (props) => {
-  // const data = props.route.params.data
-  const {dataIPM} = stateDataIPM()
-  
+  const data = props.route.params.data
+  // const {dataLamaSekolah} = stateDataLamaSekolah()
   //mapping data tahun ganjil
-  // const dataTahunGanjil = dataIPM.filter((item, index) => index % 2 !== 0)
-  // const dataPresentase = dataTahunGanjil.map(item => item.ipm)
+  // const dataTahunGanjil = dataLamaSekolah.filter((item, index) => index % 2 !== 0)
+  // const dataPresentase = dataTahunGanjil.map(item => item.rls)
   
   return (
     <View style={{flex: 1 }}>
@@ -22,17 +21,16 @@ const GrafikIPM = (props) => {
       </View>
   <LineChart
     data={{
-      labels: dataIPM.map(item => item.tahun),
+      labels: dataPS.map(item => item.tahun),
       datasets: [
         {
-          data: dataIPM.map(item => item.ipm)
+          data: dataPS.map(item=> item.PS)
         }
       ]
     }}
     width={Dimensions.get("window").width} // from react-native
     height={300}
     yAxisInterval={1} // optional, defaults to 1
-    verticalLabelRotation={50}
     chartConfig={{
       backgroundColor: color.graph1,
       backgroundGradientFrom: color.graph2,
@@ -54,7 +52,7 @@ const GrafikIPM = (props) => {
       },
       propsForBackgroundLines: {
         stroke: 'blue'
-      }
+      },
     }}
     bezier
     style={{

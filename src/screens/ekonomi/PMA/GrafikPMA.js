@@ -29,6 +29,7 @@ const GrafikPE = (props) => {
     }}
     width={Dimensions.get("window").width} // from react-native
     height={300}
+    verticalLabelRotation={50}
     yAxisInterval={1} // optional, defaults to 1
     chartConfig={{
       backgroundColor: color.graph1,

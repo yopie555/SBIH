@@ -45,7 +45,7 @@ const DrawerContent = () => {
                     <List.Item titleNumberOfLines={2} title="Angka Harapan Hidup (AHH)" onPress={() => navigation.navigate('DetailAHHDashboard')} />
                     <List.Item titleNumberOfLines={2} title="Angka Keberlangsungan Hidup Bayi (AKHB)" onPress={() => navigation.navigate('DetailAKHBDashboard')}/>
                     <List.Item titleNumberOfLines={3} titleMaxFontSizeMultiplier={18} title="Angka Kematian Ibu Melahirkan (AKIM)" onPress={() => navigation.navigate('DetailAKIMDashboard')}/>
-                    <List.Item titleNumberOfLines={2} title="Perkembangan Kondisi Ketenagakerjaan di Kabupaten Bintan" onPress={() => navigation.navigate('DetailPKKDashboard')}/>
+                    <List.Item titleNumberOfLines={2} title="Perkembangan Kondisi Ketenagakerjaan" onPress={() => navigation.navigate('DetailPKKDashboard')}/>
                     <List.Item titleNumberOfLines={2} title="Index Pembangunan Gender" onPress={() => navigation.navigate('DetailIPGDashboard')} />
                     <List.Item titleNumberOfLines={2} title="Angka Partisipasi Kasar" onPress={() => navigation.navigate('DetailAPKDashboard')}  />
                     <List.Item titleNumberOfLines={2} title="Angka Partisipasi Murni" onPress={() => navigation.navigate('DetailAPMDashboard')}  />
@@ -64,8 +64,8 @@ const DrawerContent = () => {
                     <List.Item titleNumberOfLines={2} title="Tingkat Inflasi" onPress={() => navigation.navigate("DetailLIDashboard")} />
                     <List.Item titleNumberOfLines={2} title="Kunjungan Wisata" onPress={() => navigation.navigate("DetailKWDashboard")} />
                     <List.Item titleNumberOfLines={2} title="Realisasi Investasi PMA / PMDN" onPress={() => navigation.navigate("DetailPMADashboard")}/>
-                    <List.Item titleNumberOfLines={2} title="Distribusi PDRB Atas Dasar Harga Berlaku (ADHB)" onPress={() => navigation.navigate("DetailADHBDashboard")} />
-                    <List.Item titleNumberOfLines={2} title="Distribusi PDRB Atas Dasar Harga Konstan (ADHK)" onPress={() => navigation.navigate("DetailADHKDashboard")}/>
+                    <List.Item titleNumberOfLines={2} title="PDRB Atas Dasar Harga Berlaku (ADHB)" onPress={() => navigation.navigate("DetailADHBDashboard")} />
+                    <List.Item titleNumberOfLines={2} title="PDRB Atas Dasar Harga Konstan (ADHK)" onPress={() => navigation.navigate("DetailADHKDashboard")}/>
                 </List.Accordion>
                 <List.Accordion
                     title="Pertanian dan Perikanan"
@@ -82,7 +82,7 @@ const DrawerContent = () => {
                     <List.Item titleNumberOfLines={2} title="Pertumbuhan Penduduk"  onPress={() => navigation.navigate("DetailPPDashboard")}/>
                     <List.Item titleNumberOfLines={2} title="Jumlah Penduduk" onPress={() => navigation.navigate("DetailJPDashboard")}/>
                     <List.Item titleNumberOfLines={3} title="Jumlah Penduduk Berdasarkan Kelompok Umur" onPress={() => navigation.navigate("DetailJPBKUDashboard")}/>
-                    <List.Item titleNumberOfLines={3} title="Jumlah Penduduk berdasarkan Kecamatan Tahun 2021" onPress={() => navigation.navigate("DetailJPBKDashboard")}/>
+                    <List.Item titleNumberOfLines={3} title="Jumlah Penduduk berdasarkan Kecamatan" onPress={() => navigation.navigate("DetailJPBKDashboard")}/>
                 </List.Accordion>
                 <List.Accordion
                     title="Infrastruktur"
