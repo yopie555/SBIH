@@ -123,24 +123,60 @@ const Index = () => {
 
     const [refreshing, setRefreshing] = useState(false);
 
-    // All your useQuery hooks here (keeping them as is)
-    const datas = useQuery('dataJPM', async () => {
-        const res = await axios.get(`${baseURL}/sosial/ppm`)
-        setDataPenduduk(res?.data?.result)
+    // Helper function to format numbers with null check
+    const formatNumber = (num) => {
+        if (!num && num !== 0) return '0';
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    };
+
+    // 1. Pertumbuhan Ekonomi
+    const dataPE = useQuery('dataPE', async () => {
+        const res = await axios.get(`${baseURL}/ekonomi/pe`)
+        setDataPertumbuhanEkonomi(res?.data?.result)
         return res.data
     }, { retry: 0, keepPreviousData: true })
 
+    // 2. Indeks Pembangunan Manusia
     const dataIPM = useQuery('dataIPM', async () => {
         const res = await axios.get(`${baseURL}/sosial/ipm`)
         setDataIPM(res?.data?.result)
         return res.data
+    }, { retry: 0, keepPreviousData: true, enabled: dataPE.isSuccess })
+
+    // 3. Tingkat Kemiskinan
+    const datas = useQuery('dataJPM', async () => {
+        const res = await axios.get(`${baseURL}/sosial/ppm`)
+        setDataPenduduk(res?.data?.result)
+        return res.data
+    }, { retry: 0, keepPreviousData: true, enabled: dataIPM.isSuccess })
+
+    // 5. Tingkat Inflasi
+    const dataLI = useQuery('dataLI', async () => {
+        const res = await axios.get(`${baseURL}/ekonomi/li`)
+        setDataLajuInflasi(res?.data?.result)
+        return res.data
     }, { retry: 0, keepPreviousData: true, enabled: datas.isSuccess })
 
+    // 6. Tingkat Pengangguran Terbuka
+    const dataPKK = useQuery('dataPKK', async () => {
+        const res = await axios.get(`${baseURL}/sosial/pkk`)
+        setDataPerkembanganKondisiKetenagakerjaan(res?.data?.result)
+        return res.data
+    }, { retry: 0, keepPreviousData: true, enabled: dataLI.isSuccess })
+
+    // 7. Jumlah Penduduk
+    const dataJP = useQuery('dataJP', async () => {
+        const res = await axios.get(`${baseURL}/kependudukan/jp`)
+        setDataJumlahPenduduk(res?.data?.result)
+        return res.data
+    }, { retry: 0, keepPreviousData: true, enabled: dataPKK.isSuccess })
+
+    // Continue with other APIs
     const dataALS = useQuery('dataALS', async () => {
         const res = await axios.get(`${baseURL}/sosial/rls`)
         setDataLamaSekolah(res?.data?.result)
         return res.data
-    }, { retry: 0, keepPreviousData: true, enabled: dataIPM.isSuccess })
+    }, { retry: 0, keepPreviousData: true, enabled: dataJP.isSuccess })
 
     const dataIG = useQuery('dataIG', async () => {
         const res = await axios.get(`${baseURL}/sosial/ig`)
@@ -154,17 +190,11 @@ const Index = () => {
         return res.data
     }, { retry: 0, keepPreviousData: true, enabled: dataIG.isSuccess })
 
-    const dataPE = useQuery('dataPE', async () => {
-        const res = await axios.get(`${baseURL}/ekonomi/pe`)
-        setDataPertumbuhanEkonomi(res?.data?.result)
-        return res.data
-    }, { retry: 0, keepPreviousData: true, enabled: dataIDB.isSuccess })
-
     const dataKW = useQuery('dataKW', async () => {
         const res = await axios.get(`${baseURL}/ekonomi/kw`)
         setDataKunjunganWisata(res?.data?.result)
         return res.data
-    }, { retry: 0, keepPreviousData: true, enabled: dataPE.isSuccess })
+    }, { retry: 0, keepPreviousData: true, enabled: dataIDB.isSuccess })
 
     const dataPP = useQuery('dataPP', async () => {
         const res = await axios.get(`${baseURL}/kependudukan/pp`)
@@ -188,7 +218,7 @@ const Index = () => {
         const res = await axios.get(`${baseURL}/sosial/amh`)
         setDataAngkaMelekHuruf(res?.data?.result)
         return res.data
-    }, { retry: 0, keepPreviousData: true, enabled: dataPJD.isSuccess })
+    }, { retry: 0, keepPreviousData: true, enabled: dataPRT.isSuccess })
 
     const dataAHH = useQuery('dataAHH', async () => {
         const res = await axios.get(`${baseURL}/sosial/ahh`)
@@ -208,17 +238,11 @@ const Index = () => {
         return res.data
     }, { retry: 0, keepPreviousData: true, enabled: dataAKHB.isSuccess })
 
-    const dataPKK = useQuery('dataPKK', async () => {
-        const res = await axios.get(`${baseURL}/sosial/pkk`)
-        setDataPerkembanganKondisiKetenagakerjaan(res?.data?.result)
-        return res.data
-    }, { retry: 0, keepPreviousData: true, enabled: dataAKIM.isSuccess })
-
     const dataIPG = useQuery('dataIPG', async () => {
         const res = await axios.get(`${baseURL}/sosial/ipg`)
         setDataIndeksPembangunanGender(res?.data?.result)
         return res.data
-    }, { retry: 0, keepPreviousData: true, enabled: dataPKK.isSuccess })
+    }, { retry: 0, keepPreviousData: true, enabled: dataAKIM.isSuccess })
 
     const dataAPK = useQuery('dataAPK', async () => {
         const res = await axios.get(`${baseURL}/sosial/apk`)
@@ -256,17 +280,11 @@ const Index = () => {
         return res.data
     }, { retry: 0, keepPreviousData: true, enabled: dataPPU.isSuccess })
 
-    const dataLI = useQuery('dataLI', async () => {
-        const res = await axios.get(`${baseURL}/ekonomi/li`)
-        setDataLajuInflasi(res?.data?.result)
-        return res.data
-    }, { retry: 0, keepPreviousData: true, enabled: dataIPGG.isSuccess })
-
     const dataPMA = useQuery('dataPMA', async () => {
         const res = await axios.get(`${baseURL}/ekonomi/pma`)
         setDataPMA(res?.data?.result)
         return res.data
-    }, { retry: 0, keepPreviousData: true, enabled: dataLI.isSuccess })
+    }, { retry: 0, keepPreviousData: true, enabled: dataIPGG.isSuccess })
 
     const dataPPB = useQuery('dataPPB', async () => {
         const res = await axios.get(`${baseURL}/pertanian/ppb`)
@@ -322,21 +340,18 @@ const Index = () => {
         return res.data
     }, { retry: 0, keepPreviousData: true, enabled: dataPTKJ.isSuccess })
 
-    const dataJP = useQuery('dataJP', async () => {
-        const res = await axios.get(`${baseURL}/kependudukan/jp`)
-        setDataJumlahPenduduk(res?.data?.result)
-        return res.data
-    }, { retry: 0, keepPreviousData: true, enabled: dataVideo.isSuccess })
-
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
         Promise.all([
-            datas.refetch(),
+            dataPE.refetch(),
             dataIPM.refetch(),
+            datas.refetch(),
+            dataLI.refetch(),
+            dataPKK.refetch(),
+            dataJP.refetch(),
             dataALS.refetch(),
             dataIG.refetch(),
             dataIDB.refetch(),
-            dataPE.refetch(),
             dataKW.refetch(),
             dataPP.refetch(),
             dataPJD.refetch(),
@@ -345,7 +360,6 @@ const Index = () => {
             dataAHH.refetch(),
             dataAKHB.refetch(),
             dataAKIM.refetch(),
-            dataPKK.refetch(),
             dataIPG.refetch(),
             dataAPK.refetch(),
             dataAPM.refetch(),
@@ -353,7 +367,6 @@ const Index = () => {
             dataJRTLH.refetch(),
             dataPPU.refetch(),
             dataIPGG.refetch(),
-            dataLI.refetch(),
             dataPMA.refetch(),
             dataPPB.refetch(),
             dataPPT.refetch(),
@@ -363,8 +376,7 @@ const Index = () => {
             dataJBPK.refetch(),
             dataJPBKU.refetch(),
             dataPTKJ.refetch(),
-            dataVideo.refetch(),
-            dataJP.refetch()
+            dataVideo.refetch()
         ]).finally(() => setRefreshing(false));
     }, []);
 
@@ -375,7 +387,7 @@ const Index = () => {
             iconName: 'trending-up',
             color: '#1e88e5',
             data: dataPE,
-            getValue: () => `${dataPE?.data?.last_data[0].pertumbuhan_ekonomi} %`,
+            getValue: () => dataPE?.data?.last_data?.[0]?.pertumbuhan_ekonomi ? `${dataPE.data.last_data[0].pertumbuhan_ekonomi} %` : '0 %',
             route: 'DetailPEDashboard',
         },
         {
@@ -384,7 +396,7 @@ const Index = () => {
             iconName: 'people',
             color: '#43a047',
             data: dataIPM,
-            getValue: () => `${dataIPM?.data?.last_data[0].ipm} %`,
+            getValue: () => dataIPM?.data?.last_data?.[0]?.ipm ? `${dataIPM.data.last_data[0].ipm} %` : '0 %',
             route: 'DetailIPMDashboard',
         },
         {
@@ -393,7 +405,7 @@ const Index = () => {
             iconName: 'hand-right',
             color: '#e53935',
             data: datas,
-            getValue: () => `${datas?.data?.last_data[0].presentase} %`,
+            getValue: () => datas?.data?.last_data?.[0]?.presentase ? `${datas.data.last_data[0].presentase} %` : '0 %',
             route: 'DetailDashboard',
         },
         {
@@ -412,7 +424,7 @@ const Index = () => {
             iconName: 'stats-chart',
             color: '#8e24aa',
             data: dataLI,
-            getValue: () => `${dataLI?.data?.last_data[0].umum} %`,
+            getValue: () => dataLI?.data?.last_data?.[0]?.umum ? `${dataLI.data.last_data[0].umum} %` : '0 %',
             route: 'DetailLIDashboard',
         },
         {
@@ -421,7 +433,7 @@ const Index = () => {
             iconName: 'briefcase',
             color: '#00897b',
             data: dataPKK,
-            getValue: () => `${dataPKK?.data?.last_data[0].tingkat_pengangguran} %`,
+            getValue: () => dataPKK?.data?.last_data?.[0]?.tingkat_pengangguran ? `${dataPKK.data.last_data[0].tingkat_pengangguran} %` : '0 %',
             route: 'DetailPKKDashboard',
         },
         {
@@ -430,11 +442,20 @@ const Index = () => {
             iconName: 'people-circle',
             color: '#3949ab',
             data: dataJP,
-            getValue: () => ({
-                laki: dataJP?.data?.last_data[0].laki,
-                perempuan: dataJP?.data?.last_data[0].perempuan,
-                total: dataJP?.data?.last_data[0].total,
-            }),
+            getValue: () => {
+                if (!dataJP?.data?.last_data?.[0]) {
+                    return {
+                        laki: '0',
+                        perempuan: '0',
+                        total: '0',
+                    };
+                }
+                return {
+                    laki: formatNumber(dataJP.data.last_data[0].laki),
+                    perempuan: formatNumber(dataJP.data.last_data[0].perempuan),
+                    total: formatNumber(dataJP.data.last_data[0].total),
+                };
+            },
             route: 'DetailJPDashboard',
             isPopulation: true,
         },
@@ -447,8 +468,8 @@ const Index = () => {
                 style={styles.headerImage}
             >
                 <View style={styles.statusIndicator}>
-                    <View style={[styles.statusDot, { backgroundColor: dataJP.isFetched ? '#4caf50' : '#f44336' }]} />
-                    <Text style={styles.statusText}>{dataJP.isFetched ? 'Online' : 'Loading'}</Text>
+                    <View style={[styles.statusDot, { backgroundColor: dataVideo.isFetched ? '#4caf50' : '#f44336' }]} />
+                    <Text style={styles.statusText}>{dataVideo.isFetched ? 'Online' : 'Loading'}</Text>
                 </View>
             </ImageBackground>
             
@@ -463,10 +484,6 @@ const Index = () => {
                 }
                 showsVerticalScrollIndicator={false}
             >
-                <View style={styles.headerSection}>
-                    <Text style={styles.sectionTitle}>Dashboard Statistik</Text>
-                    <Text style={styles.sectionSubtitle}>Kabupaten Bintan</Text>
-                </View>
 
                 {dashboardCards.map((card, index) => (
                     <AnimatedCard key={index} delay={index * 50}>
@@ -497,7 +514,7 @@ const Index = () => {
                                     ) : (
                                         <>
                                             <Text style={styles.cardYear}>
-                                                Tahun {card.year || card.data?.data?.last_data[0].tahun}
+                                                Tahun {card.year || card.data?.data?.last_data?.[0]?.tahun || '-'}
                                             </Text>
                                             
                                             {card.isPopulation ? (
@@ -559,20 +576,6 @@ const styles = StyleSheet.create({
     },
     scrollContent: {
         paddingBottom: 30,
-    },
-    headerSection: {
-        padding: 20,
-        paddingBottom: 10,
-    },
-    sectionTitle: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        color: '#1a1a1a',
-    },
-    sectionSubtitle: {
-        fontSize: 14,
-        color: '#666',
-        marginTop: 4,
     },
     modernCard: {
         marginHorizontal: 16,
