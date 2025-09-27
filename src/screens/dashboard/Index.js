@@ -1,9 +1,10 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, ImageBackground, RefreshControl, Alert } from 'react-native'
-import React, { useState, useEffect } from 'react'
+import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, ImageBackground, RefreshControl, Alert, Animated } from 'react-native'
+import React, { useState, useEffect, useRef } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import axios, { AxiosError } from 'axios'
 import { baseURL } from '../../constants/General'
 import { useQuery } from 'react-query'
+import Icon from 'react-native-vector-icons/Ionicons'
 import { stateDataPenduduk } from '../../state/dataPenduduk'
 import { stateDataIPM } from '../../state/dataIPM'
 import { stateDataLamaSekolah } from '../../state/dataRLS'
@@ -49,6 +50,39 @@ import pertumbuhanPenduduk from '../../assets/PP.png'
 import privalensiStunting from '../../assets/PS.png'
 import tingkatPengangguran from '../../assets/TPT.png'
 
+const AnimatedCard = ({ children, delay = 0 }) => {
+    const fadeAnim = useRef(new Animated.Value(0)).current;
+    const slideAnim = useRef(new Animated.Value(30)).current;
+
+    useEffect(() => {
+        Animated.parallel([
+            Animated.timing(fadeAnim, {
+                toValue: 1,
+                duration: 500,
+                delay,
+                useNativeDriver: true,
+            }),
+            Animated.timing(slideAnim, {
+                toValue: 0,
+                duration: 500,
+                delay,
+                useNativeDriver: true,
+            }),
+        ]).start();
+    }, []);
+
+    return (
+        <Animated.View
+            style={{
+                opacity: fadeAnim,
+                transform: [{ translateY: slideAnim }],
+            }}
+        >
+            {children}
+        </Animated.View>
+    );
+};
+
 const Index = () => {
     const navigation = useNavigation()
     const { setDataPenduduk } = stateDataPenduduk()
@@ -87,626 +121,406 @@ const Index = () => {
     const { setDataVideo } = stateDataVideo()
     const { setDataJumlahPenduduk } = stateDataJumlahPenduduk()
 
-    const [refreshing, setRefreshing] = React.useState(false);
-    // console.log('state', state);
+    const [refreshing, setRefreshing] = useState(false);
 
+    // All your useQuery hooks here (keeping them as is)
     const datas = useQuery('dataJPM', async () => {
         const res = await axios.get(`${baseURL}/sosial/ppm`)
         setDataPenduduk(res?.data?.result)
         return res.data
-    }, {
-        retry: 0,
-        keepPreviousData: true,
-    })
+    }, { retry: 0, keepPreviousData: true })
 
     const dataIPM = useQuery('dataIPM', async () => {
         const res = await axios.get(`${baseURL}/sosial/ipm`)
         setDataIPM(res?.data?.result)
         return res.data
-    }, {
-        retry: 0,
-        keepPreviousData: true,
-        enabled: datas.isSuccess
-    })
+    }, { retry: 0, keepPreviousData: true, enabled: datas.isSuccess })
 
     const dataALS = useQuery('dataALS', async () => {
         const res = await axios.get(`${baseURL}/sosial/rls`)
         setDataLamaSekolah(res?.data?.result)
         return res.data
-    }, {
-        retry: 0,
-        keepPreviousData: true,
-        enabled: dataIPM.isSuccess
-    })
+    }, { retry: 0, keepPreviousData: true, enabled: dataIPM.isSuccess })
 
     const dataIG = useQuery('dataIG', async () => {
         const res = await axios.get(`${baseURL}/sosial/ig`)
         setDataIndeksGini(res?.data?.result)
         return res.data
-    }
-        , {
-            retry: 0,
-            keepPreviousData: true,
-            enabled: dataALS.isSuccess
-        })
+    }, { retry: 0, keepPreviousData: true, enabled: dataALS.isSuccess })
 
     const dataIDB = useQuery('dataIdb', async () => {
         const res = await axios.get(`${baseURL}/sosial/idb`)
         setDataIndeksDayaBeli(res?.data?.result)
         return res.data
-    }, {
-        retry: 0,
-        keepPreviousData: true,
-        enabled: dataIG.isSuccess
-    })
+    }, { retry: 0, keepPreviousData: true, enabled: dataIG.isSuccess })
 
     const dataPE = useQuery('dataPE', async () => {
         const res = await axios.get(`${baseURL}/ekonomi/pe`)
         setDataPertumbuhanEkonomi(res?.data?.result)
         return res.data
-    }, {
-        retry: 0,
-        keepPreviousData: true,
-        enabled: dataIDB.isSuccess
-    })
+    }, { retry: 0, keepPreviousData: true, enabled: dataIDB.isSuccess })
 
     const dataKW = useQuery('dataKW', async () => {
         const res = await axios.get(`${baseURL}/ekonomi/kw`)
         setDataKunjunganWisata(res?.data?.result)
         return res.data
-    }, {
-        retry: 0,
-        keepPreviousData: true,
-        enabled: dataPE.isSuccess
-    })
+    }, { retry: 0, keepPreviousData: true, enabled: dataPE.isSuccess })
 
     const dataPP = useQuery('dataPP', async () => {
         const res = await axios.get(`${baseURL}/kependudukan/pp`)
         setDataPertumbuhanPenduduk(res?.data?.result)
         return res.data
-    }, {
-        retry: 0,
-        keepPreviousData: true,
-        enabled: dataKW.isSuccess
-    })
+    }, { retry: 0, keepPreviousData: true, enabled: dataKW.isSuccess })
 
     const dataPJD = useQuery('dataPJD', async () => {
         const res = await axios.get(`${baseURL}/infrastruktur/pjdd`)
         setDataPanjangJalanDibangun(res?.data?.result)
         return res.data
-    }, {
-        retry: 0,
-        keepPreviousData: true,
-        enabled: dataPP.isSuccess
-    })
+    }, { retry: 0, keepPreviousData: true, enabled: dataPP.isSuccess })
 
     const dataPRT = useQuery('dataPRT', async () => {
         const res = await axios.get(`${baseURL}/infrastruktur/prt`)
         setDataPenggunaanAirBersih(res?.data?.result)
         return res.data
-    }, {
-        retry: 0,
-        keepPreviousData: true,
-        enabled: dataPJD.isSuccess
-    })
+    }, { retry: 0, keepPreviousData: true, enabled: dataPJD.isSuccess })
 
     const dataAMH = useQuery('dataAMH', async () => {
         const res = await axios.get(`${baseURL}/sosial/amh`)
         setDataAngkaMelekHuruf(res?.data?.result)
         return res.data
-    }, {
-        retry: 0,
-        keepPreviousData: true,
-        enabled: dataPJD.isSuccess
-    })
+    }, { retry: 0, keepPreviousData: true, enabled: dataPJD.isSuccess })
 
     const dataAHH = useQuery('dataAHH', async () => {
         const res = await axios.get(`${baseURL}/sosial/ahh`)
         setDataAngkaHarapanHidup(res?.data?.result)
         return res.data
-    }, {
-        retry: 0,
-        keepPreviousData: true,
-        enabled: dataAMH.isSuccess
-    })
+    }, { retry: 0, keepPreviousData: true, enabled: dataAMH.isSuccess })
 
     const dataAKHB = useQuery('dataAKHB', async () => {
         const res = await axios.get(`${baseURL}/sosial/akhb`)
         setDataAngkaKeberlangsunganHidupBayi(res?.data?.result)
         return res.data
-    }, {
-        retry: 0,
-        keepPreviousData: true,
-        enabled: dataAHH.isSuccess
-    })
+    }, { retry: 0, keepPreviousData: true, enabled: dataAHH.isSuccess })
 
     const dataAKIM = useQuery('dataAKIM', async () => {
         const res = await axios.get(`${baseURL}/sosial/akim`)
         setDataAngkaKematianIbuMelahirkan(res?.data?.result)
         return res.data
-    }, {
-        retry: 0,
-        keepPreviousData: true,
-        enabled: dataAKHB.isSuccess
-    })
+    }, { retry: 0, keepPreviousData: true, enabled: dataAKHB.isSuccess })
 
     const dataPKK = useQuery('dataPKK', async () => {
         const res = await axios.get(`${baseURL}/sosial/pkk`)
         setDataPerkembanganKondisiKetenagakerjaan(res?.data?.result)
         return res.data
-    }, {
-        retry: 0,
-        keepPreviousData: true,
-        enabled: dataAKIM.isSuccess
-    })
+    }, { retry: 0, keepPreviousData: true, enabled: dataAKIM.isSuccess })
 
     const dataIPG = useQuery('dataIPG', async () => {
         const res = await axios.get(`${baseURL}/sosial/ipg`)
         setDataIndeksPembangunanGender(res?.data?.result)
         return res.data
-    }, {
-        retry: 0,
-        keepPreviousData: true,
-        enabled: dataPKK.isSuccess
-    })
+    }, { retry: 0, keepPreviousData: true, enabled: dataPKK.isSuccess })
 
     const dataAPK = useQuery('dataAPK', async () => {
         const res = await axios.get(`${baseURL}/sosial/apk`)
         setDataAngkaPartisipasiKasar(res?.data?.result)
         return res.data
-    }, {
-        retry: 0,
-        keepPreviousData: true,
-        enabled: dataIPG.isSuccess
-    })
+    }, { retry: 0, keepPreviousData: true, enabled: dataIPG.isSuccess })
 
     const dataAPM = useQuery('dataAPM', async () => {
         const res = await axios.get(`${baseURL}/sosial/apm`)
         setDataAngkaPartisipasiMurni(res?.data?.result)
         return res.data
-    }, {
-        retry: 0,
-        keepPreviousData: true,
-        enabled: dataAPK.isSuccess
-    })
+    }, { retry: 0, keepPreviousData: true, enabled: dataAPK.isSuccess })
 
     const dataHLS = useQuery('dataHLS', async () => {
         const res = await axios.get(`${baseURL}/sosial/hls`)
         setDataAngkaHarapanLamaSekolah(res?.data?.result)
         return res.data
-    }, {
-        retry: 0,
-        keepPreviousData: true,
-        enabled: dataAPM.isSuccess
-    })
+    }, { retry: 0, keepPreviousData: true, enabled: dataAPM.isSuccess })
 
     const dataJRTLH = useQuery('dataJRTLH', async () => {
         const res = await axios.get(`${baseURL}/sosial/jrtlh`)
         setDataJumlahRumahTidakLayakHuni(res?.data?.result)
         return res.data
-    }, {
-        retry: 0,
-        keepPreviousData: true,
-        enabled: dataHLS.isSuccess
-    })
+    }, { retry: 0, keepPreviousData: true, enabled: dataHLS.isSuccess })
 
     const dataPPU = useQuery('dataPPU', async () => {
         const res = await axios.get(`${baseURL}/sosial/ppu`)
         setDataPersentasePendudukUsia(res?.data?.result)
         return res.data
-    }, {
-        retry: 0,
-        keepPreviousData: true,
-        enabled: dataJRTLH.isSuccess
-    })
+    }, { retry: 0, keepPreviousData: true, enabled: dataJRTLH.isSuccess })
 
     const dataIPGG = useQuery('dataIPGG', async () => {
         const res = await axios.get(`${baseURL}/sosial/ipgg`)
         setDataIndeksPemberdayaanGender(res?.data?.result)
         return res.data
-    }, {
-        retry: 0,
-        keepPreviousData: true,
-        enabled: dataPPU.isSuccess
-    })
+    }, { retry: 0, keepPreviousData: true, enabled: dataPPU.isSuccess })
 
     const dataLI = useQuery('dataLI', async () => {
         const res = await axios.get(`${baseURL}/ekonomi/li`)
         setDataLajuInflasi(res?.data?.result)
         return res.data
-    }, {
-        retry: 0,
-        keepPreviousData: true,
-        enabled: dataIPGG.isSuccess
-    })
+    }, { retry: 0, keepPreviousData: true, enabled: dataIPGG.isSuccess })
 
     const dataPMA = useQuery('dataPMA', async () => {
         const res = await axios.get(`${baseURL}/ekonomi/pma`)
         setDataPMA(res?.data?.result)
         return res.data
-    }, {
-        retry: 0,
-        keepPreviousData: true,
-        enabled: dataLI.isSuccess
-    })
+    }, { retry: 0, keepPreviousData: true, enabled: dataLI.isSuccess })
 
     const dataPPB = useQuery('dataPPB', async () => {
         const res = await axios.get(`${baseURL}/pertanian/ppb`)
         setDataProduksiPerikananBudidaya(res?.data?.result)
         return res.data
-    }, {
-        retry: 0,
-        keepPreviousData: true,
-        enabled: dataPMA.isSuccess
-    })
+    }, { retry: 0, keepPreviousData: true, enabled: dataPMA.isSuccess })
 
     const dataPPT = useQuery('dataPPT', async () => {
         const res = await axios.get(`${baseURL}/pertanian/ppt`)
         setDataProduksiPerikananTangkap(res?.data?.result)
         return res.data
-    }, {
-        retry: 0,
-        keepPreviousData: true,
-        enabled: dataPPB.isSuccess
-    })
+    }, { retry: 0, keepPreviousData: true, enabled: dataPPB.isSuccess })
 
     const dataCPKUP = useQuery('dataCPKUP', async () => {
         const res = await axios.get(`${baseURL}/pertanian/cpkup`)
         setDataCapaianProduksiKomoditiUnggulanPerkebunan(res?.data?.result)
         return res.data
-    }, {
-        retry: 0,
-        keepPreviousData: true,
-        enabled: dataPPT.isSuccess
-    })
+    }, { retry: 0, keepPreviousData: true, enabled: dataPPT.isSuccess })
 
     const dataCPKH = useQuery('dataCPKH', async () => {
         const res = await axios.get(`${baseURL}/pertanian/cpkh`)
         setDataCapaianProduksiKomoditiHortikultura(res?.data?.result)
         return res.data
-    }, {
-        retry: 0,
-        keepPreviousData: true,
-        enabled: dataCPKUP.isSuccess
-    })
+    }, { retry: 0, keepPreviousData: true, enabled: dataCPKUP.isSuccess })
 
     const dataJPP = useQuery('dataJPP', async () => {
         const res = await axios.get(`${baseURL}/pertanian/jpp`)
         setDataJumlahProduksiPeternakan(res?.data?.result)
         return res.data
-    }, {
-        retry: 0,
-        keepPreviousData: true,
-        enabled: dataCPKH.isSuccess
-    })
+    }, { retry: 0, keepPreviousData: true, enabled: dataCPKH.isSuccess })
 
     const dataJBPK = useQuery('dataJBPK', async () => {
         const res = await axios.get(`${baseURL}/kependudukan/jpbk`)
         setDataJumlahPendudukBerdasarkanKecamatan(res?.data?.result)
         return res.data
-    }, {
-        retry: 0,
-        keepPreviousData: true,
-        enabled: dataJPP.isSuccess
-    })
+    }, { retry: 0, keepPreviousData: true, enabled: dataJPP.isSuccess })
 
     const dataJPBKU = useQuery('dataJPBKU', async () => {
         const res = await axios.get(`${baseURL}/kependudukan/jpbku`)
         setDataJumlahPendudukBerdasarkanKelompokUmur(res?.data?.result)
         return res.data
-    }, {
-        retry: 0,
-        keepPreviousData: true,
-        enabled: dataJBPK.isSuccess
-    })
+    }, { retry: 0, keepPreviousData: true, enabled: dataJBPK.isSuccess })
 
     const dataPTKJ = useQuery('dataPTKJ', async () => {
         const res = await axios.get(`${baseURL}/infrastruktur/ptkj`)
         setDataPersentaseTingkatKemantapanJalan(res?.data?.result)
         return res.data
-    }, {
-        retry: 0,
-        keepPreviousData: true,
-        enabled: dataJPBKU.isSuccess
-    })
+    }, { retry: 0, keepPreviousData: true, enabled: dataJPBKU.isSuccess })
 
     const dataVideo = useQuery('dataVideo', async () => {
         const res = await axios.get(`${baseURL}/video`)
         setDataVideo(res?.data?.result)
         return res.data
-    }, {
-        retry: 0,
-        keepPreviousData: true,
-        enabled: dataPTKJ.isSuccess
-    })
+    }, { retry: 0, keepPreviousData: true, enabled: dataPTKJ.isSuccess })
 
     const dataJP = useQuery('dataJP', async () => {
         const res = await axios.get(`${baseURL}/kependudukan/jp`)
         setDataJumlahPenduduk(res?.data?.result)
         return res.data
-    }, {
-        retry: 0,
-        keepPreviousData: true,
-        enabled: dataVideo.isSuccess
-    })
+    }, { retry: 0, keepPreviousData: true, enabled: dataVideo.isSuccess })
 
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
-        datas.refetch()
-        dataIPM.refetch()
-        dataALS.refetch()
-        dataIG.refetch()
-        dataIDB.refetch()
-        dataPE.refetch()
-        dataKW.refetch()
-        dataPP.refetch()
-        dataPJD.refetch()
-        dataPRT.refetch()
-        dataAMH.refetch()
-        dataAHH.refetch()
-        dataAKHB.refetch()
-        dataAKIM.refetch()
-        dataPKK.refetch()
-        dataIPG.refetch()
-        dataAPK.refetch()
-        dataAPM.refetch()
-        dataHLS.refetch()
-        dataJRTLH.refetch()
-        dataPPU.refetch()
-        dataIPGG.refetch()
-        dataLI.refetch()
-        dataPMA.refetch()
-        dataPPB.refetch()
-        dataPPT.refetch()
-        dataCPKUP.refetch()
-        dataCPKH.refetch()
-        dataJPP.refetch()
-        dataJBPK.refetch()
-        dataJPBKU.refetch()
-        dataPTKJ.refetch()
-        dataVideo.refetch()
-        dataJP.refetch()
-        setRefreshing(false);
-    }
-        , [refreshing]);
+        Promise.all([
+            datas.refetch(),
+            dataIPM.refetch(),
+            dataALS.refetch(),
+            dataIG.refetch(),
+            dataIDB.refetch(),
+            dataPE.refetch(),
+            dataKW.refetch(),
+            dataPP.refetch(),
+            dataPJD.refetch(),
+            dataPRT.refetch(),
+            dataAMH.refetch(),
+            dataAHH.refetch(),
+            dataAKHB.refetch(),
+            dataAKIM.refetch(),
+            dataPKK.refetch(),
+            dataIPG.refetch(),
+            dataAPK.refetch(),
+            dataAPM.refetch(),
+            dataHLS.refetch(),
+            dataJRTLH.refetch(),
+            dataPPU.refetch(),
+            dataIPGG.refetch(),
+            dataLI.refetch(),
+            dataPMA.refetch(),
+            dataPPB.refetch(),
+            dataPPT.refetch(),
+            dataCPKUP.refetch(),
+            dataCPKH.refetch(),
+            dataJPP.refetch(),
+            dataJBPK.refetch(),
+            dataJPBKU.refetch(),
+            dataPTKJ.refetch(),
+            dataVideo.refetch(),
+            dataJP.refetch()
+        ]).finally(() => setRefreshing(false));
+    }, []);
+
+    const dashboardCards = [
+        {
+            title: 'Pertumbuhan Ekonomi',
+            icon: pertumbuhanEkonomi,
+            iconName: 'trending-up',
+            color: '#1e88e5',
+            data: dataPE,
+            getValue: () => `${dataPE?.data?.last_data[0].pertumbuhan_ekonomi} %`,
+            route: 'DetailPEDashboard',
+        },
+        {
+            title: 'Indeks Pembangunan Manusia',
+            icon: indexpembangunanmanusia,
+            iconName: 'people',
+            color: '#43a047',
+            data: dataIPM,
+            getValue: () => `${dataIPM?.data?.last_data[0].ipm} %`,
+            route: 'DetailIPMDashboard',
+        },
+        {
+            title: 'Tingkat Kemiskinan',
+            icon: pendudukmiskin,
+            iconName: 'hand-right',
+            color: '#e53935',
+            data: datas,
+            getValue: () => `${datas?.data?.last_data[0].presentase} %`,
+            route: 'DetailDashboard',
+        },
+        {
+            title: 'Privalensi Stunting',
+            icon: privalensiStunting,
+            iconName: 'fitness',
+            color: '#fb8c00',
+            data: { isFetched: true, isLoading: false },
+            getValue: () => '3.49 %',
+            year: '2023',
+            route: 'DetailPSDashboard',
+        },
+        {
+            title: 'Tingkat Inflasi',
+            icon: AngkaSekolah,
+            iconName: 'stats-chart',
+            color: '#8e24aa',
+            data: dataLI,
+            getValue: () => `${dataLI?.data?.last_data[0].umum} %`,
+            route: 'DetailLIDashboard',
+        },
+        {
+            title: 'Tingkat Pengangguran Terbuka',
+            icon: tingkatPengangguran,
+            iconName: 'briefcase',
+            color: '#00897b',
+            data: dataPKK,
+            getValue: () => `${dataPKK?.data?.last_data[0].tingkat_pengangguran} %`,
+            route: 'DetailPKKDashboard',
+        },
+        {
+            title: 'Jumlah Penduduk',
+            icon: pertumbuhanPenduduk,
+            iconName: 'people-circle',
+            color: '#3949ab',
+            data: dataJP,
+            getValue: () => ({
+                laki: dataJP?.data?.last_data[0].laki,
+                perempuan: dataJP?.data?.last_data[0].perempuan,
+                total: dataJP?.data?.last_data[0].total,
+            }),
+            route: 'DetailJPDashboard',
+            isPopulation: true,
+        },
+    ];
 
     return (
         <View style={styles.container}>
             <ImageBackground
                 source={headerImage}
-                style={{ width: '100%', height: 180 }}
-            />
-            {
-                dataJP.isFetched ?
-                    <View style={{ position: 'absolute', top: 10, right: 10, height: 20, width: 20, backgroundColor: 'blue', borderRadius: 50 }}></View>
-                    : <View style={{ position: 'absolute', top: 10, right: 10, height: 20, width: 20, backgroundColor: 'red', borderRadius: 50 }}></View>
-            }
+                style={styles.headerImage}
+            >
+                <View style={styles.statusIndicator}>
+                    <View style={[styles.statusDot, { backgroundColor: dataJP.isFetched ? '#4caf50' : '#f44336' }]} />
+                    <Text style={styles.statusText}>{dataJP.isFetched ? 'Online' : 'Loading'}</Text>
+                </View>
+            </ImageBackground>
+            
             <ScrollView
-                contentContainerStyle={{ flexGrow: 1 }}
+                contentContainerStyle={styles.scrollContent}
                 refreshControl={
                     <RefreshControl
                         refreshing={refreshing}
                         onRefresh={onRefresh}
+                        colors={['#0074BD']}
                     />
                 }
+                showsVerticalScrollIndicator={false}
             >
-                <TouchableOpacity
-                    style={styles.cardDashbord}
-                    onPress={() => {
-                        if (dataPE.isFetched) {
-                            navigation.navigate('DetailPEDashboard', {
-                                title: "Pertumbuhan Ekonomi",
-                            })
-                        }
-                        else {
-                            Alert.alert('Data belum tersedia')
-                        }
-                    }}
-                >
-                    <View style={styles.innerCard}>
-                        <Image source={pertumbuhanEkonomi} style={styles.iconImage} />
-                        <View style={{ paddingHorizontal: 10, width: '82%' }}>
-                            <Text style={styles.titleText}>Pertumbuhan Ekonomi</Text>
-                            {
-                                dataPE.isLoading === false ?
-                                    <Text style={styles.subTitleText}>Tahun {dataPE?.data?.last_data[0].tahun}</Text>
-                                    : <ActivityIndicator size="small" color="#fff" />
-                            }
-                            {
-                                dataPE.isLoading === false ?
-                                    <Text style={styles.subTitleText}>{dataPE?.data?.last_data[0].pertumbuhan_ekonomi} %</Text>
-                                    : <ActivityIndicator size="small" color="#fff" />
-                            }
-                        </View>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.cardDashbord}
-                    onPress={() => {
-                        if (dataIPM.isFetched) {
-                            navigation.navigate('DetailIPMDashboard', {
-                                title: "Indeks Pembangunan Manusia",
-                            })
-                        }
-                        else {
-                            Alert.alert('Data belum tersedia')
-                        }
-                    }}
-                >
-                    <View style={styles.innerCard}>
-                        <Image source={indexpembangunanmanusia} style={styles.iconImage} />
-                        <View style={{ paddingHorizontal: 10, width: '84%' }}>
-                            <Text numberOfLines={2} style={styles.titleText}>Indeks Pembangunan Manusia</Text>
-                            {dataIPM.isLoading === false ?
-                                <Text style={styles.subTitleText}>Tahun {dataIPM?.data?.last_data[0].tahun}</Text>
-                                : <ActivityIndicator size="small" color="#fff" />
-                            }
-                            {dataIPM.isLoading === false ?
-                                <Text style={styles.subTitleText}>{dataIPM?.data?.last_data[0].ipm} %</Text>
-                                : <ActivityIndicator size="small" color="#fff" />
-                            }
-                        </View>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.cardDashbord}
-                    onPress={() => {
-                        if (datas.isFetched) {
-                            navigation.navigate('DetailDashboard', {
-                                title: "Data Tingkat Kemiskinan",
-                            })
-                        }
-                        else {
-                            Alert.alert('Data belum tersedia')
-                        }
-                    }}
-                >
-                    <View style={styles.innerCard}>
-                        <Image source={pendudukmiskin} style={styles.iconImage} />
-                        <View style={{ paddingHorizontal: 10, width: '82%' }}>
-                            <Text style={styles.titleText}>Tingkat Kemiskinan</Text>
-                            {
-                                datas.isLoading === false ?
-                                    <Text style={styles.subTitleText}>Tahun {datas?.data?.last_data[0].tahun}</Text>
-                                    : <ActivityIndicator size="small" color="#fff" />
-                            }
-                            {
-                                datas.isLoading === false ?
-                                    <Text style={styles.subTitleText}>{datas?.data?.last_data[0].presentase} %</Text>
-                                    : <ActivityIndicator size="small" color="#fff" />
-                            }
-                        </View>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.cardDashbord}
-                    onPress={() => {
-                        navigation.navigate('DetailPSDashboard')
-                        // if (datas.isFetched) {
-                        //     navigation.navigate('DetailDashboard', {
-                        //         title: "Data Tingkat Kemiskinan",
-                        //     })
-                        // }
-                        // else {
-                        //     Alert.alert('Data belum tersedia')
-                        // }
-                    }}
-                >
-                    <View style={styles.innerCard}>
-                        <Image source={privalensiStunting} style={styles.iconImage} />
-                        <View style={{ paddingHorizontal: 10, width: '82%' }}>
-                            <Text style={styles.titleText}>Privalensi Stunting</Text>
-                            {/* {
-                                datas.isLoading === false ?
-                                    <Text style={styles.subTitleText}>Tahun {datas?.data?.last_data[0].tahun}</Text>
-                                    : <ActivityIndicator size="small" color="#fff" />
-                                    }
-                                    {
-                                        datas.isLoading === false ?
-                                        <Text style={styles.subTitleText}>{datas?.data?.last_data[0].presentase} %</Text>
-                                        : <ActivityIndicator size="small" color="#fff" />
-                                        } */}
-                            <Text style={styles.subTitleText}>Tahun 2023</Text>
-                            <Text style={styles.subTitleText}>3.49 %</Text>
-                        </View>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.cardDashbord}
-                    onPress={() => {
-                        if (dataLI.isFetched) {
-                            navigation.navigate('DetailLIDashboard', {
-                                title: "Laju Inflasi",
-                            })
-                        }
-                        else {
-                            Alert.alert('Data belum tersedia')
-                        }
-                    }}
-                >
-                    <View style={styles.innerCard}>
-                        <Image source={AngkaSekolah} style={styles.iconImage} />
-                        <View style={{ paddingHorizontal: 10, width: '82%' }}>
-                            <Text style={styles.titleText}>Tingkat Inflasi</Text>
-                            {dataLI.isLoading === false ?
-                                <Text style={styles.subTitleText}>Tahun {dataLI?.data?.last_data[0].tahun}</Text>
-                                : <ActivityIndicator size="small" color="#fff" />
-                            }
-                            {dataLI.isLoading === false ?
-                                <Text style={styles.subTitleText}>{dataLI?.data?.last_data[0].umum} %</Text>
-                                : <ActivityIndicator size="small" color="#fff" />
-                            }
-                        </View>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.cardDashbord}
-                    onPress={() => {
-                        if (dataPKK.isFetched) {
-                            navigation.navigate('DetailPKKDashboard', {
-                                title: "Tingkat Pengangguran Terbuka",
-                            })
-                        }
-                        else {
-                            Alert.alert('Data belum tersedia')
-                        }
-                    }}
-                >
-                    <View style={styles.innerCard}>
-                        <Image source={tingkatPengangguran} style={styles.iconImage} />
-                        <View style={{ paddingHorizontal: 10, width: '82%' }}>
-                            <Text style={styles.titleText}>Tingkat Pengangguran Terbuka</Text>
-                            {dataPKK.isLoading === false ?
-                                <Text style={styles.subTitleText}>Tahun {dataPKK?.data?.last_data[0].tahun}</Text>
-                                : <ActivityIndicator size="small" color="#fff" />
-                            }
-                            {dataPKK.isLoading === false ?
-                                <Text style={styles.subTitleText}>{dataPKK?.data?.last_data[0].tingkat_pengangguran} %</Text>
-                                : <ActivityIndicator size="small" color="#fff" />
-                            }
-                        </View>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.cardDashbord}
-                    onPress={() => {
-                        if (dataJP.isFetched) {
-                            navigation.navigate('DetailJPDashboard', {
-                                title: "Jumlah Penduduk",
-                            })
-                        }
-                        else {
-                            Alert.alert('Data belum tersedia')
-                        }
-                    }}
-                >
-                    <View style={styles.innerCard}>
-                        <Image source={pertumbuhanPenduduk} style={styles.iconImage} />
-                        <View style={{ paddingHorizontal: 10, width: '82%' }}>
-                            <Text style={styles.titleText}>Jumlah Penduduk</Text>
-                            {
-                                dataJP.isLoading === false ?
-                                    <Text style={styles.subTitleText}>Tahun {dataJP?.data?.last_data[0].tahun}</Text>
-                                    : <ActivityIndicator size="small" color="#fff" />
-                            }
-                            {
-                                dataJP.isLoading === false ?
-                                    <Text style={styles.subTitleText}>Laki: {dataJP?.data?.last_data[0].laki} Orang</Text>
-                                    : <ActivityIndicator size="small" color="#fff" />
-                            }
-                            {
-                                dataJP.isLoading === false ?
-                                    <Text style={styles.subTitleText}>Perempuan: {dataJP?.data?.last_data[0].perempuan} Orang</Text>
-                                    : <ActivityIndicator size="small" color="#fff" />
-                            }
-                            {
-                                dataJP.isLoading === false ?
-                                    <Text style={styles.subTitleText}>Total: {dataJP?.data?.last_data[0].total} Orang</Text>
-                                    : <ActivityIndicator size="small" color="#fff" />
-                            }
-                        </View>
-                    </View>
-                </TouchableOpacity>
+                <View style={styles.headerSection}>
+                    <Text style={styles.sectionTitle}>Dashboard Statistik</Text>
+                    <Text style={styles.sectionSubtitle}>Kabupaten Bintan</Text>
+                </View>
+
+                {dashboardCards.map((card, index) => (
+                    <AnimatedCard key={index} delay={index * 50}>
+                        <TouchableOpacity
+                            style={styles.modernCard}
+                            onPress={() => {
+                                if (card.data.isFetched) {
+                                    navigation.navigate(card.route, { title: card.title })
+                                } else {
+                                    Alert.alert('Info', 'Data belum tersedia')
+                                }
+                            }}
+                            activeOpacity={0.9}
+                        >
+                            <View style={[styles.cardGradient, { backgroundColor: card.color }]}>
+                                <View style={styles.cardHeader}>
+                                    <View style={styles.iconWrapper}>
+                                        <Image source={card.icon} style={styles.cardIcon} />
+                                    </View>
+                                    <Icon name={card.iconName} size={28} color="rgba(255,255,255,0.9)" />
+                                </View>
+                                
+                                <View style={styles.cardBody}>
+                                    <Text style={styles.cardTitle} numberOfLines={2}>{card.title}</Text>
+                                    
+                                    {card.data.isLoading ? (
+                                        <ActivityIndicator size="small" color="#fff" style={styles.loader} />
+                                    ) : (
+                                        <>
+                                            <Text style={styles.cardYear}>
+                                                Tahun {card.year || card.data?.data?.last_data[0].tahun}
+                                            </Text>
+                                            
+                                            {card.isPopulation ? (
+                                                <View style={styles.populationData}>
+                                                    <Text style={styles.cardValue}>Laki: {card.getValue().laki} Orang</Text>
+                                                    <Text style={styles.cardValue}>Perempuan: {card.getValue().perempuan} Orang</Text>
+                                                    <Text style={styles.cardValueTotal}>Total: {card.getValue().total} Orang</Text>
+                                                </View>
+                                            ) : (
+                                                <Text style={styles.cardValue}>{card.getValue()}</Text>
+                                            )}
+                                        </>
+                                    )}
+                                </View>
+
+                                <View style={styles.cardFooter}>
+                                    <Text style={styles.cardFooterText}>Tap untuk detail</Text>
+                                    <Icon name="chevron-forward" size={20} color="rgba(255,255,255,0.8)" />
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+                    </AnimatedCard>
+                ))}
             </ScrollView>
         </View>
     )
@@ -715,34 +529,132 @@ const Index = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: '#f5f7fa',
     },
-    cardDashbord: {
-        width: '90%',
-        height: 'auto',
-        backgroundColor: '#0074BD',
-        padding: 10,
-        marginHorizontal: '5%',
-        justifyContent: 'center',
-        borderRadius: 10,
-        marginVertical: 5
+    headerImage: {
+        width: '100%',
+        height: 180,
     },
-    innerCard: {
+    statusIndicator: {
+        position: 'absolute',
+        top: 15,
+        right: 15,
         flexDirection: 'row',
         alignItems: 'center',
-        paddingVertical: 5
+        backgroundColor: 'rgba(0,0,0,0.3)',
+        paddingHorizontal: 12,
+        paddingVertical: 6,
+        borderRadius: 20,
+        gap: 6,
     },
-    iconImage: {
-        height: 50,
-        width: 50,
+    statusDot: {
+        width: 8,
+        height: 8,
+        borderRadius: 4,
     },
-    titleText: {
+    statusText: {
+        color: '#fff',
+        fontSize: 12,
+        fontWeight: '600',
+    },
+    scrollContent: {
+        paddingBottom: 30,
+    },
+    headerSection: {
+        padding: 20,
+        paddingBottom: 10,
+    },
+    sectionTitle: {
+        fontSize: 24,
         fontWeight: 'bold',
-        fontSize: 20,
-        color: 'white',
+        color: '#1a1a1a',
     },
-    subTitleText: {
-        color: 'white'
-    }
+    sectionSubtitle: {
+        fontSize: 14,
+        color: '#666',
+        marginTop: 4,
+    },
+    modernCard: {
+        marginHorizontal: 16,
+        marginVertical: 8,
+        borderRadius: 16,
+        elevation: 4,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.15,
+        shadowRadius: 8,
+        overflow: 'hidden',
+    },
+    cardGradient: {
+        padding: 20,
+        minHeight: 140,
+    },
+    cardHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 16,
+    },
+    iconWrapper: {
+        width: 56,
+        height: 56,
+        backgroundColor: 'rgba(255,255,255,0.25)',
+        borderRadius: 28,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    cardIcon: {
+        width: 50,
+        height: 50,
+    },
+    cardBody: {
+        marginBottom: 12,
+        minHeight: 60,
+    },
+    cardTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#fff',
+        marginBottom: 8,
+        lineHeight: 26,
+    },
+    cardYear: {
+        fontSize: 13,
+        color: 'rgba(255,255,255,0.9)',
+        marginBottom: 6,
+    },
+    cardValue: {
+        fontSize: 16,
+        color: '#fff',
+        fontWeight: '600',
+        marginTop: 2,
+    },
+    cardValueTotal: {
+        fontSize: 16,
+        color: '#fff',
+        fontWeight: 'bold',
+        marginTop: 4,
+    },
+    populationData: {
+        marginTop: 4,
+    },
+    loader: {
+        marginVertical: 8,
+    },
+    cardFooter: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        gap: 6,
+        paddingTop: 8,
+        borderTopWidth: 1,
+        borderTopColor: 'rgba(255,255,255,0.2)',
+    },
+    cardFooterText: {
+        fontSize: 13,
+        color: 'rgba(255,255,255,0.85)',
+        fontWeight: '500',
+    },
 })
 
 export default Index
