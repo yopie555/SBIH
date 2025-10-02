@@ -54,6 +54,9 @@ const DetailAHH = (props) => {
     return { label: 'Rendah', color: '#e53935', icon: 'heart-dislike' };
   };
 
+  // Sort data by year in descending order (current year to past years)
+  const sortedData = [...(dataAngkaHarapanHidup || [])].sort((a, b) => b.tahun - a.tahun);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -75,10 +78,10 @@ const DetailAHH = (props) => {
       >
         <View style={styles.summaryCard}>
           <Text style={styles.summaryTitle}>Total Data Tersedia</Text>
-          <Text style={styles.summaryValue}>{dataAngkaHarapanHidup?.length || 0} Tahun</Text>
+          <Text style={styles.summaryValue}>{sortedData.length || 0} Tahun</Text>
         </View>
 
-        {dataAngkaHarapanHidup?.map((item, index) => {
+        {sortedData.map((item, index) => {
           const category = getAHHCategory(item.ahh);
           return (
             <AnimatedCard key={index} delay={index * 50}>
@@ -132,7 +135,7 @@ const DetailAHH = (props) => {
           )
         })}
 
-        {dataAngkaHarapanHidup?.length === 0 && (
+        {sortedData.length === 0 && (
           <View style={styles.emptyState}>
             <Icon name="heart-outline" size={80} color="#ccc" />
             <Text style={styles.emptyText}>Belum ada data tersedia</Text>

@@ -40,7 +40,16 @@ const AnimatedCard = ({ children, delay = 0 }) => {
 const DetailPP = (props) => {
   const { dataPertumbuhanPenduduk } = stateDataPertumbuhanPenduduk()
 
+  // Sort data dari tahun terbaru ke terlama
+  const sortedData = dataPertumbuhanPenduduk
+    ?.sort((a, b) => {
+      const yearA = parseInt(a.tahun) || 0;
+      const yearB = parseInt(b.tahun) || 0;
+      return yearB - yearA; // Descending order (terbaru ke terlama)
+    }) || [];
+
   const getStatusColor = (status) => {
+    if (!status) return '#666';
     if (status.toLowerCase().includes('tetap')) return '#43a047';
     if (status.toLowerCase().includes('sementara')) return '#fb8c00';
     if (status.toLowerCase().includes('estimasi')) return '#1e88e5';
@@ -48,7 +57,7 @@ const DetailPP = (props) => {
   };
 
   const getGrowthCategory = (laju) => {
-    const value = parseFloat(laju);
+    const value = parseFloat(laju) || 0;
     if (value >= 3.0) return { label: 'Sangat Tinggi', color: '#e53935', icon: 'trending-up' };
     if (value >= 2.0 && value < 3.0) return { label: 'Tinggi', color: '#fb8c00', icon: 'arrow-up' };
     if (value >= 1.0 && value < 2.0) return { label: 'Sedang', color: '#1e88e5', icon: 'remove' };
@@ -57,6 +66,7 @@ const DetailPP = (props) => {
   };
 
   const formatPercentage = (num) => {
+    if (!num) return '0.00';
     const numValue = parseFloat(num);
     return numValue.toFixed(2);
   };
@@ -85,28 +95,28 @@ const DetailPP = (props) => {
             <Icon name="analytics" size={24} color="#fff" />
             <Text style={styles.summaryTitle}>Total Data Tersedia</Text>
           </View>
-          <Text style={styles.summaryValue}>{dataPertumbuhanPenduduk?.length || 0} Tahun</Text>
-          {dataPertumbuhanPenduduk?.length > 0 && (
+          <Text style={styles.summaryValue}>{sortedData.length} Tahun</Text>
+          {sortedData.length > 0 && (
             <Text style={styles.summarySubtitle}>
-              Periode: {dataPertumbuhanPenduduk[0]?.tahun} - {dataPertumbuhanPenduduk[dataPertumbuhanPenduduk.length - 1]?.tahun}
+              Periode: {sortedData[0]?.tahun || '-'} - {sortedData[sortedData.length - 1]?.tahun || '-'}
             </Text>
           )}
         </View>
 
-        {dataPertumbuhanPenduduk?.map((item, index) => {
-          const category = getGrowthCategory(item.laju);
+        {sortedData.map((item, index) => {
+          const category = getGrowthCategory(item?.laju);
           return (
-            <AnimatedCard key={index} delay={index * 50}>
+            <AnimatedCard key={`${item.tahun}-${index}`} delay={index * 50}>
               <View style={styles.dataCard}>
                 <View style={styles.cardHeader}>
                   <View style={styles.yearBadge}>
                     <Icon name="calendar" size={18} color="#00acc1" />
-                    <Text style={styles.yearText}>{item.tahun}</Text>
+                    <Text style={styles.yearText}>{item?.tahun || '-'}</Text>
                   </View>
-                  <View style={[styles.statusBadge, { backgroundColor: getStatusColor(item.status_data) + '20' }]}>
-                    <View style={[styles.statusDot, { backgroundColor: getStatusColor(item.status_data) }]} />
-                    <Text style={[styles.statusText, { color: getStatusColor(item.status_data) }]}>
-                      {item.status_data}
+                  <View style={[styles.statusBadge, { backgroundColor: getStatusColor(item?.status_data) + '20' }]}>
+                    <View style={[styles.statusDot, { backgroundColor: getStatusColor(item?.status_data) }]} />
+                    <Text style={[styles.statusText, { color: getStatusColor(item?.status_data) }]}>
+                      {item?.status_data || 'N/A'}
                     </Text>
                   </View>
                 </View>
@@ -116,7 +126,7 @@ const DetailPP = (props) => {
                     <Icon name={category.icon} size={32} color={category.color} />
                     <View style={styles.growthContent}>
                       <Text style={[styles.growthValue, { color: category.color }]}>
-                        {formatPercentage(item.laju)}%
+                        {formatPercentage(item?.laju)}%
                       </Text>
                       <Text style={styles.growthLabel}>Laju Pertumbuhan</Text>
                     </View>
@@ -133,13 +143,13 @@ const DetailPP = (props) => {
                   <View style={styles.interpretationBox}>
                     <Icon name="information-circle" size={18} color="#00acc1" />
                     <Text style={styles.interpretationText}>
-                      {parseFloat(item.laju) >= 3.0
+                      {parseFloat(item?.laju || 0) >= 3.0
                         ? 'Pertumbuhan sangat tinggi, perlu perhatian khusus pada infrastruktur'
-                        : parseFloat(item.laju) >= 2.0
+                        : parseFloat(item?.laju || 0) >= 2.0
                         ? 'Pertumbuhan tinggi, perluas layanan publik'
-                        : parseFloat(item.laju) >= 1.0
+                        : parseFloat(item?.laju || 0) >= 1.0
                         ? 'Pertumbuhan sedang, pembangunan berkelanjutan'
-                        : parseFloat(item.laju) >= 0
+                        : parseFloat(item?.laju || 0) >= 0
                         ? 'Pertumbuhan rendah, stabil dan terkendali'
                         : 'Pertumbuhan negatif, ada penurunan penduduk'}
                     </Text>
@@ -155,7 +165,7 @@ const DetailPP = (props) => {
           )
         })}
 
-        {(!dataPertumbuhanPenduduk || dataPertumbuhanPenduduk?.length === 0) && (
+        {sortedData.length === 0 && (
           <View style={styles.emptyState}>
             <Icon name="people-outline" size={80} color="#ccc" />
             <Text style={styles.emptyText}>Belum ada data tersedia</Text>
@@ -163,7 +173,7 @@ const DetailPP = (props) => {
         )}
 
         {/* Statistics Card */}
-        {dataPertumbuhanPenduduk?.length > 0 && (
+        {sortedData.length > 0 && (
           <View style={styles.statsCard}>
             <View style={styles.statsHeader}>
               <Icon name="stats-chart" size={24} color="#00acc1" />
@@ -174,21 +184,21 @@ const DetailPP = (props) => {
                 <Icon name="trending-up" size={20} color="#e53935" />
                 <Text style={styles.statLabel}>Tertinggi</Text>
                 <Text style={[styles.statValue, { color: '#e53935' }]}>
-                  {formatPercentage(Math.max(...dataPertumbuhanPenduduk.map(d => parseFloat(d.laju))))}%
+                  {formatPercentage(Math.max(...sortedData.map(d => parseFloat(d?.laju || 0))))}%
                 </Text>
               </View>
               <View style={styles.statItem}>
                 <Icon name="trending-down" size={20} color="#43a047" />
                 <Text style={styles.statLabel}>Terendah</Text>
                 <Text style={[styles.statValue, { color: '#43a047' }]}>
-                  {formatPercentage(Math.min(...dataPertumbuhanPenduduk.map(d => parseFloat(d.laju))))}%
+                  {formatPercentage(Math.min(...sortedData.map(d => parseFloat(d?.laju || 0))))}%
                 </Text>
               </View>
               <View style={styles.statItem}>
                 <Icon name="calculator" size={20} color="#1e88e5" />
                 <Text style={styles.statLabel}>Rata-rata</Text>
                 <Text style={[styles.statValue, { color: '#1e88e5' }]}>
-                  {formatPercentage((dataPertumbuhanPenduduk.reduce((sum, d) => sum + parseFloat(d.laju), 0) / dataPertumbuhanPenduduk.length))}%
+                  {formatPercentage((sortedData.reduce((sum, d) => sum + (parseFloat(d?.laju || 0)), 0) / sortedData.length))}%
                 </Text>
               </View>
             </View>

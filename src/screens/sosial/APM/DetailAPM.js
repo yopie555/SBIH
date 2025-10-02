@@ -39,8 +39,12 @@ const AnimatedCard = ({ children, delay = 0 }) => {
 
 const DetailAPM = (props) => {
   const { dataAngkaPartisipasiMurni } = stateDataAngkaPartisipasiMurni()
+
+  // Sort data by year in descending order (current year to past years)
+  const sortedData = [...(dataAngkaPartisipasiMurni || [])].sort((a, b) => b.tahun - a.tahun);
+
   const [expanded, setExpanded] = useState(false);
-  const [dataFiltered, setDataFiltered] = useState(dataAngkaPartisipasiMurni.filter(item => item.no === 1))
+  const [dataFiltered, setDataFiltered] = useState(sortedData.filter(item => item.no === 1))
   const [selectedLevel, setSelectedLevel] = useState('SD')
   
   const getStatusColor = (status) => {
@@ -66,7 +70,7 @@ const DetailAPM = (props) => {
   };
 
   const handleFilterChange = (no, title) => {
-    setDataFiltered(dataAngkaPartisipasiMurni.filter(item => item.no === no));
+    setDataFiltered(sortedData.filter(item => item.no === no));
     setSelectedLevel(title);
     setExpanded(false);
   };

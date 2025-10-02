@@ -58,6 +58,9 @@ const DetailPPB = (props) => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
+  // Sort data by year in descending order (current year to past years)
+  const sortedData = [...(dataProduksiPerikananBudidaya || [])].sort((a, b) => b.tahun - a.tahun);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -79,10 +82,10 @@ const DetailPPB = (props) => {
       >
         <View style={styles.summaryCard}>
           <Text style={styles.summaryTitle}>Total Data Tersedia</Text>
-          <Text style={styles.summaryValue}>{dataProduksiPerikananBudidaya?.length || 0} Tahun</Text>
+          <Text style={styles.summaryValue}>{sortedData.length || 0} Tahun</Text>
         </View>
 
-        {dataProduksiPerikananBudidaya?.map((item, index) => {
+        {sortedData.map((item, index) => {
           const category = getPPBCategory(item.jumlah);
           return (
             <AnimatedCard key={index} delay={index * 50}>
@@ -140,7 +143,7 @@ const DetailPPB = (props) => {
           )
         })}
 
-        {dataProduksiPerikananBudidaya?.length === 0 && (
+        {sortedData.length === 0 && (
           <View style={styles.emptyState}>
             <Icon name="fish-outline" size={80} color="#ccc" />
             <Text style={styles.emptyText}>Belum ada data tersedia</Text>

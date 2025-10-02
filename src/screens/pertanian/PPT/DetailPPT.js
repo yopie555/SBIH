@@ -58,6 +58,9 @@ const DetailPPT = (props) => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
+  // Sort data by year in descending order (current year to past years)
+  const sortedData = [...(dataProduksiPerikananTangkap || [])].sort((a, b) => b.tahun - a.tahun);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -79,10 +82,10 @@ const DetailPPT = (props) => {
       >
         <View style={styles.summaryCard}>
           <Text style={styles.summaryTitle}>Total Data Tersedia</Text>
-          <Text style={styles.summaryValue}>{dataProduksiPerikananTangkap?.length || 0} Tahun</Text>
+          <Text style={styles.summaryValue}>{sortedData.length || 0} Tahun</Text>
         </View>
 
-        {dataProduksiPerikananTangkap?.map((item, index) => {
+        {sortedData.map((item, index) => {
           const category = getPPTCategory(item.jumlah);
           return (
             <AnimatedCard key={index} delay={index * 50}>
@@ -140,7 +143,7 @@ const DetailPPT = (props) => {
           )
         })}
 
-        {dataProduksiPerikananTangkap?.length === 0 && (
+        {sortedData.length === 0 && (
           <View style={styles.emptyState}>
             <Icon name="boat-outline" size={80} color="#ccc" />
             <Text style={styles.emptyText}>Belum ada data tersedia</Text>

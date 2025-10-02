@@ -40,14 +40,23 @@ const AnimatedCard = ({ children, delay = 0 }) => {
 const DetailLI = (props) => {
   const { dataLajuInflasi } = stateDataLajuInflasi()
 
+  // Sort data dari tahun terbaru ke terlama
+  const sortedData = dataLajuInflasi
+    ?.sort((a, b) => {
+      const yearA = parseInt(a.tahun) || 0;
+      const yearB = parseInt(b.tahun) || 0;
+      return yearB - yearA; // Descending order (terbaru ke terlama)
+    }) || [];
+
   const getStatusColor = (status) => {
+    if (!status) return '#666';
     if (status.toLowerCase().includes('tetap')) return '#43a047';
     if (status.toLowerCase().includes('sementara')) return '#fb8c00';
     return '#666';
   };
 
   const getInflasiCategory = (inflasi) => {
-    const value = parseFloat(inflasi);
+    const value = parseFloat(inflasi) || 0;
     if (value < 2) return { label: 'Rendah', color: '#43a047', icon: 'arrow-down' };
     if (value >= 2 && value <= 4) return { label: 'Normal', color: '#1e88e5', icon: 'remove' };
     if (value > 4 && value <= 6) return { label: 'Tinggi', color: '#fb8c00', icon: 'arrow-up' };
@@ -75,23 +84,23 @@ const DetailLI = (props) => {
       >
         <View style={styles.summaryCard}>
           <Text style={styles.summaryTitle}>Total Data Tersedia</Text>
-          <Text style={styles.summaryValue}>{dataLajuInflasi?.length || 0} Tahun</Text>
+          <Text style={styles.summaryValue}>{sortedData.length} Tahun</Text>
         </View>
 
-        {dataLajuInflasi?.map((item, index) => {
-          const category = getInflasiCategory(item.umum);
+        {sortedData.map((item, index) => {
+          const category = getInflasiCategory(item?.umum);
           return (
-            <AnimatedCard key={index} delay={index * 50}>
+            <AnimatedCard key={`${item.tahun}-${index}`} delay={index * 50}>
               <View style={styles.dataCard}>
                 <View style={styles.cardHeader}>
                   <View style={styles.yearBadge}>
                     <Icon name="calendar" size={18} color="#8e24aa" />
-                    <Text style={styles.yearText}>{item.tahun}</Text>
+                    <Text style={styles.yearText}>{item?.tahun || '-'}</Text>
                   </View>
-                  <View style={[styles.statusBadge, { backgroundColor: getStatusColor(item.status_data) + '20' }]}>
-                    <View style={[styles.statusDot, { backgroundColor: getStatusColor(item.status_data) }]} />
-                    <Text style={[styles.statusText, { color: getStatusColor(item.status_data) }]}>
-                      {item.status_data}
+                  <View style={[styles.statusBadge, { backgroundColor: getStatusColor(item?.status_data) + '20' }]}>
+                    <View style={[styles.statusDot, { backgroundColor: getStatusColor(item?.status_data) }]} />
+                    <Text style={[styles.statusText, { color: getStatusColor(item?.status_data) }]}>
+                      {item?.status_data || 'N/A'}
                     </Text>
                   </View>
                 </View>
@@ -101,7 +110,7 @@ const DetailLI = (props) => {
                     <Icon name="trending-up" size={24} color={category.color} />
                     <View>
                       <Text style={[styles.percentageValue, { color: category.color }]}>
-                        {item.umum}%
+                        {item?.umum || '0'}%
                       </Text>
                       <Text style={styles.percentageLabel}>Inflasi Umum</Text>
                     </View>
@@ -124,12 +133,27 @@ const DetailLI = (props) => {
           )
         })}
 
-        {dataLajuInflasi?.length === 0 && (
+        {sortedData.length === 0 && (
           <View style={styles.emptyState}>
             <Icon name="stats-chart-outline" size={80} color="#ccc" />
             <Text style={styles.emptyText}>Belum ada data tersedia</Text>
           </View>
         )}
+
+        {/* Info Card */}
+        <View style={styles.infoCard}>
+          <View style={styles.infoHeader}>
+            <Icon name="information-circle" size={24} color="#8e24aa" />
+            <Text style={styles.infoTitle}>Tentang Laju Inflasi</Text>
+          </View>
+          <View style={styles.infoContent}>
+            <Text style={styles.infoText}>
+              Laju Inflasi mengukur kenaikan harga barang dan jasa secara umum dalam periode 
+              tertentu. Target inflasi normal adalah 2-4% per tahun. Inflasi yang terlalu tinggi 
+              atau rendah dapat mempengaruhi daya beli masyarakat dan stabilitas ekonomi.
+            </Text>
+          </View>
+        </View>
       </ScrollView>
     </View>
   )
@@ -307,5 +331,32 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#999',
     marginTop: 16,
+  },
+  infoCard: {
+    backgroundColor: '#F3E5F5',
+    borderRadius: 12,
+    padding: 16,
+    borderLeftWidth: 4,
+    borderLeftColor: '#8e24aa',
+    marginTop: 4,
+  },
+  infoHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    marginBottom: 12,
+  },
+  infoTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#1a1a1a',
+  },
+  infoContent: {
+    paddingLeft: 36,
+  },
+  infoText: {
+    fontSize: 14,
+    color: '#555',
+    lineHeight: 20,
   },
 })

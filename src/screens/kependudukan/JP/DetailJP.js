@@ -40,20 +40,35 @@ const AnimatedCard = ({ children, delay = 0 }) => {
 const DetailPP = (props) => {
   const { dataJumlahPenduduk } = stateDataJumlahPenduduk()
 
+  // Sort data dari tahun terbaru ke terlama
+  const sortedData = dataJumlahPenduduk
+    ?.sort((a, b) => {
+      const yearA = parseInt(a.tahun) || 0;
+      const yearB = parseInt(b.tahun) || 0;
+      return yearB - yearA; // Descending order (terbaru ke terlama)
+    }) || [];
+
   const getStatusColor = (status) => {
+    if (!status) return '#666';
     if (status.toLowerCase().includes('tetap')) return '#43a047';
     if (status.toLowerCase().includes('sementara')) return '#fb8c00';
     return '#666';
   };
 
   const formatNumber = (num) => {
+    if (!num) return '0';
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
   const calculatePercentage = (laki, perempuan) => {
-    const total = parseInt(laki) + parseInt(perempuan);
-    const lakiPct = ((parseInt(laki) / total) * 100).toFixed(1);
-    const perempuanPct = ((parseInt(perempuan) / total) * 100).toFixed(1);
+    const lakiNum = parseInt(laki) || 0;
+    const perempuanNum = parseInt(perempuan) || 0;
+    const total = lakiNum + perempuanNum;
+    
+    if (total === 0) return { lakiPct: '0.0', perempuanPct: '0.0' };
+    
+    const lakiPct = ((lakiNum / total) * 100).toFixed(1);
+    const perempuanPct = ((perempuanNum / total) * 100).toFixed(1);
     return { lakiPct, perempuanPct };
   };
 
@@ -78,23 +93,23 @@ const DetailPP = (props) => {
       >
         <View style={styles.summaryCard}>
           <Text style={styles.summaryTitle}>Total Data Tersedia</Text>
-          <Text style={styles.summaryValue}>{dataJumlahPenduduk?.length || 0} Tahun</Text>
+          <Text style={styles.summaryValue}>{sortedData.length} Tahun</Text>
         </View>
 
-        {dataJumlahPenduduk?.map((item, index) => {
-          const { lakiPct, perempuanPct } = calculatePercentage(item.laki, item.perempuan);
+        {sortedData.map((item, index) => {
+          const { lakiPct, perempuanPct } = calculatePercentage(item?.laki, item?.perempuan);
           return (
-            <AnimatedCard key={index} delay={index * 50}>
+            <AnimatedCard key={`${item.tahun}-${index}`} delay={index * 50}>
               <View style={styles.dataCard}>
                 <View style={styles.cardHeader}>
                   <View style={styles.yearBadge}>
                     <Icon name="calendar" size={18} color="#3949ab" />
-                    <Text style={styles.yearText}>{item.tahun}</Text>
+                    <Text style={styles.yearText}>{item?.tahun || '-'}</Text>
                   </View>
-                  <View style={[styles.statusBadge, { backgroundColor: getStatusColor(item.status_data) + '20' }]}>
-                    <View style={[styles.statusDot, { backgroundColor: getStatusColor(item.status_data) }]} />
-                    <Text style={[styles.statusText, { color: getStatusColor(item.status_data) }]}>
-                      {item.status_data}
+                  <View style={[styles.statusBadge, { backgroundColor: getStatusColor(item?.status_data) + '20' }]}>
+                    <View style={[styles.statusDot, { backgroundColor: getStatusColor(item?.status_data) }]} />
+                    <Text style={[styles.statusText, { color: getStatusColor(item?.status_data) }]}>
+                      {item?.status_data || 'N/A'}
                     </Text>
                   </View>
                 </View>
@@ -107,7 +122,7 @@ const DetailPP = (props) => {
                         <Icon name="male" size={24} color="#1e88e5" />
                         <Text style={styles.genderLabel}>Laki-laki</Text>
                       </View>
-                      <Text style={styles.genderValue}>{formatNumber(item.laki)}</Text>
+                      <Text style={styles.genderValue}>{formatNumber(item?.laki)}</Text>
                       <View style={styles.percentageBar}>
                         <View style={[styles.percentageFill, { width: `${lakiPct}%`, backgroundColor: '#1e88e5' }]} />
                       </View>
@@ -121,7 +136,7 @@ const DetailPP = (props) => {
                         <Icon name="female" size={24} color="#e91e63" />
                         <Text style={styles.genderLabel}>Perempuan</Text>
                       </View>
-                      <Text style={styles.genderValue}>{formatNumber(item.perempuan)}</Text>
+                      <Text style={styles.genderValue}>{formatNumber(item?.perempuan)}</Text>
                       <View style={styles.percentageBar}>
                         <View style={[styles.percentageFill, { width: `${perempuanPct}%`, backgroundColor: '#e91e63' }]} />
                       </View>
@@ -134,7 +149,7 @@ const DetailPP = (props) => {
                     <Icon name="people" size={20} color="#3949ab" />
                     <View style={styles.totalContent}>
                       <Text style={styles.totalLabel}>Total Penduduk</Text>
-                      <Text style={styles.totalValue}>{formatNumber(item.total)} Orang</Text>
+                      <Text style={styles.totalValue}>{formatNumber(item?.total)} Orang</Text>
                     </View>
                   </View>
                 </View>
@@ -148,12 +163,27 @@ const DetailPP = (props) => {
           )
         })}
 
-        {dataJumlahPenduduk?.length === 0 && (
+        {sortedData.length === 0 && (
           <View style={styles.emptyState}>
             <Icon name="people-outline" size={80} color="#ccc" />
             <Text style={styles.emptyText}>Belum ada data tersedia</Text>
           </View>
         )}
+
+        {/* Info Card */}
+        <View style={styles.infoCard}>
+          <View style={styles.infoHeader}>
+            <Icon name="information-circle" size={24} color="#3949ab" />
+            <Text style={styles.infoTitle}>Tentang Data Penduduk</Text>
+          </View>
+          <View style={styles.infoContent}>
+            <Text style={styles.infoText}>
+              Jumlah penduduk menunjukkan total populasi berdasarkan jenis kelamin. 
+              Data ini penting untuk perencanaan pembangunan, alokasi sumber daya, 
+              dan kebijakan kependudukan di wilayah tersebut.
+            </Text>
+          </View>
+        </View>
       </ScrollView>
     </View>
   )
@@ -369,5 +399,32 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#999',
     marginTop: 16,
+  },
+  infoCard: {
+    backgroundColor: '#E8EAF6',
+    borderRadius: 12,
+    padding: 16,
+    borderLeftWidth: 4,
+    borderLeftColor: '#3949ab',
+    marginTop: 4,
+  },
+  infoHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    marginBottom: 12,
+  },
+  infoTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#1a1a1a',
+  },
+  infoContent: {
+    paddingLeft: 36,
+  },
+  infoText: {
+    fontSize: 14,
+    color: '#555',
+    lineHeight: 20,
   },
 })

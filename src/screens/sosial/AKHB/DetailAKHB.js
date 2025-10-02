@@ -54,6 +54,9 @@ const DetailAKHB = (props) => {
     return { label: 'Perlu Perhatian', color: '#e53935', icon: 'warning' };
   };
 
+  // Sort data by year in descending order (current year to past years)
+  const sortedData = [...(dataAngkaKeberlangsunganHidupBayi || [])].sort((a, b) => b.tahun - a.tahun);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -75,10 +78,10 @@ const DetailAKHB = (props) => {
       >
         <View style={styles.summaryCard}>
           <Text style={styles.summaryTitle}>Total Data Tersedia</Text>
-          <Text style={styles.summaryValue}>{dataAngkaKeberlangsunganHidupBayi?.length || 0} Tahun</Text>
+          <Text style={styles.summaryValue}>{sortedData.length || 0} Tahun</Text>
         </View>
 
-        {dataAngkaKeberlangsunganHidupBayi?.map((item, index) => {
+        {sortedData.map((item, index) => {
           const category = getAKHBCategory(item.pres_akhb);
           const survivalRate = parseFloat(item.pres_akhb);
           const mortalityRate = (100 - survivalRate).toFixed(2);
@@ -148,7 +151,7 @@ const DetailAKHB = (props) => {
           )
         })}
 
-        {dataAngkaKeberlangsunganHidupBayi?.length === 0 && (
+        {sortedData.length === 0 && (
           <View style={styles.emptyState}>
             <Icon name="shield-checkmark-outline" size={80} color="#ccc" />
             <Text style={styles.emptyText}>Belum ada data tersedia</Text>

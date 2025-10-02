@@ -40,7 +40,16 @@ const AnimatedCard = ({ children, delay = 0 }) => {
 const DetailPMA = (props) => {
   const {dataPMA} = stateDataPMA()
 
+  // Sort data dari tahun terbaru ke terlama
+  const sortedData = dataPMA
+    ?.sort((a, b) => {
+      const yearA = parseInt(a.tahun) || 0;
+      const yearB = parseInt(b.tahun) || 0;
+      return yearB - yearA; // Descending order (terbaru ke terlama)
+    }) || [];
+
   const convertToRupiah = (angka) => {
+    if (!angka) return 'Rp 0';
     var rupiah = '';
     var angkarev = angka.toString().split('').reverse().join('');
     for (var i = 0; i < angkarev.length; i++)
@@ -49,13 +58,14 @@ const DetailPMA = (props) => {
   }
 
   const getStatusColor = (status) => {
+    if (!status) return '#666';
     if (status.toLowerCase().includes('tetap')) return '#43a047';
     if (status.toLowerCase().includes('sementara')) return '#fb8c00';
     return '#666';
   };
 
   const getPMACategory = (jumlah) => {
-    const value = parseFloat(jumlah);
+    const value = parseFloat(jumlah) || 0;
     if (value >= 1000000000000) return { label: 'Sangat Tinggi', color: '#43a047', icon: 'trending-up' }; // >= 1T
     if (value >= 500000000000) return { label: 'Tinggi', color: '#1e88e5', icon: 'arrow-up' }; // >= 500M
     if (value >= 100000000000) return { label: 'Sedang', color: '#fb8c00', icon: 'remove' }; // >= 100M
@@ -83,23 +93,23 @@ const DetailPMA = (props) => {
       >
         <View style={styles.summaryCard}>
           <Text style={styles.summaryTitle}>Total Data Tersedia</Text>
-          <Text style={styles.summaryValue}>{dataPMA?.length || 0} Tahun</Text>
+          <Text style={styles.summaryValue}>{sortedData.length} Tahun</Text>
         </View>
 
-        {dataPMA?.map((item, index) => {
-          const category = getPMACategory(item.jumlah);
+        {sortedData.map((item, index) => {
+          const category = getPMACategory(item?.jumlah);
           return (
-            <AnimatedCard key={index} delay={index * 50}>
+            <AnimatedCard key={`${item.tahun}-${index}`} delay={index * 50}>
               <View style={styles.dataCard}>
                 <View style={styles.cardHeader}>
                   <View style={styles.yearBadge}>
                     <Icon name="calendar" size={18} color="#1565c0" />
-                    <Text style={styles.yearText}>{item.tahun}</Text>
+                    <Text style={styles.yearText}>{item?.tahun || '-'}</Text>
                   </View>
-                  <View style={[styles.statusBadge, { backgroundColor: getStatusColor(item.status_data) + '20' }]}>
-                    <View style={[styles.statusDot, { backgroundColor: getStatusColor(item.status_data) }]} />
-                    <Text style={[styles.statusText, { color: getStatusColor(item.status_data) }]}>
-                      {item.status_data}
+                  <View style={[styles.statusBadge, { backgroundColor: getStatusColor(item?.status_data) + '20' }]}>
+                    <View style={[styles.statusDot, { backgroundColor: getStatusColor(item?.status_data) }]} />
+                    <Text style={[styles.statusText, { color: getStatusColor(item?.status_data) }]}>
+                      {item?.status_data || 'N/A'}
                     </Text>
                   </View>
                 </View>
@@ -109,7 +119,7 @@ const DetailPMA = (props) => {
                     <Icon name={category.icon} size={28} color={category.color} />
                     <View style={styles.pmaContent}>
                       <Text style={styles.pmaValue}>
-                        {convertToRupiah(item.jumlah)}
+                        {convertToRupiah(item?.jumlah)}
                       </Text>
                     </View>
                   </View>
@@ -125,9 +135,9 @@ const DetailPMA = (props) => {
                   <View style={styles.interpretationBox}>
                     <Icon name="information-circle" size={18} color="#1565c0" />
                     <Text style={styles.interpretationText}>
-                      {parseFloat(item.jumlah) >= 1000000000000 
+                      {parseFloat(item?.jumlah || 0) >= 1000000000000 
                         ? 'Investasi asing sangat tinggi, daya tarik investasi sangat baik'
-                        : parseFloat(item.jumlah) >= 500000000000
+                        : parseFloat(item?.jumlah || 0) >= 500000000000
                         ? 'Investasi asing tinggi, iklim investasi kondusif'
                         : 'Perlu peningkatan promosi dan kemudahan investasi'}
                     </Text>
@@ -143,7 +153,7 @@ const DetailPMA = (props) => {
           )
         })}
 
-        {dataPMA?.length === 0 && (
+        {sortedData.length === 0 && (
           <View style={styles.emptyState}>
             <Icon name="business-outline" size={80} color="#ccc" />
             <Text style={styles.emptyText}>Belum ada data tersedia</Text>

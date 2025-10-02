@@ -40,6 +40,11 @@ const AnimatedCard = ({ children, delay = 0 }) => {
 const DetailIPM = (props) => {
   const {dataIPM} = stateDataIPM()
 
+   // Urutkan data berdasarkan tahun dari yang terbaru ke terdahulu
+  const sortedData = dataIPM?.slice().sort((a, b) => {
+    return parseInt(b.tahun) - parseInt(a.tahun);
+  }) || [];
+
   const getStatusColor = (status) => {
     if (status.toLowerCase().includes('tetap')) return '#43a047';
     if (status.toLowerCase().includes('sementara')) return '#fb8c00';
@@ -75,10 +80,10 @@ const DetailIPM = (props) => {
       >
         <View style={styles.summaryCard}>
           <Text style={styles.summaryTitle}>Total Data Tersedia</Text>
-          <Text style={styles.summaryValue}>{dataIPM?.length || 0} Tahun</Text>
+          <Text style={styles.summaryValue}>{sortedData?.length || 0} Tahun</Text>
         </View>
 
-        {dataIPM?.map((item, index) => {
+        {sortedData?.map((item, index) => {
           const category = getIPMCategory(item.ipm);
           return (
             <AnimatedCard key={index} delay={index * 50}>

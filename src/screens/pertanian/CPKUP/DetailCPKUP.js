@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, ScrollView, Animated } from 'react-native'
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useMemo } from 'react'
 import { stateDataCapaianProduksiKomoditiUnggulanPerkebunan } from '../../../state/dataCPKUP'
 import { color } from '../../../constants/Helper'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -40,6 +40,17 @@ const AnimatedCard = ({ children, delay = 0 }) => {
 const DetailCPKUP = (props) => {
   const {dataCapaianProduksiKomoditiUnggulanPerkebunan} = stateDataCapaianProduksiKomoditiUnggulanPerkebunan()
 
+  // Sort data by year (newest to oldest)
+  const sortedData = useMemo(() => {
+    if (!dataCapaianProduksiKomoditiUnggulanPerkebunan) return [];
+    
+    return [...dataCapaianProduksiKomoditiUnggulanPerkebunan].sort((a, b) => {
+      const yearA = parseInt(a.tahun);
+      const yearB = parseInt(b.tahun);
+      return yearB - yearA; // Descending order (newest first)
+    });
+  }, [dataCapaianProduksiKomoditiUnggulanPerkebunan]);
+
   const getStatusColor = (status) => {
     if (status.toLowerCase().includes('tetap')) return '#43a047';
     if (status.toLowerCase().includes('sementara')) return '#fb8c00';
@@ -79,10 +90,10 @@ const DetailCPKUP = (props) => {
       >
         <View style={styles.summaryCard}>
           <Text style={styles.summaryTitle}>Total Data Tersedia</Text>
-          <Text style={styles.summaryValue}>{dataCapaianProduksiKomoditiUnggulanPerkebunan?.length || 0} Tahun</Text>
+          <Text style={styles.summaryValue}>{sortedData?.length || 0} Tahun</Text>
         </View>
 
-        {dataCapaianProduksiKomoditiUnggulanPerkebunan?.map((item, index) => {
+        {sortedData?.map((item, index) => {
           const category = getCPKUPCategory(item.jumlah);
           return (
             <AnimatedCard key={index} delay={index * 50}>
@@ -140,7 +151,7 @@ const DetailCPKUP = (props) => {
           )
         })}
 
-        {dataCapaianProduksiKomoditiUnggulanPerkebunan?.length === 0 && (
+        {sortedData?.length === 0 && (
           <View style={styles.emptyState}>
             <Icon name="leaf-outline" size={80} color="#ccc" />
             <Text style={styles.emptyText}>Belum ada data tersedia</Text>

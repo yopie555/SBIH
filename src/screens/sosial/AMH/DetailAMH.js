@@ -54,6 +54,9 @@ const DetailAMH = (props) => {
     return { label: 'Rendah', color: '#e53935' };
   };
 
+  // Sort data by year in descending order (current year to past years)
+  const sortedData = [...(dataAngkaMelekHuruf || [])].sort((a, b) => b.tahun - a.tahun);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -75,10 +78,10 @@ const DetailAMH = (props) => {
       >
         <View style={styles.summaryCard}>
           <Text style={styles.summaryTitle}>Total Kelompok Umur</Text>
-          <Text style={styles.summaryValue}>{dataAngkaMelekHuruf?.length || 0}</Text>
+          <Text style={styles.summaryValue}>{sortedData.length || 0}</Text>
         </View>
 
-        {dataAngkaMelekHuruf?.map((item, index) => {
+        {sortedData.map((item, index) => {
           const lakiCategory = getLiteracyCategory(item.laki);
           const perempuanCategory = getLiteracyCategory(item.perempuan);
           const average = ((parseFloat(item.laki) + parseFloat(item.perempuan)) / 2).toFixed(2);
@@ -168,7 +171,7 @@ const DetailAMH = (props) => {
           )
         })}
 
-        {dataAngkaMelekHuruf?.length === 0 && (
+        {sortedData.length === 0 && (
           <View style={styles.emptyState}>
             <Icon name="book-outline" size={80} color="#ccc" />
             <Text style={styles.emptyText}>Belum ada data tersedia</Text>

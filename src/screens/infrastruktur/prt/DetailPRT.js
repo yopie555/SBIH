@@ -40,7 +40,16 @@ const AnimatedCard = ({ children, delay = 0 }) => {
 const DetailPRT = (props) => {
   const { dataPenggunaanAirBersih } = stateDataPenggunaanAirBersih()
 
+  // Sort data dari tahun terbaru ke terlama
+  const sortedData = dataPenggunaanAirBersih
+    ?.sort((a, b) => {
+      const yearA = parseInt(a.tahun) || 0;
+      const yearB = parseInt(b.tahun) || 0;
+      return yearB - yearA; // Descending order (terbaru ke terlama)
+    }) || [];
+
   const getStatusColor = (status) => {
+    if (!status) return '#666';
     if (status.toLowerCase().includes('tetap')) return '#43a047';
     if (status.toLowerCase().includes('sementara')) return '#fb8c00';
     if (status.toLowerCase().includes('estimasi')) return '#1e88e5';
@@ -48,7 +57,7 @@ const DetailPRT = (props) => {
   };
 
   const getUsageCategory = (nilai) => {
-    const value = parseFloat(nilai);
+    const value = parseFloat(nilai) || 0;
     if (value >= 80) return { label: 'Sangat Baik', color: '#43a047', icon: 'water' };
     if (value >= 60 && value < 80) return { label: 'Baik', color: '#1e88e5', icon: 'water-outline' };
     if (value >= 40 && value < 60) return { label: 'Sedang', color: '#fb8c00', icon: 'warning' };
@@ -56,6 +65,7 @@ const DetailPRT = (props) => {
   };
 
   const formatPercentage = (num) => {
+    if (!num) return '0.00';
     return parseFloat(num).toFixed(2);
   };
 
@@ -83,28 +93,28 @@ const DetailPRT = (props) => {
             <Icon name="analytics" size={24} color="#fff" />
             <Text style={styles.summaryTitle}>Total Data Tersedia</Text>
           </View>
-          <Text style={styles.summaryValue}>{dataPenggunaanAirBersih?.length || 0} Tahun</Text>
-          {dataPenggunaanAirBersih?.length > 0 && (
+          <Text style={styles.summaryValue}>{sortedData.length} Tahun</Text>
+          {sortedData.length > 0 && (
             <Text style={styles.summarySubtitle}>
-              Periode: {dataPenggunaanAirBersih[0]?.tahun} - {dataPenggunaanAirBersih[dataPenggunaanAirBersih.length - 1]?.tahun}
+              Periode: {sortedData[0]?.tahun || '-'} - {sortedData[sortedData.length - 1]?.tahun || '-'}
             </Text>
           )}
         </View>
 
-        {dataPenggunaanAirBersih?.map((item, index) => {
-          const category = getUsageCategory(item.nilai);
+        {sortedData.map((item, index) => {
+          const category = getUsageCategory(item?.nilai);
           return (
-            <AnimatedCard key={index} delay={index * 50}>
+            <AnimatedCard key={`${item.tahun}-${index}`} delay={index * 50}>
               <View style={styles.dataCard}>
                 <View style={styles.cardHeader}>
                   <View style={styles.yearBadge}>
                     <Icon name="calendar" size={18} color="#00acc1" />
-                    <Text style={styles.yearText}>{item.tahun}</Text>
+                    <Text style={styles.yearText}>{item?.tahun || '-'}</Text>
                   </View>
-                  <View style={[styles.statusBadge, { backgroundColor: getStatusColor(item.status_data) + '20' }]}>
-                    <View style={[styles.statusDot, { backgroundColor: getStatusColor(item.status_data) }]} />
-                    <Text style={[styles.statusText, { color: getStatusColor(item.status_data) }]}>
-                      {item.status_data}
+                  <View style={[styles.statusBadge, { backgroundColor: getStatusColor(item?.status_data) + '20' }]}>
+                    <View style={[styles.statusDot, { backgroundColor: getStatusColor(item?.status_data) }]} />
+                    <Text style={[styles.statusText, { color: getStatusColor(item?.status_data) }]}>
+                      {item?.status_data || 'N/A'}
                     </Text>
                   </View>
                 </View>
@@ -114,7 +124,7 @@ const DetailPRT = (props) => {
                     <Icon name={category.icon} size={32} color={category.color} />
                     <View style={styles.usageContent}>
                       <Text style={[styles.usageValue, { color: category.color }]}>
-                        {formatPercentage(item.nilai)}%
+                        {formatPercentage(item?.nilai)}%
                       </Text>
                       <Text style={styles.usageLabel}>Rumah Tangga</Text>
                     </View>
@@ -130,11 +140,11 @@ const DetailPRT = (props) => {
                   <View style={styles.interpretationBox}>
                     <Icon name="information-circle" size={18} color="#00acc1" />
                     <Text style={styles.interpretationText}>
-                      {parseFloat(item.nilai) >= 80
+                      {parseFloat(item?.nilai || 0) >= 80
                         ? 'Akses air bersih sangat baik, mayoritas rumah tangga terlayani'
-                        : parseFloat(item.nilai) >= 60
+                        : parseFloat(item?.nilai || 0) >= 60
                         ? 'Akses air bersih baik, sebagian besar rumah tangga terlayani'
-                        : parseFloat(item.nilai) >= 40
+                        : parseFloat(item?.nilai || 0) >= 40
                         ? 'Akses air bersih sedang, perlu peningkatan infrastruktur'
                         : 'Akses air bersih rendah, perlu perhatian serius dan percepatan pembangunan'}
                     </Text>
@@ -150,7 +160,7 @@ const DetailPRT = (props) => {
           )
         })}
 
-        {(!dataPenggunaanAirBersih || dataPenggunaanAirBersih?.length === 0) && (
+        {sortedData.length === 0 && (
           <View style={styles.emptyState}>
             <Icon name="water-outline" size={80} color="#ccc" />
             <Text style={styles.emptyText}>Belum ada data tersedia</Text>
@@ -158,7 +168,7 @@ const DetailPRT = (props) => {
         )}
 
         {/* Statistics Card */}
-        {dataPenggunaanAirBersih?.length > 0 && (
+        {sortedData.length > 0 && (
           <View style={styles.statsCard}>
             <View style={styles.statsHeader}>
               <Icon name="stats-chart" size={24} color="#00acc1" />
@@ -169,21 +179,21 @@ const DetailPRT = (props) => {
                 <Icon name="trending-up" size={20} color="#43a047" />
                 <Text style={styles.statLabel}>Tertinggi</Text>
                 <Text style={[styles.statValue, { color: '#43a047' }]}>
-                  {formatPercentage(Math.max(...dataPenggunaanAirBersih.map(d => parseFloat(d.nilai))))}%
+                  {formatPercentage(Math.max(...sortedData.map(d => parseFloat(d?.nilai || 0))))}%
                 </Text>
               </View>
               <View style={styles.statItem}>
                 <Icon name="trending-down" size={20} color="#e53935" />
                 <Text style={styles.statLabel}>Terendah</Text>
                 <Text style={[styles.statValue, { color: '#e53935' }]}>
-                  {formatPercentage(Math.min(...dataPenggunaanAirBersih.map(d => parseFloat(d.nilai))))}%
+                  {formatPercentage(Math.min(...sortedData.map(d => parseFloat(d?.nilai || 0))))}%
                 </Text>
               </View>
               <View style={styles.statItem}>
                 <Icon name="calculator" size={20} color="#1e88e5" />
                 <Text style={styles.statLabel}>Rata-rata</Text>
                 <Text style={[styles.statValue, { color: '#1e88e5' }]}>
-                  {formatPercentage((dataPenggunaanAirBersih.reduce((sum, d) => sum + parseFloat(d.nilai), 0) / dataPenggunaanAirBersih.length))}%
+                  {formatPercentage((sortedData.reduce((sum, d) => sum + (parseFloat(d?.nilai || 0)), 0) / sortedData.length))}%
                 </Text>
               </View>
             </View>

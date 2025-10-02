@@ -40,7 +40,16 @@ const AnimatedCard = ({ children, delay = 0 }) => {
 const DetailKW = (props) => {
   const { dataKunjunganWisata } = stateDataKunjunganWisata()
 
+  // Sort data dari tahun terbaru ke terlama
+  const sortedData = dataKunjunganWisata
+    ?.sort((a, b) => {
+      const yearA = parseInt(a.tahun) || 0;
+      const yearB = parseInt(b.tahun) || 0;
+      return yearB - yearA; // Descending order (terbaru ke terlama)
+    }) || [];
+
   const getStatusColor = (status) => {
+    if (!status) return '#666';
     if (status.toLowerCase().includes('tetap')) return '#43a047';
     if (status.toLowerCase().includes('sementara')) return '#fb8c00';
     return '#666';
@@ -55,6 +64,7 @@ const DetailKW = (props) => {
   };
 
   const formatNumber = (num) => {
+    if (!num) return '0';
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
@@ -79,23 +89,23 @@ const DetailKW = (props) => {
       >
         <View style={styles.summaryCard}>
           <Text style={styles.summaryTitle}>Total Data Tersedia</Text>
-          <Text style={styles.summaryValue}>{dataKunjunganWisata?.length || 0} Tahun</Text>
+          <Text style={styles.summaryValue}>{sortedData.length} Tahun</Text>
         </View>
 
-        {dataKunjunganWisata?.map((item, index) => {
+        {sortedData.map((item, index) => {
           const category = getKWCategory(item.jumlah);
           return (
-            <AnimatedCard key={index} delay={index * 50}>
+            <AnimatedCard key={`${item.tahun}-${index}`} delay={index * 50}>
               <View style={styles.dataCard}>
                 <View style={styles.cardHeader}>
                   <View style={styles.yearBadge}>
                     <Icon name="calendar" size={18} color="#00acc1" />
-                    <Text style={styles.yearText}>{item.tahun}</Text>
+                    <Text style={styles.yearText}>{item?.tahun || '-'}</Text>
                   </View>
-                  <View style={[styles.statusBadge, { backgroundColor: getStatusColor(item.status_data) + '20' }]}>
-                    <View style={[styles.statusDot, { backgroundColor: getStatusColor(item.status_data) }]} />
-                    <Text style={[styles.statusText, { color: getStatusColor(item.status_data) }]}>
-                      {item.status_data}
+                  <View style={[styles.statusBadge, { backgroundColor: getStatusColor(item?.status_data) + '20' }]}>
+                    <View style={[styles.statusDot, { backgroundColor: getStatusColor(item?.status_data) }]} />
+                    <Text style={[styles.statusText, { color: getStatusColor(item?.status_data) }]}>
+                      {item?.status_data || 'N/A'}
                     </Text>
                   </View>
                 </View>
@@ -105,7 +115,7 @@ const DetailKW = (props) => {
                     <Icon name={category.icon} size={32} color={category.color} />
                     <View style={styles.kwContent}>
                       <Text style={[styles.kwValue, { color: category.color }]}>
-                        {formatNumber(item.jumlah)}
+                        {formatNumber(item?.jumlah)}
                       </Text>
                       <Text style={styles.kwLabel}>Wisatawan</Text>
                     </View>
@@ -122,9 +132,9 @@ const DetailKW = (props) => {
                   <View style={styles.interpretationBox}>
                     <Icon name="information-circle" size={18} color="#00acc1" />
                     <Text style={styles.interpretationText}>
-                      {parseInt(item.jumlah) >= 100000 
+                      {parseInt(item?.jumlah || 0) >= 100000 
                         ? 'Kunjungan wisata sangat tinggi, destinasi populer'
-                        : parseInt(item.jumlah) >= 50000
+                        : parseInt(item?.jumlah || 0) >= 50000
                         ? 'Kunjungan wisata tinggi, daya tarik baik'
                         : 'Perlu promosi dan pengembangan destinasi wisata'}
                     </Text>
@@ -140,7 +150,7 @@ const DetailKW = (props) => {
           )
         })}
 
-        {dataKunjunganWisata?.length === 0 && (
+        {sortedData.length === 0 && (
           <View style={styles.emptyState}>
             <Icon name="airplane-outline" size={80} color="#ccc" />
             <Text style={styles.emptyText}>Belum ada data tersedia</Text>

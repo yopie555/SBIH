@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, ScrollView, Animated } from 'react-native'
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useMemo } from 'react'
 import { stateDataJumlahProduksiPeternakan } from '../../../state/dataJPP'
 import { color } from '../../../constants/Helper'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -39,6 +39,17 @@ const AnimatedCard = ({ children, delay = 0 }) => {
 
 const DetailAHH = (props) => {
   const { dataJumlahProduksiPeternakan } = stateDataJumlahProduksiPeternakan()
+
+  // Sort data by year (newest to oldest)
+  const sortedData = useMemo(() => {
+    if (!dataJumlahProduksiPeternakan) return [];
+    
+    return [...dataJumlahProduksiPeternakan].sort((a, b) => {
+      const yearA = parseInt(a.tahun);
+      const yearB = parseInt(b.tahun);
+      return yearB - yearA; // Descending order (newest first)
+    });
+  }, [dataJumlahProduksiPeternakan]);
 
   const getStatusColor = (status) => {
     if (status.toLowerCase().includes('tetap')) return '#43a047';
@@ -88,11 +99,11 @@ const DetailAHH = (props) => {
             <Icon name="bar-chart" size={24} color="#fff" />
             <Text style={styles.summaryTitle}>Total Data Produksi</Text>
           </View>
-          <Text style={styles.summaryValue}>{dataJumlahProduksiPeternakan?.length || 0} Tahun</Text>
-          <Text style={styles.summarySubtitle}>Periode: {dataJumlahProduksiPeternakan?.[0]?.tahun} - {dataJumlahProduksiPeternakan?.[dataJumlahProduksiPeternakan?.length - 1]?.tahun}</Text>
+          <Text style={styles.summaryValue}>{sortedData?.length || 0} Tahun</Text>
+          <Text style={styles.summarySubtitle}>Periode: {sortedData?.[sortedData?.length - 1]?.tahun} - {sortedData?.[0]?.tahun}</Text>
         </View>
 
-        {dataJumlahProduksiPeternakan?.map((item, index) => {
+        {sortedData?.map((item, index) => {
           const category = getProductionCategory(item.jumlah);
           return (
             <AnimatedCard key={index} delay={index * 50}>
@@ -152,7 +163,7 @@ const DetailAHH = (props) => {
           )
         })}
 
-        {(!dataJumlahProduksiPeternakan || dataJumlahProduksiPeternakan?.length === 0) && (
+        {(!sortedData || sortedData?.length === 0) && (
           <View style={styles.emptyState}>
             <Icon name="stats-chart-outline" size={80} color="#ccc" />
             <Text style={styles.emptyText}>Belum ada data tersedia</Text>
@@ -160,7 +171,7 @@ const DetailAHH = (props) => {
         )}
 
         {/* Statistics Card */}
-        {dataJumlahProduksiPeternakan?.length > 0 && (
+        {sortedData?.length > 0 && (
           <View style={styles.statsCard}>
             <View style={styles.statsHeader}>
               <Icon name="analytics" size={24} color="#00acc1" />
@@ -171,21 +182,21 @@ const DetailAHH = (props) => {
                 <Icon name="trending-up" size={20} color="#43a047" />
                 <Text style={styles.statLabel}>Tertinggi</Text>
                 <Text style={[styles.statValue, { color: '#43a047' }]}>
-                  {formatNumber(Math.max(...dataJumlahProduksiPeternakan.map(d => parseFloat(d.jumlah))))} Ton
+                  {formatNumber(Math.max(...sortedData.map(d => parseFloat(d.jumlah))))} Ton
                 </Text>
               </View>
               <View style={styles.statItem}>
                 <Icon name="trending-down" size={20} color="#e53935" />
                 <Text style={styles.statLabel}>Terendah</Text>
                 <Text style={[styles.statValue, { color: '#e53935' }]}>
-                  {formatNumber(Math.min(...dataJumlahProduksiPeternakan.map(d => parseFloat(d.jumlah))))} Ton
+                  {formatNumber(Math.min(...sortedData.map(d => parseFloat(d.jumlah))))} Ton
                 </Text>
               </View>
               <View style={styles.statItem}>
                 <Icon name="calculator" size={20} color="#1e88e5" />
                 <Text style={styles.statLabel}>Rata-rata</Text>
                 <Text style={[styles.statValue, { color: '#1e88e5' }]}>
-                  {formatNumber((dataJumlahProduksiPeternakan.reduce((sum, d) => sum + parseFloat(d.jumlah), 0) / dataJumlahProduksiPeternakan.length).toFixed(2))} Ton
+                  {formatNumber((sortedData.reduce((sum, d) => sum + parseFloat(d.jumlah), 0) / sortedData.length).toFixed(2))} Ton
                 </Text>
               </View>
             </View>

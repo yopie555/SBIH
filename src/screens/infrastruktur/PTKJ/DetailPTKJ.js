@@ -40,7 +40,16 @@ const AnimatedCard = ({ children, delay = 0 }) => {
 const DetailPTKJ = (props) => {
   const { dataPersentaseTingkatKemantapanJalan } = stateDataPersentaseTingkatKemantapanJalan()
 
+  // Sort data dari tahun terbaru ke terlama
+  const sortedData = dataPersentaseTingkatKemantapanJalan
+    ?.sort((a, b) => {
+      const yearA = parseInt(a.tahun) || 0;
+      const yearB = parseInt(b.tahun) || 0;
+      return yearB - yearA; // Descending order (terbaru ke terlama)
+    }) || [];
+
   const getStatusColor = (status) => {
+    if (!status) return '#666';
     if (status.toLowerCase().includes('tetap')) return '#43a047';
     if (status.toLowerCase().includes('sementara')) return '#fb8c00';
     if (status.toLowerCase().includes('estimasi')) return '#1e88e5';
@@ -48,7 +57,7 @@ const DetailPTKJ = (props) => {
   };
 
   const getRoadConditionCategory = (kemantapan) => {
-    const value = parseFloat(kemantapan);
+    const value = parseFloat(kemantapan) || 0;
     if (value >= 80) return { label: 'Sangat Mantap', color: '#43a047', icon: 'checkmark-circle' };
     if (value >= 60 && value < 80) return { label: 'Mantap', color: '#1e88e5', icon: 'checkmark' };
     if (value >= 40 && value < 60) return { label: 'Sedang', color: '#fb8c00', icon: 'warning' };
@@ -56,6 +65,7 @@ const DetailPTKJ = (props) => {
   };
 
   const formatPercentage = (num) => {
+    if (!num) return '0.00';
     return parseFloat(num).toFixed(2);
   };
 
@@ -83,28 +93,28 @@ const DetailPTKJ = (props) => {
             <Icon name="road" size={24} color="#fff" />
             <Text style={styles.summaryTitle}>Total Data Tersedia</Text>
           </View>
-          <Text style={styles.summaryValue}>{dataPersentaseTingkatKemantapanJalan?.length || 0} Tahun</Text>
-          {dataPersentaseTingkatKemantapanJalan?.length > 0 && (
+          <Text style={styles.summaryValue}>{sortedData.length} Tahun</Text>
+          {sortedData.length > 0 && (
             <Text style={styles.summarySubtitle}>
-              Periode: {dataPersentaseTingkatKemantapanJalan[0]?.tahun} - {dataPersentaseTingkatKemantapanJalan[dataPersentaseTingkatKemantapanJalan.length - 1]?.tahun}
+              Periode: {sortedData[0]?.tahun || '-'} - {sortedData[sortedData.length - 1]?.tahun || '-'}
             </Text>
           )}
         </View>
 
-        {dataPersentaseTingkatKemantapanJalan?.map((item, index) => {
-          const category = getRoadConditionCategory(item.kemantapan_jalan);
+        {sortedData.map((item, index) => {
+          const category = getRoadConditionCategory(item?.kemantapan_jalan);
           return (
-            <AnimatedCard key={index} delay={index * 50}>
+            <AnimatedCard key={`${item.tahun}-${index}`} delay={index * 50}>
               <View style={styles.dataCard}>
                 <View style={styles.cardHeader}>
                   <View style={styles.yearBadge}>
                     <Icon name="calendar" size={18} color="#00acc1" />
-                    <Text style={styles.yearText}>{item.tahun}</Text>
+                    <Text style={styles.yearText}>{item?.tahun || '-'}</Text>
                   </View>
-                  <View style={[styles.statusBadge, { backgroundColor: getStatusColor(item.status_data) + '20' }]}>
-                    <View style={[styles.statusDot, { backgroundColor: getStatusColor(item.status_data) }]} />
-                    <Text style={[styles.statusText, { color: getStatusColor(item.status_data) }]}>
-                      {item.status_data}
+                  <View style={[styles.statusBadge, { backgroundColor: getStatusColor(item?.status_data) + '20' }]}>
+                    <View style={[styles.statusDot, { backgroundColor: getStatusColor(item?.status_data) }]} />
+                    <Text style={[styles.statusText, { color: getStatusColor(item?.status_data) }]}>
+                      {item?.status_data || 'N/A'}
                     </Text>
                   </View>
                 </View>
@@ -114,7 +124,7 @@ const DetailPTKJ = (props) => {
                     <Icon name={category.icon} size={32} color={category.color} />
                     <View style={styles.conditionContent}>
                       <Text style={[styles.conditionValue, { color: category.color }]}>
-                        {formatPercentage(item.kemantapan_jalan)}%
+                        {formatPercentage(item?.kemantapan_jalan)}%
                       </Text>
                       <Text style={styles.conditionLabel}>Kemantapan</Text>
                     </View>
@@ -130,11 +140,11 @@ const DetailPTKJ = (props) => {
                   <View style={styles.interpretationBox}>
                     <Icon name="information-circle" size={18} color="#00acc1" />
                     <Text style={styles.interpretationText}>
-                      {parseFloat(item.kemantapan_jalan) >= 80
+                      {parseFloat(item?.kemantapan_jalan || 0) >= 80
                         ? 'Kondisi jalan sangat baik, infrastruktur jalan berkualitas tinggi'
-                        : parseFloat(item.kemantapan_jalan) >= 60
+                        : parseFloat(item?.kemantapan_jalan || 0) >= 60
                         ? 'Kondisi jalan baik, sebagian besar jalan dalam keadaan mantap'
-                        : parseFloat(item.kemantapan_jalan) >= 40
+                        : parseFloat(item?.kemantapan_jalan || 0) >= 40
                         ? 'Kondisi jalan sedang, perlu pemeliharaan rutin'
                         : 'Kondisi jalan kurang baik, perlu perbaikan dan rehabilitasi segera'}
                     </Text>
@@ -150,7 +160,7 @@ const DetailPTKJ = (props) => {
           )
         })}
 
-        {(!dataPersentaseTingkatKemantapanJalan || dataPersentaseTingkatKemantapanJalan?.length === 0) && (
+        {sortedData.length === 0 && (
           <View style={styles.emptyState}>
             <Icon name="construct-outline" size={80} color="#ccc" />
             <Text style={styles.emptyText}>Belum ada data tersedia</Text>
@@ -158,7 +168,7 @@ const DetailPTKJ = (props) => {
         )}
 
         {/* Statistics Card */}
-        {dataPersentaseTingkatKemantapanJalan?.length > 0 && (
+        {sortedData.length > 0 && (
           <View style={styles.statsCard}>
             <View style={styles.statsHeader}>
               <Icon name="analytics" size={24} color="#00acc1" />
@@ -169,21 +179,21 @@ const DetailPTKJ = (props) => {
                 <Icon name="trending-up" size={20} color="#43a047" />
                 <Text style={styles.statLabel}>Tertinggi</Text>
                 <Text style={[styles.statValue, { color: '#43a047' }]}>
-                  {formatPercentage(Math.max(...dataPersentaseTingkatKemantapanJalan.map(d => parseFloat(d.kemantapan_jalan))))}%
+                  {formatPercentage(Math.max(...sortedData.map(d => parseFloat(d?.kemantapan_jalan || 0))))}%
                 </Text>
               </View>
               <View style={styles.statItem}>
                 <Icon name="trending-down" size={20} color="#e53935" />
                 <Text style={styles.statLabel}>Terendah</Text>
                 <Text style={[styles.statValue, { color: '#e53935' }]}>
-                  {formatPercentage(Math.min(...dataPersentaseTingkatKemantapanJalan.map(d => parseFloat(d.kemantapan_jalan))))}%
+                  {formatPercentage(Math.min(...sortedData.map(d => parseFloat(d?.kemantapan_jalan || 0))))}%
                 </Text>
               </View>
               <View style={styles.statItem}>
                 <Icon name="calculator" size={20} color="#1e88e5" />
                 <Text style={styles.statLabel}>Rata-rata</Text>
                 <Text style={[styles.statValue, { color: '#1e88e5' }]}>
-                  {formatPercentage((dataPersentaseTingkatKemantapanJalan.reduce((sum, d) => sum + parseFloat(d.kemantapan_jalan), 0) / dataPersentaseTingkatKemantapanJalan.length))}%
+                  {formatPercentage((sortedData.reduce((sum, d) => sum + (parseFloat(d?.kemantapan_jalan || 0)), 0) / sortedData.length))}%
                 </Text>
               </View>
             </View>

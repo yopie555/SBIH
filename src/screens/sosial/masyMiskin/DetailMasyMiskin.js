@@ -40,6 +40,10 @@ const AnimatedCard = ({ children, delay = 0 }) => {
 const DetailMasyMiskin = (props) => {
   const {dataPenduduk} = stateDataPenduduk()
 
+  const sortedData = dataPenduduk?.slice().sort((a, b) => {
+    return parseInt(b.tahun) - parseInt(a.tahun);
+  }) || [];
+
   const getStatusColor = (status) => {
     if (status.toLowerCase().includes('tetap')) return '#43a047';
     if (status.toLowerCase().includes('sementara')) return '#fb8c00';
@@ -75,10 +79,10 @@ const DetailMasyMiskin = (props) => {
       >
         <View style={styles.summaryCard}>
           <Text style={styles.summaryTitle}>Total Data Tersedia</Text>
-          <Text style={styles.summaryValue}>{dataPenduduk?.length || 0} Tahun</Text>
+          <Text style={styles.summaryValue}>{sortedData?.length || 0} Tahun</Text>
         </View>
 
-        {dataPenduduk?.map((item, index) => {
+        {sortedData?.map((item, index) => {
           const category = getKemiskinanCategory(item.presentase);
           return (
             <AnimatedCard key={index} delay={index * 50}>

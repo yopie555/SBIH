@@ -40,7 +40,16 @@ const AnimatedCard = ({ children, delay = 0 }) => {
 const DetailPJDD = (props) => {
   const { dataPanjangJalanDibangun } = stateDataPanjangJalanDibangun()
 
+  // Sort data dari tahun terbaru ke terlama
+  const sortedData = dataPanjangJalanDibangun
+    ?.sort((a, b) => {
+      const yearA = parseInt(a.tahun) || 0;
+      const yearB = parseInt(b.tahun) || 0;
+      return yearB - yearA; // Descending order (terbaru ke terlama)
+    }) || [];
+
   const getStatusColor = (status) => {
+    if (!status) return '#666';
     if (status.toLowerCase().includes('tetap')) return '#43a047';
     if (status.toLowerCase().includes('sementara')) return '#fb8c00';
     if (status.toLowerCase().includes('estimasi')) return '#1e88e5';
@@ -48,7 +57,7 @@ const DetailPJDD = (props) => {
   };
 
   const getRoadCategory = (panjang) => {
-    const value = parseFloat(panjang);
+    const value = parseFloat(panjang) || 0;
     if (value >= 10) return { label: 'Sangat Tinggi', color: '#43a047', icon: 'trending-up' };
     if (value >= 5 && value < 10) return { label: 'Tinggi', color: '#1e88e5', icon: 'arrow-up' };
     if (value >= 2 && value < 5) return { label: 'Sedang', color: '#fb8c00', icon: 'remove' };
@@ -56,6 +65,7 @@ const DetailPJDD = (props) => {
   };
 
   const formatNumber = (num) => {
+    if (!num) return '0';
     const numValue = parseFloat(num);
     if (Number.isInteger(numValue)) {
       return numValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -64,7 +74,7 @@ const DetailPJDD = (props) => {
   };
 
   // Hitung total panjang jalan
-  const totalPanjang = dataPanjangJalanDibangun.reduce((sum, item) => sum + parseFloat(item.panjang), 0);
+  const totalPanjang = sortedData.reduce((sum, item) => sum + (parseFloat(item?.panjang) || 0), 0);
 
   return (
     <View style={styles.container}>
@@ -92,24 +102,24 @@ const DetailPJDD = (props) => {
           </View>
           <Text style={styles.summaryValue}>{formatNumber(totalPanjang)} Km</Text>
           <Text style={styles.summarySubtitle}>
-            Periode {dataPanjangJalanDibangun?.length || 0} Tahun
+            Periode {sortedData.length} Tahun
           </Text>
         </View>
 
-        {dataPanjangJalanDibangun?.map((item, index) => {
-          const category = getRoadCategory(item.panjang);
+        {sortedData.map((item, index) => {
+          const category = getRoadCategory(item?.panjang);
           return (
-            <AnimatedCard key={index} delay={index * 50}>
+            <AnimatedCard key={`${item.tahun}-${index}`} delay={index * 50}>
               <View style={styles.dataCard}>
                 <View style={styles.cardHeader}>
                   <View style={styles.yearBadge}>
                     <Icon name="calendar" size={18} color="#00acc1" />
-                    <Text style={styles.yearText}>{item.tahun}</Text>
+                    <Text style={styles.yearText}>{item?.tahun || '-'}</Text>
                   </View>
-                  <View style={[styles.statusBadge, { backgroundColor: getStatusColor(item.status_data) + '20' }]}>
-                    <View style={[styles.statusDot, { backgroundColor: getStatusColor(item.status_data) }]} />
-                    <Text style={[styles.statusText, { color: getStatusColor(item.status_data) }]}>
-                      {item.status_data}
+                  <View style={[styles.statusBadge, { backgroundColor: getStatusColor(item?.status_data) + '20' }]}>
+                    <View style={[styles.statusDot, { backgroundColor: getStatusColor(item?.status_data) }]} />
+                    <Text style={[styles.statusText, { color: getStatusColor(item?.status_data) }]}>
+                      {item?.status_data || 'N/A'}
                     </Text>
                   </View>
                 </View>
@@ -119,7 +129,7 @@ const DetailPJDD = (props) => {
                     <Icon name={category.icon} size={32} color={category.color} />
                     <View style={styles.roadContent}>
                       <Text style={[styles.roadValue, { color: category.color }]}>
-                        {formatNumber(item.panjang)}
+                        {formatNumber(item?.panjang)}
                       </Text>
                       <Text style={styles.roadLabel}>Kilometer</Text>
                     </View>
@@ -135,11 +145,11 @@ const DetailPJDD = (props) => {
                   <View style={styles.interpretationBox}>
                     <Icon name="information-circle" size={18} color="#00acc1" />
                     <Text style={styles.interpretationText}>
-                      {parseFloat(item.panjang) >= 10
+                      {parseFloat(item?.panjang || 0) >= 10
                         ? 'Pembangunan jalan sangat tinggi, infrastruktur berkembang pesat'
-                        : parseFloat(item.panjang) >= 5
+                        : parseFloat(item?.panjang || 0) >= 5
                         ? 'Pembangunan jalan tinggi, perkembangan infrastruktur baik'
-                        : parseFloat(item.panjang) >= 2
+                        : parseFloat(item?.panjang || 0) >= 2
                         ? 'Pembangunan jalan sedang, peningkatan infrastruktur moderat'
                         : 'Pembangunan jalan rendah, perlu percepatan pembangunan'}
                     </Text>
@@ -155,7 +165,7 @@ const DetailPJDD = (props) => {
           )
         })}
 
-        {(!dataPanjangJalanDibangun || dataPanjangJalanDibangun?.length === 0) && (
+        {sortedData.length === 0 && (
           <View style={styles.emptyState}>
             <Icon name="git-network-outline" size={80} color="#ccc" />
             <Text style={styles.emptyText}>Belum ada data tersedia</Text>
@@ -163,7 +173,7 @@ const DetailPJDD = (props) => {
         )}
 
         {/* Statistics Card */}
-        {dataPanjangJalanDibangun?.length > 0 && (
+        {sortedData.length > 0 && (
           <View style={styles.statsCard}>
             <View style={styles.statsHeader}>
               <Icon name="analytics" size={24} color="#00acc1" />
@@ -174,21 +184,21 @@ const DetailPJDD = (props) => {
                 <Icon name="trending-up" size={20} color="#43a047" />
                 <Text style={styles.statLabel}>Tertinggi</Text>
                 <Text style={[styles.statValue, { color: '#43a047' }]}>
-                  {formatNumber(Math.max(...dataPanjangJalanDibangun.map(d => parseFloat(d.panjang))))} Km
+                  {formatNumber(Math.max(...sortedData.map(d => parseFloat(d?.panjang || 0))))} Km
                 </Text>
               </View>
               <View style={styles.statItem}>
                 <Icon name="trending-down" size={20} color="#e53935" />
                 <Text style={styles.statLabel}>Terendah</Text>
                 <Text style={[styles.statValue, { color: '#e53935' }]}>
-                  {formatNumber(Math.min(...dataPanjangJalanDibangun.map(d => parseFloat(d.panjang))))} Km
+                  {formatNumber(Math.min(...sortedData.map(d => parseFloat(d?.panjang || 0))))} Km
                 </Text>
               </View>
               <View style={styles.statItem}>
                 <Icon name="calculator" size={20} color="#1e88e5" />
                 <Text style={styles.statLabel}>Rata-rata</Text>
                 <Text style={[styles.statValue, { color: '#1e88e5' }]}>
-                  {formatNumber((dataPanjangJalanDibangun.reduce((sum, d) => sum + parseFloat(d.panjang), 0) / dataPanjangJalanDibangun.length))} Km
+                  {formatNumber((sortedData.reduce((sum, d) => sum + (parseFloat(d?.panjang || 0)), 0) / sortedData.length))} Km
                 </Text>
               </View>
             </View>

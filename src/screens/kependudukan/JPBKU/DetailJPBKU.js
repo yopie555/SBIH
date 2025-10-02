@@ -39,7 +39,17 @@ const AnimatedCard = ({ children, delay = 0 }) => {
 
 const DetailPP = (props) => {
   const { dataJumlahPendudukBerdasarkanKelompokUmur } = stateDataJumlahPendudukBerdasarkanKelompokUmur()
-  const [dataFiltered, setDataFiltered] = React.useState(dataJumlahPendudukBerdasarkanKelompokUmur.filter(item => item.kelompok_umur == 1))
+  
+  // Sort data dari tahun terbaru ke terlama untuk filter awal
+  const initialFilteredData = dataJumlahPendudukBerdasarkanKelompokUmur
+    ?.filter(item => item.kelompok_umur == 1)
+    ?.sort((a, b) => {
+      const yearA = parseInt(a.tahun) || 0;
+      const yearB = parseInt(b.tahun) || 0;
+      return yearB - yearA;
+    }) || [];
+
+  const [dataFiltered, setDataFiltered] = React.useState(initialFilteredData)
   const [title, setTitle] = React.useState("0-4 Tahun")
   const [selectedGroup, setSelectedGroup] = React.useState(1)
   const [modalVisible, setModalVisible] = React.useState(false)
@@ -64,13 +74,23 @@ const DetailPP = (props) => {
   ]
 
   const handleSelectGroup = (group) => {
-    setDataFiltered(dataJumlahPendudukBerdasarkanKelompokUmur.filter(item => item.kelompok_umur == group.id))
+    // Filter dan sort data
+    const filtered = dataJumlahPendudukBerdasarkanKelompokUmur
+      ?.filter(item => item.kelompok_umur == group.id)
+      ?.sort((a, b) => {
+        const yearA = parseInt(a.tahun) || 0;
+        const yearB = parseInt(b.tahun) || 0;
+        return yearB - yearA; // Descending order (terbaru ke terlama)
+      }) || [];
+    
+    setDataFiltered(filtered)
     setTitle(group.label)
     setSelectedGroup(group.id)
     setModalVisible(false)
   }
 
   const getStatusColor = (status) => {
+    if (!status) return '#666';
     if (status.toLowerCase().includes('tetap')) return '#43a047';
     if (status.toLowerCase().includes('sementara')) return '#fb8c00';
     if (status.toLowerCase().includes('estimasi')) return '#1e88e5';
@@ -85,6 +105,7 @@ const DetailPP = (props) => {
   };
 
   const formatNumber = (num) => {
+    if (!num) return '0';
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
@@ -175,27 +196,27 @@ const DetailPP = (props) => {
             <Icon name="bar-chart" size={24} color="#fff" />
             <Text style={styles.summaryTitle}>Total Data</Text>
           </View>
-          <Text style={styles.summaryValue}>{dataFiltered?.length || 0} Tahun</Text>
-          {dataFiltered?.length > 0 && (
+          <Text style={styles.summaryValue}>{dataFiltered.length} Tahun</Text>
+          {dataFiltered.length > 0 && (
             <Text style={styles.summarySubtitle}>
               Kelompok Umur: {title}
             </Text>
           )}
         </View>
 
-        {dataFiltered?.map((item, index) => {
+        {dataFiltered.map((item, index) => {
           return (
-            <AnimatedCard key={index} delay={index * 50}>
+            <AnimatedCard key={`${item.tahun}-${index}`} delay={index * 50}>
               <View style={styles.dataCard}>
                 <View style={styles.cardHeader}>
                   <View style={styles.yearBadge}>
                     <Icon name="calendar" size={18} color="#00acc1" />
-                    <Text style={styles.yearText}>{item.tahun}</Text>
+                    <Text style={styles.yearText}>{item?.tahun || '-'}</Text>
                   </View>
-                  <View style={[styles.statusBadge, { backgroundColor: getStatusColor(item.status_data) + '20' }]}>
-                    <View style={[styles.statusDot, { backgroundColor: getStatusColor(item.status_data) }]} />
-                    <Text style={[styles.statusText, { color: getStatusColor(item.status_data) }]}>
-                      {item.status_data}
+                  <View style={[styles.statusBadge, { backgroundColor: getStatusColor(item?.status_data) + '20' }]}>
+                    <View style={[styles.statusDot, { backgroundColor: getStatusColor(item?.status_data) }]} />
+                    <Text style={[styles.statusText, { color: getStatusColor(item?.status_data) }]}>
+                      {item?.status_data || 'N/A'}
                     </Text>
                   </View>
                 </View>
@@ -205,7 +226,7 @@ const DetailPP = (props) => {
                     <Icon name="people" size={32} color="#00acc1" />
                     <View style={styles.populationContent}>
                       <Text style={styles.populationValue}>
-                        {formatNumber(item.jumlah)}
+                        {formatNumber(item?.jumlah)}
                       </Text>
                       <Text style={styles.populationLabel}>Jiwa</Text>
                     </View>
@@ -214,7 +235,7 @@ const DetailPP = (props) => {
                   <View style={styles.infoBox}>
                     <Icon name="information-circle" size={18} color="#00acc1" />
                     <Text style={styles.infoBoxText}>
-                      Jumlah penduduk kelompok umur {title} pada tahun {item.tahun}
+                      Jumlah penduduk kelompok umur {title} pada tahun {item?.tahun || '-'}
                     </Text>
                   </View>
                 </View>
@@ -228,7 +249,7 @@ const DetailPP = (props) => {
           )
         })}
 
-        {(!dataFiltered || dataFiltered?.length === 0) && (
+        {dataFiltered.length === 0 && (
           <View style={styles.emptyState}>
             <Icon name="people-outline" size={80} color="#ccc" />
             <Text style={styles.emptyText}>Belum ada data untuk kelompok umur ini</Text>
@@ -245,7 +266,7 @@ const DetailPP = (props) => {
             <Text style={styles.infoText}>
               Data penduduk berdasarkan kelompok umur menunjukkan distribusi demografi 
               yang penting untuk perencanaan layanan pendidikan, kesehatan, dan sosial 
-              sesuai dengan kebutuhan setiap kelompok usia.
+              sesuai dengan kebutuhan setiap kelompok usia. Data diurutkan dari tahun terbaru.
             </Text>
           </View>
         </View>

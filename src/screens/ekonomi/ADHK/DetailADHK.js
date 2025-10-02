@@ -48,9 +48,17 @@ const DetailADHK = (props) => {
   const [selectedCategoryId, setSelectedCategoryId] = useState(1);  
   const { dataAtasDasarHargaKonstan } = stateDataAtasDasarHargaKonstan();  
   
-  const dataRender = dataAtasDasarHargaKonstan?.filter(item => item.id === selectedCategoryId);
+  // Filter dan sort data dari tahun terbaru ke terlama
+  const dataRender = dataAtasDasarHargaKonstan
+    ?.filter(item => item.id === selectedCategoryId)
+    ?.sort((a, b) => {
+      const yearA = parseInt(a.tahun) || 0;
+      const yearB = parseInt(b.tahun) || 0;
+      return yearB - yearA; // Descending order (terbaru ke terlama)
+    }) || [];
 
   const getStatusColor = (status) => {
+    if (!status) return '#666';
     if (status.toLowerCase().includes('tetap')) return '#43a047';
     if (status.toLowerCase().includes('sementara')) return '#fb8c00';
     return '#666';
@@ -91,22 +99,22 @@ const DetailADHK = (props) => {
       >  
         <View style={styles.summaryCard}>
           <Text style={styles.summaryTitle}>Total Data Tersedia</Text>
-          <Text style={styles.summaryValue}>{dataRender?.length || 0} Tahun</Text>
+          <Text style={styles.summaryValue}>{dataRender.length} Tahun</Text>
         </View>
 
-        {dataRender && dataRender.length > 0 ? (  
+        {dataRender.length > 0 ? (  
           dataRender.map((item, index) => (  
-            <AnimatedCard key={index} delay={index * 50}>
+            <AnimatedCard key={`${item.tahun}-${index}`} delay={index * 50}>
               <View style={styles.dataCard}>
                 <View style={styles.cardHeader}>
                   <View style={styles.yearBadge}>
                     <Icon name="calendar" size={18} color="#0288d1" />
-                    <Text style={styles.yearText}>{item?.tahun}</Text>
+                    <Text style={styles.yearText}>{item?.tahun || '-'}</Text>
                   </View>
                   <View style={[styles.statusBadge, { backgroundColor: getStatusColor(item?.status_data) + '20' }]}>
                     <View style={[styles.statusDot, { backgroundColor: getStatusColor(item?.status_data) }]} />
                     <Text style={[styles.statusText, { color: getStatusColor(item?.status_data) }]}>
-                      {item?.status_data}
+                      {item?.status_data || 'N/A'}
                     </Text>
                   </View>
                 </View>
@@ -115,7 +123,7 @@ const DetailADHK = (props) => {
                   {/* Uraian */}
                   <View style={styles.uraianBox}>
                     <Icon name="document-text" size={18} color="#0288d1" />
-                    <Text style={styles.uraianText}>{item?.uraian}</Text>
+                    <Text style={styles.uraianText}>{item?.uraian || '-'}</Text>
                   </View>
 
                   {/* Jumlah */}

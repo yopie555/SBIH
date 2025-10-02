@@ -40,7 +40,16 @@ const AnimatedCard = ({ children, delay = 0 }) => {
 const DetailPP = (props) => {
   const { dataJumlahPendudukBerdasarkanKecamatan } = stateDataJumlahPendudukBerdasarkanKecamatan()
 
+  // Sort data dari total penduduk tertinggi ke terendah
+  const sortedData = dataJumlahPendudukBerdasarkanKecamatan
+    ?.sort((a, b) => {
+      const totalA = (parseInt(a.laki) || 0) + (parseInt(a.perempuan) || 0);
+      const totalB = (parseInt(b.laki) || 0) + (parseInt(b.perempuan) || 0);
+      return totalB - totalA; // Descending order (tertinggi ke terendah)
+    }) || [];
+
   const getStatusColor = (status) => {
+    if (!status) return '#666';
     if (status.toLowerCase().includes('tetap')) return '#43a047';
     if (status.toLowerCase().includes('sementara')) return '#fb8c00';
     if (status.toLowerCase().includes('estimasi')) return '#1e88e5';
@@ -48,7 +57,7 @@ const DetailPP = (props) => {
   };
 
   const getPopulationCategory = (total) => {
-    const value = parseInt(total);
+    const value = parseInt(total) || 0;
     if (value >= 15000) return { label: 'Sangat Padat', color: '#e53935', icon: 'people' };
     if (value >= 10000 && value < 15000) return { label: 'Padat', color: '#fb8c00', icon: 'people-circle' };
     if (value >= 5000 && value < 10000) return { label: 'Sedang', color: '#1e88e5', icon: 'person' };
@@ -56,17 +65,21 @@ const DetailPP = (props) => {
   };
 
   const formatNumber = (num) => {
+    if (!num) return '0';
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
   const calculateGenderRatio = (laki, perempuan) => {
-    const ratio = (parseInt(laki) / parseInt(perempuan) * 100).toFixed(1);
+    const lakiNum = parseInt(laki) || 0;
+    const perempuanNum = parseInt(perempuan) || 0;
+    if (perempuanNum === 0) return '0.0';
+    const ratio = (lakiNum / perempuanNum * 100).toFixed(1);
     return ratio;
   };
 
   // Hitung total keseluruhan
-  const totalLaki = dataJumlahPendudukBerdasarkanKecamatan.reduce((sum, item) => sum + parseInt(item.laki), 0);
-  const totalPerempuan = dataJumlahPendudukBerdasarkanKecamatan.reduce((sum, item) => sum + parseInt(item.perempuan), 0);
+  const totalLaki = sortedData.reduce((sum, item) => sum + (parseInt(item?.laki) || 0), 0);
+  const totalPerempuan = sortedData.reduce((sum, item) => sum + (parseInt(item?.perempuan) || 0), 0);
   const totalPenduduk = totalLaki + totalPerempuan;
 
   return (
@@ -105,28 +118,28 @@ const DetailPP = (props) => {
               <Text style={styles.summaryItemText}>{formatNumber(totalPerempuan)} Perempuan</Text>
             </View>
           </View>
-          <Text style={styles.summarySubtitle}>{dataJumlahPendudukBerdasarkanKecamatan?.length || 0} Kecamatan</Text>
+          <Text style={styles.summarySubtitle}>{sortedData.length} Kecamatan</Text>
         </View>
 
-        {dataJumlahPendudukBerdasarkanKecamatan?.map((item, index) => {
-          const total = parseInt(item.laki) + parseInt(item.perempuan);
+        {sortedData.map((item, index) => {
+          const total = (parseInt(item?.laki) || 0) + (parseInt(item?.perempuan) || 0);
           const category = getPopulationCategory(total);
-          const genderRatio = calculateGenderRatio(item.laki, item.perempuan);
-          const percentageMale = ((parseInt(item.laki) / total) * 100).toFixed(1);
-          const percentageFemale = ((parseInt(item.perempuan) / total) * 100).toFixed(1);
+          const genderRatio = calculateGenderRatio(item?.laki, item?.perempuan);
+          const percentageMale = total > 0 ? (((parseInt(item?.laki) || 0) / total) * 100).toFixed(1) : '0.0';
+          const percentageFemale = total > 0 ? (((parseInt(item?.perempuan) || 0) / total) * 100).toFixed(1) : '0.0';
 
           return (
-            <AnimatedCard key={index} delay={index * 50}>
+            <AnimatedCard key={`${item.kecamatan}-${index}`} delay={index * 50}>
               <View style={styles.dataCard}>
                 <View style={styles.cardHeader}>
                   <View style={styles.districtBadge}>
                     <Icon name="location" size={18} color="#00acc1" />
-                    <Text style={styles.districtText}>{item.kecamatan}</Text>
+                    <Text style={styles.districtText}>{item?.kecamatan || 'N/A'}</Text>
                   </View>
-                  <View style={[styles.statusBadge, { backgroundColor: getStatusColor(item.status_data) + '20' }]}>
-                    <View style={[styles.statusDot, { backgroundColor: getStatusColor(item.status_data) }]} />
-                    <Text style={[styles.statusText, { color: getStatusColor(item.status_data) }]}>
-                      {item.status_data}
+                  <View style={[styles.statusBadge, { backgroundColor: getStatusColor(item?.status_data) + '20' }]}>
+                    <View style={[styles.statusDot, { backgroundColor: getStatusColor(item?.status_data) }]} />
+                    <Text style={[styles.statusText, { color: getStatusColor(item?.status_data) }]}>
+                      {item?.status_data || 'N/A'}
                     </Text>
                   </View>
                 </View>
@@ -154,7 +167,7 @@ const DetailPP = (props) => {
                     <View style={styles.genderItem}>
                       <Icon name="male" size={20} color="#1e88e5" />
                       <View style={styles.genderContent}>
-                        <Text style={styles.genderValue}>{formatNumber(item.laki)}</Text>
+                        <Text style={styles.genderValue}>{formatNumber(item?.laki)}</Text>
                         <Text style={styles.genderLabel}>Laki-laki ({percentageMale}%)</Text>
                       </View>
                     </View>
@@ -162,7 +175,7 @@ const DetailPP = (props) => {
                     <View style={styles.genderItem}>
                       <Icon name="female" size={20} color="#e91e63" />
                       <View style={styles.genderContent}>
-                        <Text style={styles.genderValue}>{formatNumber(item.perempuan)}</Text>
+                        <Text style={styles.genderValue}>{formatNumber(item?.perempuan)}</Text>
                         <Text style={styles.genderLabel}>Perempuan ({percentageFemale}%)</Text>
                       </View>
                     </View>
@@ -186,7 +199,7 @@ const DetailPP = (props) => {
           )
         })}
 
-        {(!dataJumlahPendudukBerdasarkanKecamatan || dataJumlahPendudukBerdasarkanKecamatan?.length === 0) && (
+        {sortedData.length === 0 && (
           <View style={styles.emptyState}>
             <Icon name="map-outline" size={80} color="#ccc" />
             <Text style={styles.emptyText}>Belum ada data tersedia</Text>
@@ -203,7 +216,8 @@ const DetailPP = (props) => {
             <Text style={styles.infoText}>
               Data penduduk berdasarkan kecamatan menunjukkan distribusi populasi di setiap 
               wilayah kecamatan, termasuk komposisi jenis kelamin. Informasi ini penting untuk 
-              perencanaan pembangunan dan pemerataan layanan publik.
+              perencanaan pembangunan dan pemerataan layanan publik. Data diurutkan dari 
+              kecamatan dengan jumlah penduduk terbanyak.
             </Text>
           </View>
         </View>

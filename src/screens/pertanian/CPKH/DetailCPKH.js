@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, ScrollView, Animated } from 'react-native'
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useMemo } from 'react'
 import { stateDataCapaianProduksiKomoditiHortikultura } from '../../../state/dataCPKH'
 import { color } from '../../../constants/Helper'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -40,6 +40,17 @@ const AnimatedCard = ({ children, delay = 0 }) => {
 const DetailCPKH = (props) => {
   const {dataCapaianProduksiKomoditiHortikultura} = stateDataCapaianProduksiKomoditiHortikultura()
 
+  // Sort data by year (newest to oldest)
+  const sortedData = useMemo(() => {
+    if (!dataCapaianProduksiKomoditiHortikultura) return [];
+    
+    return [...dataCapaianProduksiKomoditiHortikultura].sort((a, b) => {
+      const yearA = parseInt(a.tahun);
+      const yearB = parseInt(b.tahun);
+      return yearB - yearA; // Descending order (newest first)
+    });
+  }, [dataCapaianProduksiKomoditiHortikultura]);
+
   const getStatusColor = (status) => {
     if (status.toLowerCase().includes('tetap')) return '#43a047';
     if (status.toLowerCase().includes('sementara')) return '#fb8c00';
@@ -79,10 +90,10 @@ const DetailCPKH = (props) => {
       >
         <View style={styles.summaryCard}>
           <Text style={styles.summaryTitle}>Total Data Tersedia</Text>
-          <Text style={styles.summaryValue}>{dataCapaianProduksiKomoditiHortikultura?.length || 0} Tahun</Text>
+          <Text style={styles.summaryValue}>{sortedData?.length || 0} Tahun</Text>
         </View>
 
-        {dataCapaianProduksiKomoditiHortikultura?.map((item, index) => {
+        {sortedData?.map((item, index) => {
           const category = getCPKHCategory(item.jumlah);
           return (
             <AnimatedCard key={index} delay={index * 50}>
@@ -140,7 +151,7 @@ const DetailCPKH = (props) => {
           )
         })}
 
-        {dataCapaianProduksiKomoditiHortikultura?.length === 0 && (
+        {sortedData?.length === 0 && (
           <View style={styles.emptyState}>
             <Icon name="nutrition-outline" size={80} color="#ccc" />
             <Text style={styles.emptyText}>Belum ada data tersedia</Text>

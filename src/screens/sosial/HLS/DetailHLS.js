@@ -54,6 +54,9 @@ const DetailHLS = (props) => {
     return { label: 'Rendah', color: '#e53935', icon: 'alert-circle' };
   };
 
+  // Sort data by year in descending order (current year to past years)
+  const sortedData = [...(dataAngkaHarapanLamaSekolah || [])].sort((a, b) => b.tahun - a.tahun);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -75,10 +78,10 @@ const DetailHLS = (props) => {
       >
         <View style={styles.summaryCard}>
           <Text style={styles.summaryTitle}>Total Data Tersedia</Text>
-          <Text style={styles.summaryValue}>{dataAngkaHarapanLamaSekolah?.length || 0} Tahun</Text>
+          <Text style={styles.summaryValue}>{sortedData.length || 0} Tahun</Text>
         </View>
 
-        {dataAngkaHarapanLamaSekolah?.map((item, index) => {
+        {sortedData.map((item, index) => {
           const category = getHLSCategory(item.hls);
           return (
             <AnimatedCard key={index} delay={index * 50}>
@@ -132,7 +135,7 @@ const DetailHLS = (props) => {
           )
         })}
 
-        {dataAngkaHarapanLamaSekolah?.length === 0 && (
+        {sortedData.length === 0 && (
           <View style={styles.emptyState}>
             <Icon name="time-outline" size={80} color="#ccc" />
             <Text style={styles.emptyText}>Belum ada data tersedia</Text>

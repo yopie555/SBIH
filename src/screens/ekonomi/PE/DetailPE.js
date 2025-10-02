@@ -40,6 +40,11 @@ const AnimatedCard = ({ children, delay = 0 }) => {
 const DetailPE = (props) => {
   const {dataPertumbuhanEkonomi} = stateDataPertumbuhanEkonomi()
 
+  // Urutkan data berdasarkan tahun dari yang terbaru ke terdahulu
+  const sortedData = dataPertumbuhanEkonomi?.slice().sort((a, b) => {
+    return parseInt(b.tahun) - parseInt(a.tahun);
+  }) || [];
+
   const getStatusColor = (status) => {
     if (status.toLowerCase().includes('tetap')) return '#43a047';
     if (status.toLowerCase().includes('sementara')) return '#fb8c00';
@@ -75,10 +80,10 @@ const DetailPE = (props) => {
       >
         <View style={styles.summaryCard}>
           <Text style={styles.summaryTitle}>Total Data Tersedia</Text>
-          <Text style={styles.summaryValue}>{dataPertumbuhanEkonomi?.length || 0} Tahun</Text>
+          <Text style={styles.summaryValue}>{sortedData.length} Tahun</Text>
         </View>
 
-        {dataPertumbuhanEkonomi?.map((item, index) => {
+        {sortedData.map((item, index) => {
           const percentageValue = parseFloat(item.pertumbuhan_ekonomi);
           return (
             <AnimatedCard key={index} delay={index * 50}>
@@ -125,7 +130,7 @@ const DetailPE = (props) => {
           )
         })}
 
-        {dataPertumbuhanEkonomi?.length === 0 && (
+        {sortedData.length === 0 && (
           <View style={styles.emptyState}>
             <Icon name="bar-chart-outline" size={80} color="#ccc" />
             <Text style={styles.emptyText}>Belum ada data tersedia</Text>
