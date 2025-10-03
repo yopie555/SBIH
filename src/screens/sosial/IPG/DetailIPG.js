@@ -54,6 +54,10 @@ const DetailIPG = (props) => {
     return { label: 'Rendah', color: '#e53935', icon: 'alert-circle' };
   };
 
+  const sortedData = [...(dataIndeksPembangunanGender || [])].sort((a, b) => {
+    return parseInt(b.tahun) - parseInt(a.tahun);
+  });
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -78,7 +82,7 @@ const DetailIPG = (props) => {
           <Text style={styles.summaryValue}>{dataIndeksPembangunanGender?.length || 0} Tahun</Text>
         </View>
 
-        {dataIndeksPembangunanGender?.map((item, index) => {
+        {sortedData.map((item, index) => {
           const category = getIPGCategory(item.total);
           return (
             <AnimatedCard key={index} delay={index * 50}>

@@ -46,6 +46,10 @@ const DetailPPU = (props) => {
     return '#666';
   };
 
+  const sortedData = [...(dataPersentasePendudukUsia || [])].sort((a, b) => {
+    return parseInt(b.tahun) - parseInt(a.tahun);
+  });
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -70,7 +74,7 @@ const DetailPPU = (props) => {
           <Text style={styles.summaryValue}>{dataPersentasePendudukUsia?.length || 0} Kategori</Text>
         </View>
 
-        {dataPersentasePendudukUsia?.map((item, index) => {
+        {sortedData.map((item, index) => {
           const gapGender = Math.abs(parseFloat(item.laki) - parseFloat(item.perempuan)).toFixed(2);
           
           return (

@@ -58,6 +58,10 @@ const DetailJRTLH = (props) => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
+  const sortedData = [...(dataJumlahRumahTidakLayakHuni || [])].sort((a, b) => {
+    return parseInt(b.tahun) - parseInt(a.tahun);
+  });
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -82,7 +86,7 @@ const DetailJRTLH = (props) => {
           <Text style={styles.summaryValue}>{dataJumlahRumahTidakLayakHuni?.length || 0} Tahun</Text>
         </View>
 
-        {dataJumlahRumahTidakLayakHuni?.map((item, index) => {
+        {sortedData.map((item, index) => {
           const category = getJRTLHCategory(item.jumlah_unit);
           return (
             <AnimatedCard key={index} delay={index * 50}>

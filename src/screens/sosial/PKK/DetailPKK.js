@@ -58,6 +58,10 @@ const DetailPKK = (props) => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
+  const sortedData = [...(dataPerkembanganKondisiKetenagakerjaan || [])].sort((a, b) => {
+    return parseInt(b.tahun) - parseInt(a.tahun);
+  });
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -82,7 +86,7 @@ const DetailPKK = (props) => {
           <Text style={styles.summaryValue}>{dataPerkembanganKondisiKetenagakerjaan?.length || 0} Tahun</Text>
         </View>
 
-        {dataPerkembanganKondisiKetenagakerjaan?.map((item, index) => {
+        {sortedData.map((item, index) => {
           const category = getPengangguranCategory(item.tingkat_pengangguran);
           return (
             <AnimatedCard key={index} delay={index * 50}>

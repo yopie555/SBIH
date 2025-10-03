@@ -67,6 +67,10 @@ const DetailRLS = (props) => {
     return { label: 'Rendah', color: '#e53935', icon: 'alert-circle' };
   };
 
+  const sortedData = [...(dataLamaSekolah || [])].sort((a, b) => {
+    return parseInt(b.tahun) - parseInt(a.tahun);
+  });
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -91,7 +95,7 @@ const DetailRLS = (props) => {
           <Text style={styles.summaryValue}>{dataLamaSekolah?.length || 0} Tahun</Text>
         </View>
 
-        {dataLamaSekolah?.map((item, index) => {
+        {sortedData.map((item, index) => {
           const category = getRLSCategory(item.rls);
           return (
             <AnimatedCard key={index} delay={index * 50}>

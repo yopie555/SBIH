@@ -58,6 +58,10 @@ const DetailIDB = (props) => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
+  const sortedData = [...(dataIndeksDayaBeli || [])].sort((a, b) => {
+    return parseInt(b.tahun) - parseInt(a.tahun);
+  });
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -82,7 +86,7 @@ const DetailIDB = (props) => {
           <Text style={styles.summaryValue}>{dataIndeksDayaBeli?.length || 0} Tahun</Text>
         </View>
 
-        {dataIndeksDayaBeli?.map((item, index) => {
+        {sortedData.map((item, index) => {
           const category = getIDBCategory(item.daya_beli);
           return (
             <AnimatedCard key={index} delay={index * 50}>

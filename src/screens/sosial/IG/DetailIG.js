@@ -54,6 +54,10 @@ const DetailIG = (props) => {
     return { label: 'Sangat Tinggi', color: '#e53935', icon: 'alert-circle' };
   };
 
+  const sortedData = [...(dataIndeksGini || [])].sort((a, b) => {
+    return parseInt(b.tahun) - parseInt(a.tahun);
+  });
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -78,7 +82,7 @@ const DetailIG = (props) => {
           <Text style={styles.summaryValue}>{dataIndeksGini?.length || 0} Tahun</Text>
         </View>
 
-        {dataIndeksGini?.map((item, index) => {
+        {sortedData.map((item, index) => {
           const category = getGiniCategory(item.gini_ratio);
           return (
             <AnimatedCard key={index} delay={index * 50}>
