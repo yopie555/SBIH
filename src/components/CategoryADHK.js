@@ -58,6 +58,15 @@ const CategoryADHK = ({ onCategorySelect }) => {
     fetchData();
   }, [id]);
 
+  // Call onCategorySelect on initial mount to notify parent component
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      onCategorySelect(id);
+    }, 100); // Small delay to ensure component is fully mounted
+
+    return () => clearTimeout(timeoutId);
+  }, []); // Empty dependency array means this runs once on mount
+
   return (
     <View>  
       {isLoading && (

@@ -67,10 +67,30 @@ const DetailADHB = (props) => {
 
   const formatRupiah = (angka) => {
     if (!angka) return '-';
-    const formatted = angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    return `Rp ${formatted}`;
+
+    // Konversi ke string dan hapus karakter non-digit kecuali koma untuk desimal
+    const numStr = angka.toString().replace(/[^\d,]/g, '');
+
+    // Ganti koma dengan titik untuk parsing
+    const cleanStr = numStr.replace(',', '.');
+
+    if (cleanStr === '') return 'Rp 0';
+
+    // Konversi ke number
+    const num = parseFloat(cleanStr) || 0;
+
+    // Format dengan titik sebagai pemisah ribuan
+    const formatted = num.toLocaleString('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    });
+
+    return formatted;
   };
 
+  
   return (
     <View style={styles.container}>
       <View style={styles.header}>

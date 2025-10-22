@@ -16,13 +16,13 @@ const GrafikADHB = (props) => {
     const [selectedCategoryId, setSelectedCategoryId] = useState(1);  
     const dataAtasDasarHargaBerlaku = stateDataAtasDasarHargaBerlaku();  
     
-    // Filter data berdasarkan kategori yang dipilih
-    const processGraphData = () => {  
-        const filteredData = dataAtasDasarHargaBerlaku?.dataAtasDasarHargaBerlaku  
+    // Hitung data grafik berdasarkan kategori yang dipilih
+    const graphData = (() => {
+        const filteredData = dataAtasDasarHargaBerlaku?.dataAtasDasarHargaBerlaku
             ?.filter(item => item.id === selectedCategoryId)
             .sort((a, b) => parseInt(a.tahun) - parseInt(b.tahun));
 
-        if (!filteredData || filteredData.length === 0) {  
+        if (!filteredData || filteredData.length === 0) {
             return null;
         }
 
@@ -46,9 +46,7 @@ const GrafikADHB = (props) => {
                 data: values
             }]
         };
-    };
-
-    const graphData = processGraphData();
+    })();
 
     const formatRupiah = (angka) => {
         if (!angka) return '-';

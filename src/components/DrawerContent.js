@@ -52,7 +52,7 @@ const DrawerContent = () => {
                     <List.Item titleNumberOfLines={2} title="Angka Harapan Lama Sekolah (HLS)" onPress={() => navigation.navigate('DetailHLSDashboard')} />
                     <List.Item titleNumberOfLines={2} title="Jumlah Rumah Tidak Layak Huni yang Di Rehab" onPress={() => navigation.navigate('DetailJRTLHDashboard')} />
                     <List.Item titleNumberOfLines={2} title="Index Gini" onPress={() => navigation.navigate("DetailIGDashboard")} />
-                    <List.Item titleNumberOfLines={2} title="Index Daya Beli (Purchasing Power Parity)" onPress={() => navigation.navigate("DetailIDBDashboard")} />
+                    {/* <List.Item titleNumberOfLines={2} title="Index Daya Beli (Purchasing Power Parity)" onPress={() => navigation.navigate("DetailIDBDashboard")} /> */}
                     <List.Item titleNumberOfLines={3} titleMaxFontSizeMultiplier={18} title="Persentase Penduduk Usia 15 Tahun Ke Atas Menurut Pendidikan yang Di Tamatkan" onPress={() => navigation.navigate("DetailPPUDashboard")}/>
                     <List.Item titleNumberOfLines={2} title="Index pemberdayaan Gender" onPress={() => navigation.navigate("DetailIPGGDashboard")}/>
 

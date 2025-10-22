@@ -5,40 +5,40 @@ import { color } from '../../../constants/Helper'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 const AnimatedCard = ({ children, delay = 0 }) => {
-    const fadeAnim = useRef(new Animated.Value(0)).current;
-    const slideAnim = useRef(new Animated.Value(20)).current;
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(20)).current;
 
-    useEffect(() => {
-        Animated.parallel([
-            Animated.timing(fadeAnim, {
-                toValue: 1,
-                duration: 400,
-                delay,
-                useNativeDriver: true,
-            }),
-            Animated.timing(slideAnim, {
-                toValue: 0,
-                duration: 400,
-                delay,
-                useNativeDriver: true,
-            }),
-        ]).start();
-    }, []);
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 400,
+        delay,
+        useNativeDriver: true,
+      }),
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 400,
+        delay,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, []);
 
-    return (
-        <Animated.View
-            style={{
-                opacity: fadeAnim,
-                transform: [{ translateY: slideAnim }],
-            }}
-        >
-            {children}
-        </Animated.View>
-    );
+  return (
+    <Animated.View
+      style={{
+        opacity: fadeAnim,
+        transform: [{ translateY: slideAnim }],
+      }}
+    >
+      {children}
+    </Animated.View>
+  );
 };
 
 const DetailAMH = (props) => {
-  const {dataAngkaMelekHuruf} = stateDataAngkaMelekHuruf()
+  const { dataAngkaMelekHuruf } = stateDataAngkaMelekHuruf()
 
   const getStatusColor = (status) => {
     if (status.toLowerCase().includes('tetap')) return '#43a047';
@@ -72,7 +72,7 @@ const DetailAMH = (props) => {
         </View>
       </View>
 
-      <ScrollView 
+      <ScrollView
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
@@ -82,10 +82,7 @@ const DetailAMH = (props) => {
         </View>
 
         {sortedData.map((item, index) => {
-          const lakiCategory = getLiteracyCategory(item.laki);
-          const perempuanCategory = getLiteracyCategory(item.perempuan);
-          const average = ((parseFloat(item.laki) + parseFloat(item.perempuan)) / 2).toFixed(2);
-          const averageCategory = getLiteracyCategory(average);
+          const category = getLiteracyCategory(item.laki);
 
           return (
             <AnimatedCard key={index} delay={index * 50}>
@@ -104,61 +101,34 @@ const DetailAMH = (props) => {
                 </View>
 
                 <View style={styles.cardBody}>
-                  {/* Gender Stats */}
-                  <View style={styles.genderStats}>
-                    <View style={styles.genderItem}>
-                      <View style={styles.genderHeader}>
-                        <Icon name="male" size={20} color="#1e88e5" />
-                        <Text style={styles.genderLabel}>Laki-laki</Text>
-                      </View>
-                      <Text style={[styles.genderValue, { color: lakiCategory.color }]}>
+                  {/* Data Display */}
+                  <View style={styles.dataDisplay}>
+                    {/* <View style={styles.dataItem}>
+                      <Text style={styles.dataLabel}>Tahun</Text>
+                      <Text style={styles.dataValue}>{item.tahun}</Text>
+                    </View> */}
+                    <View style={styles.dataItem}>
+                      <Text style={styles.dataLabel}>Angka Melek Huruf</Text>
+                      <Text style={[styles.dataValue, { color: category.color }]}>
                         {item.laki}%
                       </Text>
-                      <View style={styles.progressBar}>
-                        <View style={[styles.progressFill, { width: `${item.laki}%`, backgroundColor: lakiCategory.color }]} />
-                      </View>
-                      <View style={[styles.miniCategory, { backgroundColor: lakiCategory.color + '20' }]}>
-                        <Text style={[styles.miniCategoryText, { color: lakiCategory.color }]}>
-                          {lakiCategory.label}
-                        </Text>
-                      </View>
                     </View>
-
-                    <View style={styles.genderDivider} />
-
-                    <View style={styles.genderItem}>
-                      <View style={styles.genderHeader}>
-                        <Icon name="female" size={20} color="#e91e63" />
-                        <Text style={styles.genderLabel}>Perempuan</Text>
-                      </View>
-                      <Text style={[styles.genderValue, { color: perempuanCategory.color }]}>
-                        {item.perempuan}%
-                      </Text>
-                      <View style={styles.progressBar}>
-                        <View style={[styles.progressFill, { width: `${item.perempuan}%`, backgroundColor: perempuanCategory.color }]} />
-                      </View>
-                      <View style={[styles.miniCategory, { backgroundColor: perempuanCategory.color + '20' }]}>
-                        <Text style={[styles.miniCategoryText, { color: perempuanCategory.color }]}>
-                          {perempuanCategory.label}
+                    <View style={styles.dataItem}>
+                      <Text style={styles.dataLabel}>Kategori</Text>
+                      <View style={[styles.miniCategory, { backgroundColor: category.color + '20' }]}>
+                        <Text style={[styles.miniCategoryText, { color: category.color }]}>
+                          {category.label}
                         </Text>
                       </View>
                     </View>
                   </View>
 
-                  {/* Average */}
-                  <View style={styles.averageSection}>
-                    <Icon name="analytics" size={18} color="#00897b" />
-                    <View style={styles.averageContent}>
-                      <Text style={styles.averageLabel}>Rata-rata</Text>
-                      <Text style={[styles.averageValue, { color: averageCategory.color }]}>
-                        {average}%
-                      </Text>
+                  {/* Progress Bar */}
+                  <View style={styles.progressSection}>
+                    <View style={styles.progressBar}>
+                      <View style={[styles.progressFill, { width: `${item.laki}%`, backgroundColor: category.color }]} />
                     </View>
-                    <View style={[styles.averageBadge, { backgroundColor: averageCategory.color + '20' }]}>
-                      <Text style={[styles.averageBadgeText, { color: averageCategory.color }]}>
-                        {averageCategory.label}
-                      </Text>
-                    </View>
+                    <Text style={styles.progressText}>{item.laki}% dari populasi</Text>
                   </View>
                 </View>
 
@@ -186,7 +156,7 @@ const DetailAMH = (props) => {
           </View>
           <View style={styles.infoContent}>
             <Text style={styles.infoText}>
-              Angka Melek Huruf (AMH) menunjukkan persentase penduduk usia tertentu 
+              Angka Melek Huruf (AMH) menunjukkan persentase penduduk usia tertentu
               yang memiliki kemampuan membaca dan menulis huruf latin dan/atau huruf lainnya.
             </Text>
           </View>
@@ -322,39 +292,42 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     gap: 16,
   },
-  genderStats: {
-    flexDirection: 'row',
-    gap: 16,
+  dataDisplay: {
+    gap: 12,
   },
-  genderItem: {
-    flex: 1,
-  },
-  genderHeader: {
+  dataItem: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    gap: 6,
-    marginBottom: 8,
   },
-  genderLabel: {
-    fontSize: 13,
+  dataLabel: {
+    fontSize: 14,
     color: '#666',
     fontWeight: '600',
   },
-  genderValue: {
-    fontSize: 24,
+  dataValue: {
+    fontSize: 16,
     fontWeight: 'bold',
-    marginBottom: 8,
+    color: '#333',
   },
   progressBar: {
-    height: 6,
+    height: 8,
     backgroundColor: '#e0e0e0',
-    borderRadius: 3,
+    borderRadius: 4,
     overflow: 'hidden',
     marginBottom: 8,
   },
   progressFill: {
     height: '100%',
-    borderRadius: 3,
+    borderRadius: 4,
+  },
+  progressSection: {
+    marginTop: 8,
+  },
+  progressText: {
+    fontSize: 12,
+    color: '#666',
+    textAlign: 'center',
   },
   miniCategory: {
     paddingHorizontal: 8,
@@ -366,40 +339,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: '600',
   },
-  genderDivider: {
-    width: 1,
-    backgroundColor: '#e0e0e0',
-  },
-  averageSection: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#E0F2F1',
-    borderRadius: 12,
-    padding: 12,
-    gap: 12,
-  },
-  averageContent: {
-    flex: 1,
-  },
-  averageLabel: {
-    fontSize: 12,
-    color: '#666',
-    marginBottom: 2,
-  },
-  averageValue: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  averageBadge: {
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 12,
-  },
-  averageBadgeText: {
-    fontSize: 12,
-    fontWeight: '600',
-  },
-  cardFooter: {
+    cardFooter: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,

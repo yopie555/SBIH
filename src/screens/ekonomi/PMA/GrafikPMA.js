@@ -8,8 +8,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 const GrafikPMA = (props) => {
   const { dataPMA } = stateDataPMA()
   
-  // Ambil 5 tahun terakhir
-  const last5Years = dataPMA.slice(-5);
+  // Ambil 5 tahun terakhir dan urutkan dari tahun terendah ke tahun sekarang
+  const last5Years = [...dataPMA].sort((a, b) => a.tahun - b.tahun).slice(-5);
   
   // Hitung statistik dari 5 tahun terakhir
   const values = last5Years.map(item => parseFloat(item.jumlah));
@@ -17,6 +17,10 @@ const GrafikPMA = (props) => {
   const minValue = Math.min(...values);
   const avgValue = (values.reduce((a, b) => a + b, 0) / values.length).toFixed(0);
   const latestValue = values[values.length - 1];
+
+  // Tentukan range untuk sumbu Y (mulai dari 0)
+  const yAxisMin = 0;
+  const yAxisMax = Math.ceil(maxValue / 100000000000) * 100000000000 + 100000000000; // Bulatkan ke triliun terdekat + 1 triliun
 
   const convertToRupiah = (angka) => {
     var rupiah = '';
@@ -107,7 +111,7 @@ const GrafikPMA = (props) => {
               }}
               width={Dimensions.get("window").width - 48}
               height={280}
-              yAxisInterval={1}
+              yAxisInterval={Math.ceil(yAxisMax / 5)}
               fromZero={true}
               segments={5}
               chartConfig={{
@@ -137,6 +141,14 @@ const GrafikPMA = (props) => {
               bezier
               style={styles.chart}
             />
+          </View>
+
+          {/* Y-Axis Info */}
+          <View style={styles.axisInfo}>
+            <View style={styles.axisRow}>
+              <Icon name="resize-outline" size={16} color="#666" />
+              <Text style={styles.axisText}>Sumbu Y: {formatToTrillions(yAxisMin)} - {formatToTrillions(yAxisMax)}</Text>
+            </View>
           </View>
 
           {/* Current Value */}
@@ -200,6 +212,10 @@ const GrafikPMA = (props) => {
             <View style={styles.infoRow}>
               <View style={styles.infoDot} />
               <Text style={styles.infoText}>Semakin tinggi nilai, semakin besar investasi asing</Text>
+            </View>
+            <View style={styles.infoRow}>
+              <View style={styles.infoDot} />
+              <Text style={styles.infoText}>Sumbu Y: {formatToTrillions(yAxisMin)} - {formatToTrillions(yAxisMax)}</Text>
             </View>
           </View>
         </View>
@@ -353,6 +369,22 @@ const styles = StyleSheet.create({
   },
   chart: {
     borderRadius: 16,
+  },
+  axisInfo: {
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
+    marginBottom: 12,
+  },
+  axisRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  axisText: {
+    fontSize: 13,
+    color: '#666',
+    fontWeight: '500',
   },
   currentValueContainer: {
     flexDirection: 'row',

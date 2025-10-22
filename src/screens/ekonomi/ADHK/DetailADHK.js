@@ -1,13 +1,13 @@
-import React, { useState } from 'react';  
-import {  
-  StyleSheet,  
-  Text,  
-  View,  
+import React, { useState } from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
   ScrollView,
   Animated,
-} from 'react-native';  
-import CategoryADHK from '../../../components/CategoryADHK';  
-import { color } from '../../../constants/Helper';  
+} from 'react-native';
+import CategoryADHK from '../../../components/CategoryADHK';
+import { color } from '../../../constants/Helper';
 import { stateDataAtasDasarHargaKonstan } from '../../../state/dataADHK';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -44,13 +44,16 @@ const AnimatedCard = ({ children, delay = 0 }) => {
     );
 };
 
-const DetailADHK = (props) => {  
-  const [selectedCategoryId, setSelectedCategoryId] = useState(1);  
+const DetailADHK = (props) => {
+  const [selectedCategoryId, setSelectedCategoryId] = useState(1);
   const { dataAtasDasarHargaKonstan } = stateDataAtasDasarHargaKonstan();  
   
   // Filter dan sort data dari tahun terbaru ke terlama
   const dataRender = dataAtasDasarHargaKonstan
-    ?.filter(item => item.id === selectedCategoryId)
+    ?.filter(item => {
+      console.log('Filtering item:', item, 'selectedCategoryId:', selectedCategoryId, 'Match:', item.id === selectedCategoryId);
+      return item.id === selectedCategoryId;
+    })
     ?.sort((a, b) => {
       const yearA = parseInt(a.tahun) || 0;
       const yearB = parseInt(b.tahun) || 0;
@@ -66,15 +69,34 @@ const DetailADHK = (props) => {
 
   const formatRupiah = (angka) => {
     if (!angka) return '-';
-    const formatted = angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    return `Rp ${formatted}`;
+
+    // Konversi ke string dan hapus karakter non-digit kecuali koma untuk desimal
+    const numStr = angka.toString().replace(/[^\d,]/g, '');
+
+    // Ganti koma dengan titik untuk parsing
+    const cleanStr = numStr.replace(',', '.');
+
+    if (cleanStr === '') return 'Rp 0';
+
+    // Konversi ke number
+    const num = parseFloat(cleanStr) || 0;
+
+    // Format dengan titik sebagai pemisah ribuan
+    const formatted = num.toLocaleString('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    });
+
+    return formatted;
   };
   
   return (  
     <View style={styles.container}>  
       <View style={styles.header}>
         <View style={styles.headerTop}>
-          <Icon name="cash-outline" size={32} color="#0288d1" />
+          <Icon name="cash" size={32} color="#2e7d32" />
           <View style={styles.headerTextContainer}>
             <Text style={styles.headerTitle}>{props.route.params.title}</Text>
             <View style={styles.sourceContainer}>
@@ -86,10 +108,11 @@ const DetailADHK = (props) => {
       </View>
 
       <View style={styles.filterSection}>
-        <CategoryADHK   
-          onCategorySelect={(id) => {  
-            setSelectedCategoryId(id);  
-          }}   
+        <CategoryADHK
+          onCategorySelect={(id) => {
+            console.log('Category selected:', id);
+            setSelectedCategoryId(id);
+          }}
         />
       </View>
       
@@ -108,7 +131,7 @@ const DetailADHK = (props) => {
               <View style={styles.dataCard}>
                 <View style={styles.cardHeader}>
                   <View style={styles.yearBadge}>
-                    <Icon name="calendar" size={18} color="#0288d1" />
+                    <Icon name="calendar" size={18} color="#2e7d32" />
                     <Text style={styles.yearText}>{item?.tahun || '-'}</Text>
                   </View>
                   <View style={[styles.statusBadge, { backgroundColor: getStatusColor(item?.status_data) + '20' }]}>
@@ -122,13 +145,13 @@ const DetailADHK = (props) => {
                 <View style={styles.cardBody}>
                   {/* Uraian */}
                   <View style={styles.uraianBox}>
-                    <Icon name="document-text" size={18} color="#0288d1" />
+                    <Icon name="document-text" size={18} color="#2e7d32" />
                     <Text style={styles.uraianText}>{item?.uraian || '-'}</Text>
                   </View>
 
                   {/* Jumlah */}
                   <View style={styles.jumlahContainer}>
-                    <Icon name="cash-outline" size={24} color="#0288d1" />
+                    <Icon name="cash-outline" size={24} color="#2e7d32" />
                     <View style={styles.jumlahContent}>
                       <Text style={styles.jumlahLabel}>Nilai ADHK:</Text>
                       <Text style={styles.jumlahValue}>
@@ -144,24 +167,24 @@ const DetailADHK = (props) => {
                 </View>
               </View>
             </AnimatedCard>
-          ))  
-        ) : (  
+          ))
+        ) : (
           <View style={styles.emptyState}>
             <Icon name="document-outline" size={80} color="#ccc" />
-            <Text style={styles.emptyText}>Tidak ada data tersedia</Text>
+            <Text style={styles.emptyText}>Belum ada data tersedia</Text>
           </View>
         )}  
 
         {/* Info Card */}
         <View style={styles.infoCard}>
           <View style={styles.infoHeader}>
-            <Icon name="information-circle" size={24} color="#0288d1" />
+            <Icon name="information-circle" size={24} color="#2e7d32" />
             <Text style={styles.infoTitle}>Tentang ADHK</Text>
           </View>
           <View style={styles.infoContent}>
             <Text style={styles.infoText}>
-              Atas Dasar Harga Konstan (ADHK) adalah nilai produk domestik yang dihitung 
-              berdasarkan harga pada tahun dasar tertentu. ADHK menghilangkan pengaruh 
+              Atas Dasar Harga Konstan (ADHK) adalah nilai produk domestik yang dihitung
+              berdasarkan harga pada tahun dasar tertentu. ADHK menghilangkan pengaruh
               inflasi untuk melihat pertumbuhan ekonomi riil.
             </Text>
           </View>
@@ -228,7 +251,7 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
   },
   summaryCard: {
-    backgroundColor: '#0288d1',
+    backgroundColor: '#2e7d32',
     borderRadius: 12,
     padding: 20,
     marginBottom: 16,
@@ -268,7 +291,7 @@ const styles = StyleSheet.create({
   yearBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#E1F5FE',
+    backgroundColor: '#E8F5E9',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 20,
@@ -277,7 +300,7 @@ const styles = StyleSheet.create({
   yearText: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#0288d1',
+    color: '#2e7d32',
   },
   statusBadge: {
     flexDirection: 'row',
@@ -333,7 +356,7 @@ const styles = StyleSheet.create({
   jumlahValue: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#0288d1',
+    color: '#2e7d32',
   },
   cardFooter: {
     flexDirection: 'row',
@@ -356,11 +379,11 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   infoCard: {
-    backgroundColor: '#E1F5FE',
+    backgroundColor: '#E8F5E9',
     borderRadius: 12,
     padding: 16,
     borderLeftWidth: 4,
-    borderLeftColor: '#0288d1',
+    borderLeftColor: '#2e7d32',
     marginTop: 4,
   },
   infoHeader: {

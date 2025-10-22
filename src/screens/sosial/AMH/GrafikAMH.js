@@ -9,16 +9,12 @@ const GrafikAMH = (props) => {
   const {dataAngkaMelekHuruf} = stateDataAngkaMelekHuruf()
 
   const kel_umur = dataAngkaMelekHuruf.map(item => item.kel_umur)
-  const dataPresentasLaki = dataAngkaMelekHuruf.map(item => parseFloat(item.laki))
-  const dataPresentasePerempuan = dataAngkaMelekHuruf.map(item => parseFloat(item.perempuan))
+  const dataPresentase = dataAngkaMelekHuruf.map(item => parseFloat(item.laki))
 
   // Statistik
-  const avgLaki = (dataPresentasLaki.reduce((a, b) => a + b, 0) / dataPresentasLaki.length).toFixed(2);
-  const avgPerempuan = (dataPresentasePerempuan.reduce((a, b) => a + b, 0) / dataPresentasePerempuan.length).toFixed(2);
-  const maxLaki = Math.max(...dataPresentasLaki);
-  const minLaki = Math.min(...dataPresentasLaki);
-  const maxPerempuan = Math.max(...dataPresentasePerempuan);
-  const minPerempuan = Math.min(...dataPresentasePerempuan);
+  const avgPresentase = (dataPresentase.reduce((a, b) => a + b, 0) / dataPresentase.length).toFixed(2);
+  const maxPresentase = Math.max(...dataPresentase);
+  const minPresentase = Math.min(...dataPresentase);
 
   return (
     <View style={styles.container}>
@@ -40,93 +36,51 @@ const GrafikAMH = (props) => {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        {/* Gender Stats Summary */}
-        <View style={styles.genderSummary}>
-          <View style={styles.genderSummaryItem}>
-            <Icon name="male" size={24} color="#1e88e5" />
-            <View style={styles.genderSummaryContent}>
-              <Text style={styles.genderSummaryLabel}>Laki-laki</Text>
-              <Text style={[styles.genderSummaryValue, { color: '#1e88e5' }]}>
-                {avgLaki}%
-              </Text>
-              <Text style={styles.genderSummarySubtext}>Rata-rata</Text>
-            </View>
-          </View>
-
-          <View style={styles.genderDivider} />
-
-          <View style={styles.genderSummaryItem}>
-            <Icon name="female" size={24} color="#e91e63" />
-            <View style={styles.genderSummaryContent}>
-              <Text style={styles.genderSummaryLabel}>Perempuan</Text>
-              <Text style={[styles.genderSummaryValue, { color: '#e91e63' }]}>
-                {avgPerempuan}%
-              </Text>
-              <Text style={styles.genderSummarySubtext}>Rata-rata</Text>
-            </View>
-          </View>
-        </View>
-
-        {/* Statistics Cards */}
+        {/* Summary Stats */}
         <View style={styles.statsRow}>
           <View style={styles.statCard}>
-            <Text style={styles.statLabel}>Tertinggi</Text>
-            <View style={styles.statValues}>
-              <View style={styles.statValueItem}>
-                <Icon name="male" size={16} color="#1e88e5" />
-                <Text style={[styles.statValue, { color: '#1e88e5' }]}>{maxLaki}%</Text>
-              </View>
-              <View style={styles.statValueItem}>
-                <Icon name="female" size={16} color="#e91e63" />
-                <Text style={[styles.statValue, { color: '#e91e63' }]}>{maxPerempuan}%</Text>
-              </View>
-            </View>
+            <Icon name="analytics" size={24} color="#00897b" />
+            <Text style={styles.statLabel}>Rata-rata</Text>
+            <Text style={[styles.statValue, { color: '#00897b' }]}>{avgPresentase}%</Text>
           </View>
 
           <View style={styles.statCard}>
+            <Icon name="trending-up" size={24} color="#43a047" />
+            <Text style={styles.statLabel}>Tertinggi</Text>
+            <Text style={[styles.statValue, { color: '#43a047' }]}>{maxPresentase}%</Text>
+          </View>
+
+          <View style={styles.statCard}>
+            <Icon name="trending-down" size={24} color="#e53935" />
             <Text style={styles.statLabel}>Terendah</Text>
-            <View style={styles.statValues}>
-              <View style={styles.statValueItem}>
-                <Icon name="male" size={16} color="#1e88e5" />
-                <Text style={[styles.statValue, { color: '#1e88e5' }]}>{minLaki}%</Text>
-              </View>
-              <View style={styles.statValueItem}>
-                <Icon name="female" size={16} color="#e91e63" />
-                <Text style={[styles.statValue, { color: '#e91e63' }]}>{minPerempuan}%</Text>
-              </View>
-            </View>
+            <Text style={[styles.statValue, { color: '#e53935' }]}>{minPresentase}%</Text>
           </View>
         </View>
 
+  
         {/* Chart Card */}
         <View style={styles.chartCard}>
           <View style={styles.chartHeader}>
             <Icon name="bar-chart" size={24} color="#00897b" />
-            <Text style={styles.chartTitle}>Grafik Perbandingan Gender</Text>
+            <Text style={styles.chartTitle}>Grafik Angka Melek Huruf</Text>
           </View>
-          
+
           <View style={styles.chartWrapper}>
             <LineChart
               data={{
                 labels: kel_umur,
                 datasets: [
                   {
-                    data: dataPresentasLaki,
-                    color: (opacity = 1) => `rgba(30, 136, 229, ${opacity})`,
-                    strokeWidth: 3
-                  },
-                  {
-                    data: dataPresentasePerempuan,
-                    color: (opacity = 1) => `rgba(233, 30, 99, ${opacity})`,
-                    strokeWidth: 3
+                    data: dataPresentase,
+                    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                    strokeWidth: 4
                   }
-                ],
-                legend: ["Laki-laki", "Perempuan"]
+                ]
               }}
               width={Dimensions.get("window").width - 48}
               height={280}
               yAxisSuffix="%"
-              yAxisInterval={1}
+              yAxisInterval={20}
               fromZero={true}
               chartConfig={{
                 backgroundColor: "#00897b",
@@ -143,7 +97,7 @@ const GrafikAMH = (props) => {
                   fontWeight: '600'
                 },
                 propsForDots: {
-                  r: "5",
+                  r: "6",
                   strokeWidth: "2",
                 },
                 propsForBackgroundLines: {
@@ -156,15 +110,11 @@ const GrafikAMH = (props) => {
             />
           </View>
 
-          {/* Custom Legend */}
+          {/* Legend */}
           <View style={styles.legendContainer}>
             <View style={styles.legendItem}>
-              <View style={[styles.legendDot, { backgroundColor: '#1e88e5' }]} />
-              <Text style={styles.legendText}>Laki-laki</Text>
-            </View>
-            <View style={styles.legendItem}>
-              <View style={[styles.legendDot, { backgroundColor: '#e91e63' }]} />
-              <Text style={styles.legendText}>Perempuan</Text>
+              <View style={[styles.legendDot, { backgroundColor: '#ffffff' }]} />
+              <Text style={styles.legendText}>Angka Melek Huruf</Text>
             </View>
           </View>
         </View>
@@ -178,11 +128,7 @@ const GrafikAMH = (props) => {
           <View style={styles.infoContent}>
             <View style={styles.infoRow}>
               <View style={styles.infoDot} />
-              <Text style={styles.infoText}>Perbandingan AMH berdasarkan kelompok umur</Text>
-            </View>
-            <View style={styles.infoRow}>
-              <View style={styles.infoDot} />
-              <Text style={styles.infoText}>Garis biru = Laki-laki, Garis pink = Perempuan</Text>
+              <Text style={styles.infoText}>Tren Angka Melek Huruf berdasarkan kelompok umur</Text>
             </View>
             <View style={styles.infoRow}>
               <View style={styles.infoDot} />
@@ -192,26 +138,10 @@ const GrafikAMH = (props) => {
               <View style={styles.infoDot} />
               <Text style={styles.infoText}>AMH = Angka Melek Huruf (dalam %)</Text>
             </View>
-          </View>
-        </View>
-
-        {/* Gap Analysis */}
-        <View style={styles.gapCard}>
-          <Text style={styles.gapTitle}>Analisis Gap Gender</Text>
-          <View style={styles.gapContent}>
-            <View style={styles.gapItem}>
-              <Text style={styles.gapLabel}>Selisih Rata-rata:</Text>
-              <Text style={[styles.gapValue, { color: avgLaki > avgPerempuan ? '#1e88e5' : '#e91e63' }]}>
-                {Math.abs(avgLaki - avgPerempuan).toFixed(2)}%
-              </Text>
+            <View style={styles.infoRow}>
+              <View style={styles.infoDot} />
+              <Text style={styles.infoText}>Rata-rata keseluruhan: {avgPresentase}%</Text>
             </View>
-            <Text style={styles.gapDescription}>
-              {avgLaki > avgPerempuan 
-                ? 'Laki-laki memiliki tingkat melek huruf lebih tinggi' 
-                : avgPerempuan > avgLaki 
-                ? 'Perempuan memiliki tingkat melek huruf lebih tinggi'
-                : 'Tingkat melek huruf setara'}
-            </Text>
           </View>
         </View>
       </ScrollView>
@@ -269,47 +199,7 @@ const styles = StyleSheet.create({
     padding: 16,
     paddingBottom: 30,
   },
-  genderSummary: {
-    flexDirection: 'row',
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 20,
-    marginBottom: 16,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-  },
-  genderSummaryItem: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  genderSummaryContent: {
-    flex: 1,
-  },
-  genderSummaryLabel: {
-    fontSize: 13,
-    color: '#666',
-    marginBottom: 4,
-  },
-  genderSummaryValue: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginBottom: 2,
-  },
-  genderSummarySubtext: {
-    fontSize: 11,
-    color: '#999',
-  },
-  genderDivider: {
-    width: 1,
-    backgroundColor: '#e0e0e0',
-    marginHorizontal: 16,
-  },
-  statsRow: {
+      statsRow: {
     flexDirection: 'row',
     gap: 12,
     marginBottom: 16,
@@ -319,6 +209,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 12,
     padding: 16,
+    alignItems: 'center',
     elevation: 2,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
@@ -326,21 +217,13 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
   },
   statLabel: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#666',
-    marginBottom: 12,
+    marginBottom: 8,
     fontWeight: '600',
   },
-  statValues: {
-    gap: 8,
-  },
-  statValueItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
   statValue: {
-    fontSize: 16,
+    fontSize: 24,
     fontWeight: 'bold',
   },
   chartCard: {
@@ -433,42 +316,4 @@ const styles = StyleSheet.create({
     color: '#555',
     flex: 1,
   },
-  gapCard: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 16,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-  },
-  gapTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#1a1a1a',
-    marginBottom: 12,
-  },
-  gapContent: {
-    gap: 8,
-  },
-  gapItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  gapLabel: {
-    fontSize: 14,
-    color: '#666',
-  },
-  gapValue: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  gapDescription: {
-    fontSize: 14,
-    color: '#555',
-    fontStyle: 'italic',
-  },
-})
+  })

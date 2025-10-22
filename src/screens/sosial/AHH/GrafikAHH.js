@@ -18,9 +18,9 @@ const GrafikAHH = (props) => {
   const avgValue = (values.reduce((a, b) => a + b, 0) / values.length).toFixed(2);
   const latestValue = values[values.length - 1];
 
-  // Tentukan range untuk sumbu Y
-  const yAxisMin = Math.floor(minValue) - 1;
-  const yAxisMax = Math.ceil(maxValue) + 1;
+  // Tentukan range untuk sumbu Y (mulai dari 0)
+  const yAxisMin = 0;
+  const yAxisMax = Math.ceil(maxValue) + 5;
 
   // Kategori AHH
   const getAHHCategory = (ahh) => {
@@ -99,8 +99,8 @@ const GrafikAHH = (props) => {
               }}
               width={Dimensions.get("window").width - 48}
               height={280}
-              yAxisInterval={1}
-              fromNumber={yAxisMax}
+              yAxisInterval={5}
+              fromZero={true}
               segments={5}
               chartConfig={{
                 backgroundColor: "#d32f2f",
