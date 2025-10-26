@@ -36,7 +36,7 @@ const CategoryStore = ({ onCategorySelect }) => {
     { id: 14, name: 'Administrasi Pemerintahan, Pertahanan dan Jaminan Sosial Wajib', icon: 'shield' },
     { id: 15, name: 'Jasa Pendidikan', icon: 'school' },
     { id: 16, name: 'Jasa Kesehatan dan Kegiatan Sosial', icon: 'medkit' },
-    { id: 17, name: 'Jasa Kemasyarakatan, Sosial dan Kegiatan Hiburan', icon: 'people' },
+    // { id: 17, name: 'Jasa Kemasyarakatan, Sosial dan Kegiatan Hiburan', icon: 'people' },
     { id: 18, name: 'Jasa Lainnya', icon: 'ellipsis-horizontal' },
   ]
 

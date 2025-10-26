@@ -71,7 +71,7 @@ const DrawerContent = () => {
                     title="Pertanian dan Perikanan"
                     left={props => <List.Icon {...props} icon="folder" />}>
                     <List.Item titleNumberOfLines={2} title="Produksi Perikanan Budidaya (PBB)" onPress={() => navigation.navigate("DetailPPBDashboard")}/>
-                    <List.Item titleNumberOfLines={2} title="Produksi Perikanan Tangkap" onPress={() => navigation.navigate("DetailPPTDashboard")}/>
+                    <List.Item titleNumberOfLines={2} title="Produksi Perikanan Tangkap (Ton)" onPress={() => navigation.navigate("DetailPPTDashboard")}/>
                     <List.Item titleNumberOfLines={3} title="Capaian Produksi Komoditi Unggulan Perkebunan (Ton)" onPress={() => navigation.navigate("DetailCPKUPDashboard")} />
                     <List.Item titleNumberOfLines={2} title="Capaian Produksi Komoditi Hortikultura (Ton/ha)" onPress={() => navigation.navigate("DetailCPKHDashboard")} />
                     <List.Item titleNumberOfLines={2} title="Jumlah Produksi Peternakan (Ton)" onPress={() => navigation.navigate("DetailJPPDashboard")}/>
@@ -88,7 +88,7 @@ const DrawerContent = () => {
                     title="Infrastruktur"
                     left={props => <List.Icon {...props} icon="folder" />}>
                     <List.Item titleNumberOfLines={3} title="Panjang Jalan yang Di Bangun dan Ditingkatkan" onPress={() => navigation.navigate("DetailPJDDDashboard")} />
-                    <List.Item titleNumberOfLines={3} title="Persentase Rumah Tangga (RT) yang Menggunakan Air Bersih" onPress={() => navigation.navigate("DetailPRTDashboard")} />
+                    <List.Item titleNumberOfLines={3} title="Persentase Rumah Tangga yang Menggunakan Air Bersih" onPress={() => navigation.navigate("DetailPRTDashboard")} />
                     <List.Item titleNumberOfLines={3} title="Persentase Tingkat Kemantapan Jalan (Mantap Sempurna)" onPress={() => navigation.navigate("DetailPTKJDashboard")} />
                 </List.Accordion>
                 <List.Accordion

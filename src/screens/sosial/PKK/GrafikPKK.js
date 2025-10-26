@@ -85,7 +85,7 @@ const GrafikPKK = (props) => {
         <View style={styles.chartCard}>
           <View style={styles.chartHeader}>
             <Icon name="bar-chart" size={24} color="#00897b" />
-            <Text style={styles.chartTitle}>Tren Tingkat Pengangguran</Text>
+            <Text style={styles.chartTitle}>Grafik Tingkat Pengangguran Terbuka (TPT)</Text>
           </View>
           
           <View style={styles.chartWrapper}>

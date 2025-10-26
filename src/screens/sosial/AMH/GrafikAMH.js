@@ -8,13 +8,49 @@ import Icon from 'react-native-vector-icons/Ionicons';
 const GrafikAMH = (props) => {
   const {dataAngkaMelekHuruf} = stateDataAngkaMelekHuruf()
 
+  // Handle case when no data is available
+  if (!dataAngkaMelekHuruf || dataAngkaMelekHuruf.length === 0) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <View style={styles.headerTop}>
+            <Icon name="analytics" size={32} color="#00897b" />
+            <View style={styles.headerTextContainer}>
+              <Text style={styles.headerTitle}>{props.route.params.title}</Text>
+              <View style={styles.sourceContainer}>
+                <Icon name="document-text-outline" size={16} color="#666" />
+                <Text style={styles.sourceText}>Sumber: <Text style={styles.sourceBPS}>BPS</Text></Text>
+              </View>
+            </View>
+          </View>
+        </View>
+        <View style={styles.noDataContainer}>
+          <Icon name="alert-circle-outline" size={64} color="#ccc" />
+          <Text style={styles.noDataText}>Data tidak tersedia</Text>
+          <Text style={styles.noDataSubText}>Silakan refresh untuk memuat data</Text>
+        </View>
+      </View>
+    );
+  }
+
   const kel_umur = dataAngkaMelekHuruf.map(item => item.kel_umur)
   const dataPresentase = dataAngkaMelekHuruf.map(item => parseFloat(item.laki))
 
-  // Statistik
-  const avgPresentase = (dataPresentase.reduce((a, b) => a + b, 0) / dataPresentase.length).toFixed(2);
-  const maxPresentase = Math.max(...dataPresentase);
-  const minPresentase = Math.min(...dataPresentase);
+  // Statistik dengan pengecekan error
+  const avgPresentase = dataPresentase.length > 0 ? (dataPresentase.reduce((a, b) => a + b, 0) / dataPresentase.length).toFixed(2) : '0';
+  const maxPresentase = dataPresentase.length > 0 ? Math.max(...dataPresentase) : 0;
+  const minPresentase = dataPresentase.length > 0 ? Math.min(...dataPresentase) : 0;
+
+  // Kategori AMH
+  const getAMHCategory = (presentase) => {
+    const value = parseFloat(presentase);
+    if (value >= 95) return { label: 'Sangat Tinggi', color: '#43a047' };
+    if (value >= 90) return { label: 'Tinggi', color: '#1e88e5' };
+    if (value >= 85) return { label: 'Sedang', color: '#fb8c00' };
+    return { label: 'Rendah', color: '#e53935' };
+  };
+
+  const currentCategory = getAMHCategory(avgPresentase);
 
   return (
     <View style={styles.container}>
@@ -36,24 +72,32 @@ const GrafikAMH = (props) => {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        {/* Summary Stats */}
-        <View style={styles.statsRow}>
-          <View style={styles.statCard}>
-            <Icon name="analytics" size={24} color="#00897b" />
-            <Text style={styles.statLabel}>Rata-rata</Text>
-            <Text style={[styles.statValue, { color: '#00897b' }]}>{avgPresentase}%</Text>
-          </View>
+        {/* Period Info */}
+        <View style={styles.periodCard}>
+          <Icon name="time-outline" size={24} color="#00897b" />
+          <Text style={styles.periodText}>
+            Total Data: <Text style={styles.periodValue}>{dataAngkaMelekHuruf.length} Kelompok Umur</Text>
+          </Text>
+        </View>
 
-          <View style={styles.statCard}>
-            <Icon name="trending-up" size={24} color="#43a047" />
+        {/* Statistics Cards */}
+        <View style={styles.statsContainer}>
+          <View style={[styles.statCard, { backgroundColor: '#43a047' }]}>
+            <Icon name="trending-up" size={24} color="#fff" />
+            <Text style={styles.statValue}>{maxPresentase}%</Text>
             <Text style={styles.statLabel}>Tertinggi</Text>
-            <Text style={[styles.statValue, { color: '#43a047' }]}>{maxPresentase}%</Text>
           </View>
 
-          <View style={styles.statCard}>
-            <Icon name="trending-down" size={24} color="#e53935" />
+          <View style={[styles.statCard, { backgroundColor: '#e53935' }]}>
+            <Icon name="trending-down" size={24} color="#fff" />
+            <Text style={styles.statValue}>{minPresentase}%</Text>
             <Text style={styles.statLabel}>Terendah</Text>
-            <Text style={[styles.statValue, { color: '#e53935' }]}>{minPresentase}%</Text>
+          </View>
+
+          <View style={[styles.statCard, { backgroundColor: '#00897b' }]}>
+            <Icon name="calculator" size={24} color="#fff" />
+            <Text style={styles.statValue}>{avgPresentase}%</Text>
+            <Text style={styles.statLabel}>Rata-rata</Text>
           </View>
         </View>
 
@@ -110,11 +154,49 @@ const GrafikAMH = (props) => {
             />
           </View>
 
-          {/* Legend */}
-          <View style={styles.legendContainer}>
+          {/* Y-Axis Info */}
+          <View style={styles.axisInfo}>
+            <View style={styles.axisRow}>
+              <Icon name="resize-outline" size={16} color="#666" />
+              <Text style={styles.axisText}>Sumbu Y: 0% - 100%</Text>
+            </View>
+          </View>
+
+          {/* Current Value */}
+          <View style={styles.currentValueContainer}>
+            <Icon name="people-outline" size={20} color="#666" />
+            <View style={styles.currentValueWrapper}>
+              <Text style={styles.currentValueText}>
+                Rata-rata Keseluruhan: <Text style={[styles.currentValue, { color: currentCategory.color }]}>{avgPresentase}%</Text>
+              </Text>
+              <View style={[styles.categoryBadge, { backgroundColor: currentCategory.color + '20' }]}>
+                <Text style={[styles.categoryText, { color: currentCategory.color }]}>
+                  {currentCategory.label}
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+
+        {/* Category Legend */}
+        <View style={styles.legendCard}>
+          <Text style={styles.legendTitle}>Kategori Angka Melek Huruf:</Text>
+          <View style={styles.legendContent}>
             <View style={styles.legendItem}>
-              <View style={[styles.legendDot, { backgroundColor: '#ffffff' }]} />
-              <Text style={styles.legendText}>Angka Melek Huruf</Text>
+              <View style={[styles.legendDot, { backgroundColor: '#43a047' }]} />
+              <Text style={styles.legendText}>Sangat Tinggi (≥95%)</Text>
+            </View>
+            <View style={styles.legendItem}>
+              <View style={[styles.legendDot, { backgroundColor: '#1e88e5' }]} />
+              <Text style={styles.legendText}>Tinggi (90-94.99%)</Text>
+            </View>
+            <View style={styles.legendItem}>
+              <View style={[styles.legendDot, { backgroundColor: '#fb8c00' }]} />
+              <Text style={styles.legendText}>Sedang (85-89.99%)</Text>
+            </View>
+            <View style={styles.legendItem}>
+              <View style={[styles.legendDot, { backgroundColor: '#e53935' }]} />
+              <Text style={styles.legendText}>Rendah {'(<85%)'}</Text>
             </View>
           </View>
         </View>
@@ -128,19 +210,19 @@ const GrafikAMH = (props) => {
           <View style={styles.infoContent}>
             <View style={styles.infoRow}>
               <View style={styles.infoDot} />
-              <Text style={styles.infoText}>Tren Angka Melek Huruf berdasarkan kelompok umur</Text>
+              <Text style={styles.infoText}>Menampilkan data berdasarkan kelompok umur</Text>
             </View>
             <View style={styles.infoRow}>
               <View style={styles.infoDot} />
-              <Text style={styles.infoText}>Total {dataAngkaMelekHuruf.length} kelompok umur</Text>
+              <Text style={styles.infoText}>Sumbu Y dimulai dari 0% hingga 100%</Text>
             </View>
             <View style={styles.infoRow}>
               <View style={styles.infoDot} />
-              <Text style={styles.infoText}>AMH = Angka Melek Huruf (dalam %)</Text>
+              <Text style={styles.infoText}>AMH = Angka Melek Huruf (persentase)</Text>
             </View>
             <View style={styles.infoRow}>
               <View style={styles.infoDot} />
-              <Text style={styles.infoText}>Rata-rata keseluruhan: {avgPresentase}%</Text>
+              <Text style={styles.infoText}>Total data: {dataAngkaMelekHuruf.length} kelompok umur</Text>
             </View>
           </View>
         </View>
@@ -199,14 +281,30 @@ const styles = StyleSheet.create({
     padding: 16,
     paddingBottom: 30,
   },
-      statsRow: {
+  periodCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#E0F2F1',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 16,
+    gap: 12,
+  },
+  periodText: {
+    fontSize: 14,
+    color: '#666',
+  },
+  periodValue: {
+    fontWeight: 'bold',
+    color: '#00897b',
+  },
+  statsContainer: {
     flexDirection: 'row',
     gap: 12,
     marginBottom: 16,
   },
   statCard: {
     flex: 1,
-    backgroundColor: '#fff',
     borderRadius: 12,
     padding: 16,
     alignItems: 'center',
@@ -218,13 +316,14 @@ const styles = StyleSheet.create({
   },
   statLabel: {
     fontSize: 12,
-    color: '#666',
-    marginBottom: 8,
-    fontWeight: '600',
+    color: 'rgba(255,255,255,0.9)',
+    marginTop: 4,
   },
   statValue: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 'bold',
+    color: '#fff',
+    marginTop: 8,
   },
   chartCard: {
     backgroundColor: '#fff',
@@ -255,18 +354,54 @@ const styles = StyleSheet.create({
   chart: {
     borderRadius: 16,
   },
-  legendContainer: {
+  axisInfo: {
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
+    marginBottom: 12,
+  },
+  axisRow: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 24,
+    alignItems: 'center',
+    gap: 8,
+  },
+  axisText: {
+    fontSize: 13,
+    color: '#666',
+    fontWeight: '500',
+  },
+  currentValueContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
     paddingTop: 12,
-    borderTopWidth: 1,
-    borderTopColor: '#f0f0f0',
+  },
+  currentValueWrapper: {
+    flex: 1,
+  },
+  currentValueText: {
+    fontSize: 14,
+    color: '#666',
+    marginBottom: 6,
+  },
+  currentValue: {
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  categoryBadge: {
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 12,
+    alignSelf: 'flex-start',
+  },
+  categoryText: {
+    fontSize: 12,
+    fontWeight: '600',
   },
   legendItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: 12,
   },
   legendDot: {
     width: 12,
@@ -275,8 +410,27 @@ const styles = StyleSheet.create({
   },
   legendText: {
     fontSize: 14,
-    color: '#666',
-    fontWeight: '500',
+    color: '#555',
+  },
+  legendCard: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 16,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    marginBottom: 16,
+  },
+  legendTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#1a1a1a',
+    marginBottom: 12,
+  },
+  legendContent: {
+    gap: 10,
   },
   infoCard: {
     backgroundColor: '#E0F2F1',
@@ -315,5 +469,23 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#555',
     flex: 1,
+  },
+  noDataContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  noDataText: {
+    fontSize: 18,
+    color: '#666',
+    marginTop: 16,
+    fontWeight: '600',
+  },
+  noDataSubText: {
+    fontSize: 14,
+    color: '#999',
+    marginTop: 8,
+    textAlign: 'center',
   },
   })

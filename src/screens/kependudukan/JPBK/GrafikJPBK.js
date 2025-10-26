@@ -5,7 +5,7 @@ import { stateDataJumlahPendudukBerdasarkanKecamatan } from '../../../state/data
 import { color } from '../../../constants/Helper';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const GrafikPP = (props) => {
+const GrafikJPBK = (props) => {
   const { dataJumlahPendudukBerdasarkanKecamatan } = stateDataJumlahPendudukBerdasarkanKecamatan()
   
   const dataPresentaseLaki = dataJumlahPendudukBerdasarkanKecamatan.map(item => parseInt(item.laki))
@@ -124,7 +124,7 @@ const GrafikPP = (props) => {
                 legend: ["Laki-laki", "Perempuan"]
               }}
               width={Math.max(Dimensions.get("window").width - 48, dataJumlahPendudukBerdasarkanKecamatan.length * 80)}
-              height={280}
+              height={320}
               yAxisInterval={1}
               fromZero={true}
               chartConfig={{
@@ -138,9 +138,13 @@ const GrafikPP = (props) => {
                   borderRadius: 16,
                 },
                 propsForLabels: {
-                  fontSize: 11,
-                  fontWeight: '600'
+                  fontSize: 10,
+                  fontWeight: '600',
+                  rotation: 45, // Rotasi label untuk membuat diagonal
+                  textAlign: 'right',
+                  width: 80, // Lebar label untuk menghindari overlap
                 },
+                verticalLabelRotation: 45, // Rotasi vertikal untuk label sumbu x
                 propsForDots: {
                   r: "5",
                   strokeWidth: "2",
@@ -246,7 +250,7 @@ const GrafikPP = (props) => {
   )
 }
 
-export default GrafikPP
+export default GrafikJPBK
 
 const styles = StyleSheet.create({
   container: {

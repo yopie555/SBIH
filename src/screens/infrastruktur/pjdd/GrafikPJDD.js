@@ -8,14 +8,16 @@ import Icon from 'react-native-vector-icons/Ionicons';
 const GrafikPJDD = (props) => {
   const { dataPanjangJalanDibangun } = stateDataPanjangJalanDibangun()
   
-  // Ambil 5 tahun terakhir
-  const last5Years = dataPanjangJalanDibangun?.slice(-5) || [];
+  // Urutkan data berdasarkan tahun dari terlama hingga sekarang, lalu ambil 5 tahun terakhir
+  const sortedData = [...(dataPanjangJalanDibangun || [])].sort((a, b) => parseInt(a.tahun) - parseInt(b.tahun));
+  const last5Years = sortedData.slice(-5);
   
   // Hitung statistik dari 5 tahun terakhir
   const values = last5Years.map(item => parseFloat(item.panjang));
   const maxValue = values.length > 0 ? Math.max(...values) : 0;
   const minValue = values.length > 0 ? Math.min(...values) : 0;
   const avgValue = values.length > 0 ? (values.reduce((a, b) => a + b, 0) / values.length).toFixed(2) : 0;
+  // Nilai terkini adalah tahun terakhir dari data yang sudah diurutkan
   const latestValue = values.length > 0 ? values[values.length - 1] : 0;
   const totalValue = values.length > 0 ? values.reduce((a, b) => a + b, 0).toFixed(2) : 0;
 

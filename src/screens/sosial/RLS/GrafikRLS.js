@@ -10,14 +10,17 @@ const GrafikRLS = (props) => {
   
   // Filter data anomali (nilai > 15) dan ambil 5 tahun terakhir
   const filteredData = dataLamaSekolah.filter(item => parseFloat(item.rls) <= 15);
-  const last5Years = filteredData.slice(-5);
-  
-  // Hitung statistik dari 5 tahun terakhir
+
+  // Urutkan dari terdahulu ke terbaru dan ambil 5 tahun terakhir
+  const sortedAllData = [...filteredData].sort((a, b) => a.tahun - b.tahun);
+  const last5Years = sortedAllData.slice(-5);
+
+  // Hitung statistik dari data yang diurutkan
   const values = last5Years.map(item => parseFloat(item.rls));
-  const maxValue = Math.max(...values);
-  const minValue = Math.min(...values);
-  const avgValue = (values.reduce((a, b) => a + b, 0) / values.length).toFixed(2);
-  const latestValue = values[values.length - 1];
+  const maxValue = values.length > 0 ? Math.max(...values) : 0;
+  const minValue = values.length > 0 ? Math.min(...values) : 0;
+  const avgValue = values.length > 0 ? (values.reduce((a, b) => a + b, 0) / values.length).toFixed(2) : '0';
+  const latestValue = values.length > 0 ? values[values.length - 1] : 0;
 
   // Tentukan range untuk sumbu Y (0 sampai max + buffer)
   const yAxisMax = Math.ceil(maxValue) + 1;
@@ -32,6 +35,31 @@ const GrafikRLS = (props) => {
   };
 
   const currentCategory = getRLSCategory(latestValue);
+
+  // Handle case when no data is available
+  if (!dataLamaSekolah || dataLamaSekolah.length === 0) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <View style={styles.headerTop}>
+            <Icon name="analytics" size={32} color="#7b1fa2" />
+            <View style={styles.headerTextContainer}>
+              <Text style={styles.headerTitle}>{props.route.params.title}</Text>
+              <View style={styles.sourceContainer}>
+                <Icon name="document-text-outline" size={16} color="#666" />
+                <Text style={styles.sourceText}>Sumber: <Text style={styles.sourceBPS}>BPS</Text></Text>
+              </View>
+            </View>
+          </View>
+        </View>
+        <View style={styles.noDataContainer}>
+          <Icon name="alert-circle-outline" size={64} color="#ccc" />
+          <Text style={styles.noDataText}>Data tidak tersedia</Text>
+          <Text style={styles.noDataSubText}>Silakan refresh untuk memuat data</Text>
+        </View>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -57,7 +85,7 @@ const GrafikRLS = (props) => {
         <View style={styles.periodCard}>
           <Icon name="time-outline" size={24} color="#7b1fa2" />
           <Text style={styles.periodText}>
-            Periode: <Text style={styles.periodValue}>{last5Years[0]?.tahun} - {last5Years[last5Years.length - 1]?.tahun}</Text>
+            Periode: <Text style={styles.periodValue}>{last5Years[0]?.tahun} - {last5Years[last5Years.length - 1]?.tahun} (diurutkan dari terdahulu)</Text>
           </Text>
         </View>
 
@@ -86,7 +114,7 @@ const GrafikRLS = (props) => {
         <View style={styles.chartCard}>
           <View style={styles.chartHeader}>
             <Icon name="bar-chart" size={24} color="#7b1fa2" />
-            <Text style={styles.chartTitle}>Grafik Tren 5 Tahun Terakhir</Text>
+            <Text style={styles.chartTitle}>Grafik Tren Per Tahun</Text>
           </View>
           
           <View style={styles.chartWrapper}>
@@ -164,7 +192,11 @@ const GrafikRLS = (props) => {
           <View style={styles.infoContent}>
             <View style={styles.infoRow}>
               <View style={styles.infoDot} />
-              <Text style={styles.infoText}>Menampilkan data 5 tahun terakhir</Text>
+              <Text style={styles.infoText}>Menampilkan 5 tahun terakhir yang tersedia</Text>
+            </View>
+            <View style={styles.infoRow}>
+              <View style={styles.infoDot} />
+              <Text style={styles.infoText}>Data diurutkan dari tahun terdahulu ke terbaru</Text>
             </View>
             <View style={styles.infoRow}>
               <View style={styles.infoDot} />
@@ -451,5 +483,23 @@ const styles = StyleSheet.create({
   legendText: {
     fontSize: 14,
     color: '#555',
+  },
+  noDataContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  noDataText: {
+    fontSize: 18,
+    color: '#666',
+    marginTop: 16,
+    fontWeight: '600',
+  },
+  noDataSubText: {
+    fontSize: 14,
+    color: '#999',
+    marginTop: 8,
+    textAlign: 'center',
   },
 })

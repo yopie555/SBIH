@@ -49,10 +49,10 @@ const DetailAKIM = (props) => {
 
   const getAKIMCategory = (kematian) => {
     const value = parseFloat(kematian);
-    if (value < 100) return { label: 'Sangat Baik', color: '#43a047', icon: 'checkmark-circle' };
-    if (value >= 100 && value < 150) return { label: 'Baik', color: '#1e88e5', icon: 'shield-checkmark' };
-    if (value >= 150 && value < 200) return { label: 'Perlu Perhatian', color: '#fb8c00', icon: 'warning' };
-    return { label: 'Kritis', color: '#e53935', icon: 'alert-circle' };
+    if (value < 100) return { label: 'Sangat Baik', color: '#43a047' };
+    if (value >= 100 && value < 150) return { label: 'Baik', color: '#1e88e5' };
+    if (value >= 150 && value < 200) return { label: 'Perlu Perhatian', color: '#fb8c00' };
+    return { label: 'Kritis', color: '#e53935' };
   };
 
   // Sort data by year in descending order (current year to past years)
@@ -102,27 +102,20 @@ const DetailAKIM = (props) => {
 
                 <View style={styles.cardBody}>
                   <View style={styles.akimContainer}>
-                    <Icon name={category.icon} size={32} color={category.color} />
+                    <Icon name="heart" size={32} color={category.color} />
                     <View style={styles.akimContent}>
                       <Text style={[styles.akimValue, { color: category.color }]}>
-                        {item.kematian_ibu}
+                        {parseFloat(item.kematian_ibu).toFixed(2)}%
                       </Text>
                       <Text style={styles.akimLabel}>per 100K</Text>
                     </View>
-                  </View>
-                  
-                  <View style={[styles.categoryBadge, { backgroundColor: category.color + '20' }]}>
-                    <Icon name="ribbon" size={16} color={category.color} />
-                    <Text style={[styles.categoryText, { color: category.color }]}>
-                      Status: {category.label}
-                    </Text>
                   </View>
 
                   {/* Interpretation */}
                   <View style={styles.interpretationBox}>
                     <Icon name="information-circle" size={18} color="#c2185b" />
                     <Text style={styles.interpretationText}>
-                      Dari 100.000 kelahiran hidup, sekitar {Math.round(parseFloat(item.kematian_ibu))} ibu meninggal
+                      Dari 100.000 kelahiran hidup, sekitar {parseFloat(item.kematian_ibu).toFixed(2)}% ibu meninggal
                     </Text>
                   </View>
                 </View>
@@ -306,19 +299,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#666',
     fontWeight: '500',
-  },
-  categoryBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 20,
-    gap: 8,
-    alignSelf: 'flex-start',
-  },
-  categoryText: {
-    fontSize: 14,
-    fontWeight: '600',
   },
   interpretationBox: {
     flexDirection: 'row',

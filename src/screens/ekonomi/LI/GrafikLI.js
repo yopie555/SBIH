@@ -7,12 +7,15 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 const GrafikLI = (props) => {
   const { dataLajuInflasi } = stateDataLajuInflasi()
-  
-  const [dataFiltered, setDataFiltered] = useState(dataLajuInflasi.map(item => ({ data: item.umum, tahun: item.tahun })))
+
+  const [dataFiltered, setDataFiltered] = useState(() => {
+    const initialData = dataLajuInflasi.map(item => ({ data: item.umum, tahun: item.tahun }))
+    return [...initialData].sort((a, b) => parseInt(a.tahun) - parseInt(b.tahun))
+  })
   const [titleList, setTitleList] = useState('Umum')
   const [modalVisible, setModalVisible] = useState(false)
 
-  // Ambil 5 tahun terakhir
+  // Ambil 5 tahun terakhir (data sudah terurut dari tahun terendah ke tertinggi)
   const last5Years = dataFiltered.slice(-5);
   
   // Hitung statistik
@@ -36,7 +39,9 @@ const GrafikLI = (props) => {
   ];
 
   const handleCategorySelect = (key, label) => {
-    setDataFiltered(dataLajuInflasi.map(item => ({ data: item[key], tahun: item.tahun })))
+    const newData = dataLajuInflasi.map(item => ({ data: item[key], tahun: item.tahun }))
+    const sortedNewData = [...newData].sort((a, b) => parseInt(a.tahun) - parseInt(b.tahun));
+    setDataFiltered(sortedNewData)
     setTitleList(label)
     setModalVisible(false)
   }

@@ -64,19 +64,19 @@ const GrafikAKIM = (props) => {
         <View style={styles.statsContainer}>
           <View style={[styles.statCard, { backgroundColor: '#e53935' }]}>
             <Icon name="trending-up" size={24} color="#fff" />
-            <Text style={styles.statValue}>{maxValue}</Text>
+            <Text style={styles.statValue}>{maxValue.toFixed(2)}%</Text>
             <Text style={styles.statLabel}>Tertinggi</Text>
           </View>
           
           <View style={[styles.statCard, { backgroundColor: '#43a047' }]}>
             <Icon name="trending-down" size={24} color="#fff" />
-            <Text style={styles.statValue}>{minValue}</Text>
+            <Text style={styles.statValue}>{minValue.toFixed(2)}%</Text>
             <Text style={styles.statLabel}>Terendah</Text>
           </View>
           
           <View style={[styles.statCard, { backgroundColor: '#1e88e5' }]}>
             <Icon name="calculator" size={24} color="#fff" />
-            <Text style={styles.statValue}>{avgValue}</Text>
+            <Text style={styles.statValue}>{avgValue}%</Text>
             <Text style={styles.statLabel}>Rata-rata</Text>
           </View>
         </View>
@@ -134,7 +134,7 @@ const GrafikAKIM = (props) => {
           <View style={styles.axisInfo}>
             <View style={styles.axisRow}>
               <Icon name="resize-outline" size={16} color="#666" />
-              <Text style={styles.axisText}>Sumbu Y: 0 - {yAxisMax} per 100K kelahiran</Text>
+              <Text style={styles.axisText}>Sumbu Y: 0% - {yAxisMax.toFixed(1)}% per 100K kelahiran</Text>
             </View>
           </View>
 
@@ -143,7 +143,7 @@ const GrafikAKIM = (props) => {
             <Icon name="calendar-outline" size={20} color="#666" />
             <View style={styles.currentValueWrapper}>
               <Text style={styles.currentValueText}>
-                AKIM Terkini: <Text style={[styles.currentValue, { color: currentCategory.color }]}>{latestValue}</Text>
+                AKIM Terkini: <Text style={[styles.currentValue, { color: currentCategory.color }]}>{latestValue.toFixed(2)}%</Text>
               </Text>
               <View style={[styles.categoryBadge, { backgroundColor: currentCategory.color + '20' }]}>
                 <Text style={[styles.categoryText, { color: currentCategory.color }]}>
@@ -167,7 +167,7 @@ const GrafikAKIM = (props) => {
             </View>
             <View style={styles.infoRow}>
               <View style={styles.infoDot} />
-              <Text style={styles.infoText}>Sumbu Y dimulai dari 0 hingga {yAxisMax}</Text>
+              <Text style={styles.infoText}>Sumbu Y dimulai dari 0% hingga {yAxisMax.toFixed(1)}%</Text>
             </View>
             <View style={styles.infoRow}>
               <View style={styles.infoDot} />
@@ -186,19 +186,19 @@ const GrafikAKIM = (props) => {
           <View style={styles.legendContent}>
             <View style={styles.legendItem}>
               <View style={[styles.legendDot, { backgroundColor: '#43a047' }]} />
-              <Text style={styles.legendText}>{`Sangat Baik (<100)`}</Text>
+              <Text style={styles.legendText}>{`Sangat Baik (<100%)`}</Text>
             </View>
             <View style={styles.legendItem}>
               <View style={[styles.legendDot, { backgroundColor: '#1e88e5' }]} />
-              <Text style={styles.legendText}>Baik (100-149)</Text>
+              <Text style={styles.legendText}>Baik (100%-149%)</Text>
             </View>
             <View style={styles.legendItem}>
               <View style={[styles.legendDot, { backgroundColor: '#fb8c00' }]} />
-              <Text style={styles.legendText}>Perlu Perhatian (150-199)</Text>
+              <Text style={styles.legendText}>Perlu Perhatian (150%-199%)</Text>
             </View>
             <View style={styles.legendItem}>
               <View style={[styles.legendDot, { backgroundColor: '#e53935' }]} />
-              <Text style={styles.legendText}>Kritis (≥200)</Text>
+              <Text style={styles.legendText}>Kritis (≥200%)</Text>
             </View>
           </View>
         </View>

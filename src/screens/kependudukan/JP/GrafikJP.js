@@ -5,11 +5,12 @@ import { stateDataJumlahPenduduk } from '../../../state/dataJP';
 import { color } from '../../../constants/Helper';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const GrafikPP = (props) => {
+const GrafikJP = (props) => {
   const { dataJumlahPenduduk } = stateDataJumlahPenduduk()
-  
-  // Ambil 5 tahun terakhir
-  const last5Years = dataJumlahPenduduk.slice(-5);
+
+  // Urutkan data berdasarkan tahun dari terdahulu hingga sekarang, lalu ambil 5 tahun terakhir
+  const sortedData = [...(dataJumlahPenduduk || [])].sort((a, b) => parseInt(a.tahun) - parseInt(b.tahun));
+  const last5Years = sortedData.slice(-5);
   
   // Data untuk grafik
   const lakiData = last5Years.map(item => parseInt(item.laki));
@@ -129,6 +130,7 @@ const GrafikPP = (props) => {
               width={Dimensions.get("window").width - 48}
               height={280}
               yAxisInterval={1}
+              fromZero={true}
               chartConfig={{
                 backgroundColor: "#3949ab",
                 backgroundGradientFrom: "#3949ab",
@@ -213,7 +215,7 @@ const GrafikPP = (props) => {
   )
 }
 
-export default GrafikPP
+export default GrafikJP
 
 const styles = StyleSheet.create({
   container: {

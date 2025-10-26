@@ -8,8 +8,9 @@ import Icon from 'react-native-vector-icons/Ionicons';
 const GrafikPTKJ = (props) => {
   const { dataPersentaseTingkatKemantapanJalan } = stateDataPersentaseTingkatKemantapanJalan()
   
-  // Ambil 5 tahun terakhir
-  const last5Years = dataPersentaseTingkatKemantapanJalan?.slice(-5) || [];
+  // Urutkan data berdasarkan tahun dari terlama hingga sekarang, lalu ambil 5 tahun terakhir
+  const sortedData = [...(dataPersentaseTingkatKemantapanJalan || [])].sort((a, b) => parseInt(a.tahun) - parseInt(b.tahun));
+  const last5Years = sortedData.slice(-5);
   
   // Hitung statistik dari 5 tahun terakhir
   const values = last5Years.map(item => parseFloat(item.kemantapan_jalan));
@@ -105,6 +106,7 @@ const GrafikPTKJ = (props) => {
                 width={Dimensions.get("window").width - 48}
                 height={280}
                 yAxisInterval={1}
+                fromZero={true}
                 segments={5}
                 chartConfig={{
                   backgroundColor: "#00acc1",

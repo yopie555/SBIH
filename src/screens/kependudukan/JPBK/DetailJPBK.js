@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View, ScrollView, Animated } from 'react-native'
-import React, { useRef, useEffect } from 'react'
+import { StyleSheet, Text, View, ScrollView, Animated, TouchableOpacity, Modal, FlatList } from 'react-native'
+import React, { useRef, useEffect, useState } from 'react'
 import { stateDataJumlahPendudukBerdasarkanKecamatan } from '../../../state/dataJBPK'
 import { color } from '../../../constants/Helper'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -39,9 +39,39 @@ const AnimatedCard = ({ children, delay = 0 }) => {
 
 const DetailPP = (props) => {
   const { dataJumlahPendudukBerdasarkanKecamatan } = stateDataJumlahPendudukBerdasarkanKecamatan()
+  const [selectedYear, setSelectedYear] = useState('Semua Tahun');
+  const [modalVisible, setModalVisible] = useState(false);
+
+  // Ekstrak tahun unik dari data
+  const uniqueYears = [...new Set(dataJumlahPendudukBerdasarkanKecamatan?.map(item => item.tahun) || [])]
+    .sort((a, b) => parseInt(b) - parseInt(a)); // Urut dari terbaru ke terlama
+
+  // Kelompokkan data berdasarkan tahun
+  const groupDataByYear = (data) => {
+    const grouped = {};
+    data?.forEach(item => {
+      if (!grouped[item.tahun]) {
+        grouped[item.tahun] = [];
+      }
+      grouped[item.tahun].push(item);
+    });
+    return grouped;
+  };
+
+  const groupedData = groupDataByYear(dataJumlahPendudukBerdasarkanKecamatan);
+
+  // Filter data berdasarkan tahun yang dipilih
+  const getFilteredData = () => {
+    if (selectedYear === 'Semua Tahun') {
+      return dataJumlahPendudukBerdasarkanKecamatan || [];
+    }
+    return groupedData[selectedYear] || [];
+  };
+
+  const filteredData = getFilteredData();
 
   // Sort data dari total penduduk tertinggi ke terendah
-  const sortedData = dataJumlahPendudukBerdasarkanKecamatan
+  const sortedData = filteredData
     ?.sort((a, b) => {
       const totalA = (parseInt(a.laki) || 0) + (parseInt(a.perempuan) || 0);
       const totalB = (parseInt(b.laki) || 0) + (parseInt(b.perempuan) || 0);
@@ -97,10 +127,71 @@ const DetailPP = (props) => {
         </View>
       </View>
 
-      <ScrollView 
+      <ScrollView
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
+        {/* Year Dropdown */}
+        <View style={styles.dropdownContainer}>
+          <Text style={styles.dropdownLabel}>Pilih Tahun:</Text>
+          <TouchableOpacity
+            style={styles.dropdownButton}
+            onPress={() => setModalVisible(true)}
+          >
+            <View style={styles.dropdownContent}>
+              <Icon name="calendar" size={20} color="#00acc1" />
+              <Text style={styles.dropdownText}>
+                {selectedYear === 'Semua Tahun' ? 'Semua Tahun' : selectedYear}
+              </Text>
+              <Icon name="chevron-down" size={20} color="#666" />
+            </View>
+          </TouchableOpacity>
+        </View>
+
+        {/* Year Selection Modal */}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => setModalVisible(false)}
+        >
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContent}>
+              <View style={styles.modalHeader}>
+                <Text style={styles.modalTitle}>Pilih Tahun</Text>
+                <TouchableOpacity
+                  style={styles.closeButton}
+                  onPress={() => setModalVisible(false)}
+                >
+                  <Icon name="close" size={24} color="#666" />
+                </TouchableOpacity>
+              </View>
+
+              <FlatList
+                data={['Semua Tahun', ...uniqueYears]}
+                keyExtractor={(item) => item}
+                renderItem={({ item }) => (
+                  <TouchableOpacity
+                    style={styles.yearItem}
+                    onPress={() => {
+                      setSelectedYear(item);
+                      setModalVisible(false);
+                    }}
+                  >
+                    <View style={styles.yearItemContent}>
+                      <Icon name="calendar-outline" size={20} color="#00acc1" />
+                      <Text style={styles.yearItemText}>{item}</Text>
+                      {selectedYear === item && (
+                        <Icon name="checkmark" size={20} color="#00acc1" />
+                      )}
+                    </View>
+                  </TouchableOpacity>
+                )}
+              />
+            </View>
+          </View>
+        </Modal>
+
         {/* Summary Card */}
         <View style={styles.summaryCard}>
           <View style={styles.summaryHeader}>
@@ -118,7 +209,9 @@ const DetailPP = (props) => {
               <Text style={styles.summaryItemText}>{formatNumber(totalPerempuan)} Perempuan</Text>
             </View>
           </View>
-          <Text style={styles.summarySubtitle}>{sortedData.length} Kecamatan</Text>
+          <Text style={styles.summarySubtitle}>
+            {selectedYear === 'Semua Tahun' ? `${Object.keys(groupedData).length} Tahun` : '1 Tahun'} • {sortedData.length} Kecamatan
+          </Text>
         </View>
 
         {sortedData.map((item, index) => {
@@ -136,11 +229,17 @@ const DetailPP = (props) => {
                     <Icon name="location" size={18} color="#00acc1" />
                     <Text style={styles.districtText}>{item?.kecamatan || 'N/A'}</Text>
                   </View>
-                  <View style={[styles.statusBadge, { backgroundColor: getStatusColor(item?.status_data) + '20' }]}>
-                    <View style={[styles.statusDot, { backgroundColor: getStatusColor(item?.status_data) }]} />
-                    <Text style={[styles.statusText, { color: getStatusColor(item?.status_data) }]}>
-                      {item?.status_data || 'N/A'}
-                    </Text>
+                  <View style={styles.cardHeaderRight}>
+                    <View style={styles.yearBadge}>
+                      <Icon name="calendar" size={14} color="#00acc1" />
+                      <Text style={styles.yearText}>{item?.tahun || 'N/A'}</Text>
+                    </View>
+                    <View style={[styles.statusBadge, { backgroundColor: getStatusColor(item?.status_data) + '20' }]}>
+                      <View style={[styles.statusDot, { backgroundColor: getStatusColor(item?.status_data) }]} />
+                      <Text style={[styles.statusText, { color: getStatusColor(item?.status_data) }]}>
+                        {item?.status_data || 'N/A'}
+                      </Text>
+                    </View>
                   </View>
                 </View>
 
@@ -395,6 +494,25 @@ const styles = StyleSheet.create({
     color: '#00acc1',
     flex: 1,
   },
+  cardHeaderRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  yearBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F5F5F5',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 12,
+    gap: 4,
+  },
+  yearText: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#00acc1',
+  },
   statusBadge: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -604,5 +722,80 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#555',
     lineHeight: 20,
+  },
+  // Dropdown styles
+  dropdownContainer: {
+    marginBottom: 16,
+  },
+  dropdownLabel: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#333',
+    marginBottom: 8,
+  },
+  dropdownButton: {
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
+    paddingHorizontal: 12,
+    paddingVertical: 12,
+  },
+  dropdownContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  dropdownText: {
+    flex: 1,
+    fontSize: 14,
+    color: '#333',
+    marginLeft: 8,
+    fontWeight: '500',
+  },
+  // Modal styles
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'flex-end',
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    maxHeight: '80%',
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  closeButton: {
+    padding: 4,
+  },
+  yearItem: {
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f5f5f5',
+  },
+  yearItemContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  yearItemText: {
+    flex: 1,
+    fontSize: 14,
+    color: '#333',
   },
 })

@@ -74,20 +74,22 @@ const DetailADHB = (props) => {
     // Ganti koma dengan titik untuk parsing
     const cleanStr = numStr.replace(',', '.');
 
-    if (cleanStr === '') return 'Rp 0';
+    if (cleanStr === '') return 'Rp.0,00-';
 
     // Konversi ke number
     const num = parseFloat(cleanStr) || 0;
 
-    // Format dengan titik sebagai pemisah ribuan
-    const formatted = num.toLocaleString('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    });
+    // Format angka dengan 2 desimal
+    const formattedNum = num.toFixed(2);
 
-    return formatted;
+    // Pisahkan bagian bulat dan desimal
+    const [wholeNum, decimal] = formattedNum.split('.');
+
+    // Tambahkan titik sebagai pemisah ribuan
+    const formattedWhole = wholeNum.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+    // Gabungkan dengan format yang diminta: Rp.1.000.000,00-
+    return `Rp ${formattedWhole},${decimal}-`;
   };
 
   

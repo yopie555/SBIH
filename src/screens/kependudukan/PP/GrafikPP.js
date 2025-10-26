@@ -8,14 +8,16 @@ import Icon from 'react-native-vector-icons/Ionicons';
 const GrafikPP = (props) => {
   const { dataPertumbuhanPenduduk } = stateDataPertumbuhanPenduduk()
   
-  // Ambil 5 tahun terakhir
-  const last5Years = dataPertumbuhanPenduduk?.slice(-5) || [];
+  // Urutkan data berdasarkan tahun dari terdahulu hingga sekarang, lalu ambil 5 tahun terakhir
+  const sortedData = [...(dataPertumbuhanPenduduk || [])].sort((a, b) => parseInt(a.tahun) - parseInt(b.tahun));
+  const last5Years = sortedData.slice(-5);
   
   // Hitung statistik dari 5 tahun terakhir
   const values = last5Years.map(item => parseFloat(item.laju));
   const maxValue = values.length > 0 ? Math.max(...values) : 0;
   const minValue = values.length > 0 ? Math.min(...values) : 0;
   const avgValue = values.length > 0 ? (values.reduce((a, b) => a + b, 0) / values.length).toFixed(2) : 0;
+  // Nilai terkini adalah tahun terakhir dari data yang sudah diurutkan
   const latestValue = values.length > 0 ? values[values.length - 1] : 0;
 
   const formatPercentage = (num) => {
@@ -106,6 +108,7 @@ const GrafikPP = (props) => {
                 width={Dimensions.get("window").width - 48}
                 height={280}
                 yAxisInterval={1}
+                fromZero={true}
                 segments={5}
                 chartConfig={{
                   backgroundColor: "#00acc1",

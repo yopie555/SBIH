@@ -22,12 +22,12 @@ const DetailADHKDashboard = () => {
       <Tab.Screen
         name="Detail Atas Dasar Harga Konstan"
         component={DetailADHK}
-        initialParams={{ title: "Data Atas Dasar Harga Konstan (ADHK)" }}
+        initialParams={{ title: "PDRB ADHK (Juta Rupiah)" }}
       />
       <Tab.Screen
         name="Grafik Atas Dasar Harga Konstan"
         component={GrafikADHK}
-        initialParams={{ title: "Data Atas Dasar Harga Konstan (ADHK)" }}
+        initialParams={{ title: "PDRB ADHK (Juta Rupiah)" }}
       />
     </Tab.Navigator>
   );
