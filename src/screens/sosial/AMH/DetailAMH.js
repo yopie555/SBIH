@@ -77,20 +77,19 @@ const DetailAMH = (props) => {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.summaryCard}>
-          <Text style={styles.summaryTitle}>Total Kelompok Umur</Text>
-          <Text style={styles.summaryValue}>{sortedData.length || 0}</Text>
+          <Text style={styles.summaryTitle}>Total Data Tersedia</Text>
+          <Text style={styles.summaryValue}>{sortedData.length || 0} Tahun</Text>
         </View>
 
         {sortedData.map((item, index) => {
           const category = getLiteracyCategory(item.laki);
-
           return (
             <AnimatedCard key={index} delay={index * 50}>
               <View style={styles.dataCard}>
                 <View style={styles.cardHeader}>
-                  <View style={styles.ageGroupBadge}>
-                    <Icon name="people" size={18} color="#00897b" />
-                    <Text style={styles.ageGroupText}>{item.kel_umur}</Text>
+                  <View style={styles.yearBadge}>
+                    <Icon name="calendar" size={18} color="#00897b" />
+                    <Text style={styles.yearText}>{item.tahun}</Text>
                   </View>
                   <View style={[styles.statusBadge, { backgroundColor: getStatusColor(item.status_data) + '20' }]}>
                     <View style={[styles.statusDot, { backgroundColor: getStatusColor(item.status_data) }]} />
@@ -101,34 +100,29 @@ const DetailAMH = (props) => {
                 </View>
 
                 <View style={styles.cardBody}>
-                  {/* Data Display */}
-                  <View style={styles.dataDisplay}>
-                    {/* <View style={styles.dataItem}>
-                      <Text style={styles.dataLabel}>Tahun</Text>
-                      <Text style={styles.dataValue}>{item.tahun}</Text>
-                    </View> */}
-                    <View style={styles.dataItem}>
-                      <Text style={styles.dataLabel}>Angka Melek Huruf</Text>
-                      <Text style={[styles.dataValue, { color: category.color }]}>
+                  <View style={styles.ahhContainer}>
+                    <Icon name="book" size={28} color={category.color} />
+                    <View style={styles.ahhContent}>
+                      <Text style={[styles.ahhValue, { color: category.color }]}>
                         {item.laki}%
                       </Text>
-                    </View>
-                    <View style={styles.dataItem}>
-                      <Text style={styles.dataLabel}>Kategori</Text>
-                      <View style={[styles.miniCategory, { backgroundColor: category.color + '20' }]}>
-                        <Text style={[styles.miniCategoryText, { color: category.color }]}>
-                          {category.label}
-                        </Text>
-                      </View>
+                      <Text style={styles.ahhLabel}>Kelompok {item.kel_umur}</Text>
                     </View>
                   </View>
 
-                  {/* Progress Bar */}
-                  <View style={styles.progressSection}>
-                    <View style={styles.progressBar}>
-                      <View style={[styles.progressFill, { width: `${item.laki}%`, backgroundColor: category.color }]} />
-                    </View>
-                    <Text style={styles.progressText}>{item.laki}% dari populasi</Text>
+                  <View style={[styles.categoryBadge, { backgroundColor: category.color + '20' }]}>
+                    <Icon name="ribbon" size={16} color={category.color} />
+                    <Text style={[styles.categoryText, { color: category.color }]}>
+                      Kategori: {category.label}
+                    </Text>
+                  </View>
+
+                  {/* Life Expectancy Interpretation */}
+                  <View style={styles.interpretationBox}>
+                    <Icon name="information-circle" size={18} color="#00897b" />
+                    <Text style={styles.interpretationText}>
+                      Tingkat melek huruf untuk kelompok {item.kel_umur}: {item.laki}%
+                    </Text>
                   </View>
                 </View>
 
@@ -254,7 +248,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 16,
   },
-  ageGroupBadge: {
+  yearBadge: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#E0F2F1',
@@ -263,7 +257,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     gap: 6,
   },
-  ageGroupText: {
+  yearText: {
     fontSize: 16,
     fontWeight: 'bold',
     color: '#00897b',
@@ -286,60 +280,59 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   cardBody: {
+    paddingVertical: 12,
     borderTopWidth: 1,
     borderBottomWidth: 1,
     borderColor: '#f0f0f0',
-    paddingVertical: 16,
-    gap: 16,
-  },
-  dataDisplay: {
     gap: 12,
   },
-  dataItem: {
+  ahhContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    gap: 16,
   },
-  dataLabel: {
-    fontSize: 14,
-    color: '#666',
-    fontWeight: '600',
+  ahhContent: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    gap: 6,
   },
-  dataValue: {
-    fontSize: 16,
+  ahhValue: {
+    fontSize: 40,
     fontWeight: 'bold',
-    color: '#333',
   },
-  progressBar: {
-    height: 8,
-    backgroundColor: '#e0e0e0',
-    borderRadius: 4,
-    overflow: 'hidden',
-    marginBottom: 8,
-  },
-  progressFill: {
-    height: '100%',
-    borderRadius: 4,
-  },
-  progressSection: {
-    marginTop: 8,
-  },
-  progressText: {
-    fontSize: 12,
+  ahhLabel: {
+    fontSize: 16,
     color: '#666',
-    textAlign: 'center',
+    fontWeight: '500',
   },
-  miniCategory: {
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 8,
+  categoryBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 20,
+    gap: 8,
     alignSelf: 'flex-start',
   },
-  miniCategoryText: {
-    fontSize: 11,
+  categoryText: {
+    fontSize: 14,
     fontWeight: '600',
   },
-    cardFooter: {
+  interpretationBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#E0F2F1',
+    borderRadius: 8,
+    padding: 12,
+    gap: 10,
+  },
+  interpretationText: {
+    fontSize: 14,
+    color: '#00695c',
+    flex: 1,
+    fontWeight: '500',
+  },
+  cardFooter: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,

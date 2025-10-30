@@ -7,9 +7,16 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 const GrafikJPBK = (props) => {
   const { dataJumlahPendudukBerdasarkanKecamatan } = stateDataJumlahPendudukBerdasarkanKecamatan()
-  
-  const dataPresentaseLaki = dataJumlahPendudukBerdasarkanKecamatan.map(item => parseInt(item.laki))
-  const dataPresentasePerempuan = dataJumlahPendudukBerdasarkanKecamatan.map(item => parseInt(item.perempuan))
+
+  // Filter data untuk menampilkan tahun terakhir saja
+  // Jika data memiliki field tahun, kelompokkan berdasarkan tahun dan ambil yang terbaru
+  // Jika tidak, asumsikan semua data adalah tahun terakhir
+  const latestYearData = dataJumlahPendudukBerdasarkanKecamatan.length > 0
+    ? dataJumlahPendudukBerdasarkanKecamatan
+    : [];
+
+  const dataPresentaseLaki = latestYearData.map(item => parseInt(item.laki))
+  const dataPresentasePerempuan = latestYearData.map(item => parseInt(item.perempuan))
   
   // Hitung statistik
   const totalLaki = dataPresentaseLaki.reduce((sum, val) => sum + val, 0);
@@ -27,13 +34,13 @@ const GrafikJPBK = (props) => {
   };
 
   // Cari kecamatan dengan penduduk terbanyak
-  const maxTotalIndex = dataJumlahPendudukBerdasarkanKecamatan.reduce((maxIdx, item, idx, arr) => {
+  const maxTotalIndex = latestYearData.reduce((maxIdx, item, idx, arr) => {
     const currentTotal = parseInt(item.laki) + parseInt(item.perempuan);
     const maxTotal = parseInt(arr[maxIdx].laki) + parseInt(arr[maxIdx].perempuan);
     return currentTotal > maxTotal ? idx : maxIdx;
   }, 0);
-  
-  const kecamatanTerbanyak = dataJumlahPendudukBerdasarkanKecamatan[maxTotalIndex];
+
+  const kecamatanTerbanyak = latestYearData[maxTotalIndex];
 
   return (
     <View style={styles.container}>
@@ -62,12 +69,23 @@ const GrafikJPBK = (props) => {
             <Text style={styles.statValue}>{formatNumber(totalLaki)}</Text>
             <Text style={styles.statLabel}>Total Laki-laki</Text>
           </View>
-          
+
           <View style={[styles.statCard, { backgroundColor: '#e91e63' }]}>
             <Icon name="female" size={28} color="#fff" />
             <Text style={styles.statValue}>{formatNumber(totalPerempuan)}</Text>
             <Text style={styles.statLabel}>Total Perempuan</Text>
           </View>
+        </View>
+
+        {/* Year Info Card */}
+        <View style={styles.yearInfoCard}>
+          <View style={styles.yearInfoHeader}>
+            <Icon name="calendar" size={24} color="#00acc1" />
+            <Text style={styles.yearInfoTitle}>Data Tahun Terakhir</Text>
+          </View>
+          <Text style={styles.yearInfoDescription}>
+            Grafik menampilkan data jumlah penduduk berdasarkan kecamatan untuk tahun terakhir yang tersedia.
+          </Text>
         </View>
 
         {/* Gender Ratio Card */}
@@ -79,11 +97,14 @@ const GrafikJPBK = (props) => {
           <Text style={styles.ratioValue}>{genderRatio}</Text>
           <Text style={styles.ratioSubtitle}>Laki-laki per 100 Perempuan</Text>
           <Text style={styles.ratioDescription}>
-            {genderRatio > 100 
-              ? `Jumlah laki-laki lebih banyak ${((genderRatio - 100)).toFixed(1)}%`
+            {genderRatio > 100
+              ? `Laki-laki lebih banyak ${((genderRatio - 100)).toFixed(1)} untuk setiap 100 perempuan`
               : genderRatio < 100
-              ? `Jumlah perempuan lebih banyak ${((100 - genderRatio)).toFixed(1)}%`
+              ? `Perempuan lebih banyak ${((100 - genderRatio)).toFixed(1)} untuk setiap 100 laki-laki`
               : 'Jumlah laki-laki dan perempuan seimbang'}
+          </Text>
+          <Text style={styles.ratioDetail}>
+            Total: {formatNumber(totalLaki)} laki-laki, {formatNumber(totalPerempuan)} perempuan
           </Text>
         </View>
 
@@ -108,7 +129,7 @@ const GrafikJPBK = (props) => {
           <ScrollView horizontal showsHorizontalScrollIndicator={true}>
             <LineChart
               data={{
-                labels: dataJumlahPendudukBerdasarkanKecamatan.map(item => item.kecamatan),
+                labels: latestYearData.map(item => item.kecamatan),
                 datasets: [
                   {
                     data: dataPresentaseLaki,
@@ -123,7 +144,7 @@ const GrafikJPBK = (props) => {
                 ],
                 legend: ["Laki-laki", "Perempuan"]
               }}
-              width={Math.max(Dimensions.get("window").width - 48, dataJumlahPendudukBerdasarkanKecamatan.length * 80)}
+              width={Math.max(Dimensions.get("window").width - 48, latestYearData.length * 80)}
               height={320}
               yAxisInterval={1}
               fromZero={true}
@@ -364,6 +385,13 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     textAlign: 'center',
   },
+  ratioDetail: {
+    fontSize: 12,
+    color: '#00796b',
+    textAlign: 'center',
+    marginTop: 8,
+    fontWeight: '500',
+  },
   chartCard: {
     backgroundColor: '#fff',
     borderRadius: 12,
@@ -385,6 +413,28 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: '#1a1a1a',
+  },
+  yearInfoCard: {
+    backgroundColor: '#E0F7FA',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 16,
+  },
+  yearInfoHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    marginBottom: 8,
+  },
+  yearInfoTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#1a1a1a',
+  },
+  yearInfoDescription: {
+    fontSize: 14,
+    color: '#006064',
+    lineHeight: 20,
   },
   legendContainer: {
     flexDirection: 'row',
