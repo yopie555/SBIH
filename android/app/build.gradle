@@ -82,8 +82,8 @@ android {
         applicationId "id.go.bintankab.bih.v2"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 2
-        versionName "1.1"
+        versionCode 4
+        versionName "2.4"
     }
     signingConfigs {
         debug {
