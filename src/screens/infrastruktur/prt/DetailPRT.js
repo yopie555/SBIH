@@ -93,7 +93,7 @@ const DetailPRT = (props) => {
             <Icon name="analytics" size={24} color="#fff" />
             <Text style={styles.summaryTitle}>Total Data Tersedia</Text>
           </View>
-          <Text style={styles.summaryValue}>{sortedData.length} Tahun</Text>
+          <Text style={styles.summaryValue}>{sortedData.length} Record</Text>
           {sortedData.length > 0 && (
             <Text style={styles.summarySubtitle}>
               Periode: {sortedData[0]?.tahun || '-'} - {sortedData[sortedData.length - 1]?.tahun || '-'}

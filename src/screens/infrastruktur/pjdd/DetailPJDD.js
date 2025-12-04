@@ -102,7 +102,7 @@ const DetailPJDD = (props) => {
           </View>
           <Text style={styles.summaryValue}>{formatNumber(totalPanjang)} Km</Text>
           <Text style={styles.summarySubtitle}>
-            Periode {sortedData.length} Tahun
+            Periode {sortedData.length} Record
           </Text>
         </View>
 

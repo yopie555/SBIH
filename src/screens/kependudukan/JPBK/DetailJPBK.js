@@ -210,7 +210,7 @@ const DetailPP = (props) => {
             </View>
           </View>
           <Text style={styles.summarySubtitle}>
-            {selectedYear === 'Semua Tahun' ? `${Object.keys(groupedData).length} Tahun` : '1 Tahun'} • {sortedData.length} Kecamatan
+            {selectedYear === 'Semua Tahun' ? `${Object.keys(groupedData).length} Record` : '1 Tahun'} • {sortedData.length} Kecamatan
           </Text>
         </View>
 
