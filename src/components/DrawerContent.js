@@ -38,7 +38,10 @@ const DrawerContent = () => {
                 <List.Accordion
                     title="Sosial"
                     titleStyle={{ fontSize: 12 }}
-                    left={props => <List.Icon {...props} icon="folder" />}>
+                    left={props => {
+                        const { key, ...restProps } = props;
+                        return <List.Icon {...restProps} icon="folder" />;
+                    }}>
                     <List.Item titleNumberOfLines={2} title="% Penduduk Miskin" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate('DetailDashboard')} />
                     <List.Item titleNumberOfLines={2} title="Index Pembangunan Manusia" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate('DetailIPMDashboard')} />
                     <List.Item titleNumberOfLines={2} title="Angka Rata-Rata Lama Sekolah" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate('DetailRLSDashboard')} />
@@ -61,7 +64,10 @@ const DrawerContent = () => {
                 <List.Accordion
                     title="Ekonomi"
                     titleStyle={{ fontSize: 12 }}
-                    left={props => <List.Icon {...props} icon="folder" />}>
+                    left={props => {
+                        const { key, ...restProps } = props;
+                        return <List.Icon {...restProps} icon="folder" />;
+                    }}>
                     <List.Item titleNumberOfLines={2} title="Pertumbuhan Ekonomi" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate("DetailPEDashboard")} />
                     <List.Item titleNumberOfLines={2} title="Tingkat Inflasi" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate("DetailLIDashboard")} />
                     <List.Item titleNumberOfLines={2} title="Kunjungan Wisata" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate("DetailKWDashboard")} />
@@ -72,7 +78,10 @@ const DrawerContent = () => {
                 <List.Accordion
                     title="Pertanian dan Perikanan"
                     titleStyle={{ fontSize: 12 }}
-                    left={props => <List.Icon {...props} icon="folder" />}>
+                    left={props => {
+                        const { key, ...restProps } = props;
+                        return <List.Icon {...restProps} icon="folder" />;
+                    }}>
                     <List.Item titleNumberOfLines={2} title="Produksi Perikanan Budidaya" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate("DetailPPBDashboard")}/>
                     <List.Item titleNumberOfLines={2} title="Produksi Perikanan Tangkap" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate("DetailPPTDashboard")}/>
                     <List.Item titleNumberOfLines={3} title="Capaian Produksi Komoditi Unggulan Perkebunan" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate("DetailCPKUPDashboard")} />
@@ -82,7 +91,10 @@ const DrawerContent = () => {
                 <List.Accordion
                     title="Kependudukan"
                     titleStyle={{ fontSize: 12 }}
-                    left={props => <List.Icon {...props} icon="folder" />}>
+                    left={props => {
+                        const { key, ...restProps } = props;
+                        return <List.Icon {...restProps} icon="folder" />;
+                    }}>
                     <List.Item titleNumberOfLines={2} title="Pertumbuhan Penduduk" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate("DetailPPDashboard")}/>
                     <List.Item titleNumberOfLines={2} title="Jumlah Penduduk" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate("DetailJPDashboard")}/>
                     <List.Item titleNumberOfLines={3} title="Jumlah Penduduk Berdasarkan Kelompok Umur" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate("DetailJPBKUDashboard")}/>
@@ -91,7 +103,10 @@ const DrawerContent = () => {
                 <List.Accordion
                     title="Infrastruktur"
                     titleStyle={{ fontSize: 12 }}
-                    left={props => <List.Icon {...props} icon="folder" />}>
+                    left={props => {
+                        const { key, ...restProps } = props;
+                        return <List.Icon {...restProps} icon="folder" />;
+                    }}>
                     <List.Item titleNumberOfLines={3} title="Panjang Jalan yang Di Bangun dan Ditingkatkan" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate("DetailPJDDDashboard")} />
                     <List.Item titleNumberOfLines={3} title="% Rumah Tangga yang Menggunakan Air Bersih" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate("DetailPRTDashboard")} />
                     <List.Item titleNumberOfLines={3} title="% Tingkat Kemantapan Jalan (Mantap Sempurna)" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate("DetailPTKJDashboard")} />
@@ -99,7 +114,10 @@ const DrawerContent = () => {
                 <List.Accordion
                     title="Video"
                     titleStyle={{ fontSize: 12 }}
-                    left={props => <List.Icon {...props} icon="folder" />}>
+                    left={props => {
+                        const { key, ...restProps } = props;
+                        return <List.Icon {...restProps} icon="folder" />;
+                    }}>
                     <List.Item titleNumberOfLines={2} title="Video" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate('DetailVideoDashboard')} />
                 </List.Accordion>
             </List.Section>
