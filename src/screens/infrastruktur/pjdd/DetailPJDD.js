@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, ScrollView, Animated } from 'react-native'
 import React, { useRef, useEffect } from 'react'
 import { stateDataPanjangJalanDibangun } from '../../../state/dataPJD'
-import { color, formatNumber } from '../../../constants/Helper'
+import { color, formatNumber, formatNumberWithDecimals } from '../../../constants/Helper'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 const AnimatedCard = ({ children, delay = 0 }) => {
@@ -67,6 +67,8 @@ const DetailPJDD = (props) => {
 
   // Hitung total panjang jalan
   const totalPanjang = sortedData.reduce((sum, item) => sum + (parseFloat(item?.panjang) || 0), 0);
+  // Round to 2 decimal places
+  const totalPanjangRounded = parseFloat(totalPanjang.toFixed(2));
 
   return (
     <View style={styles.container}>
@@ -92,9 +94,9 @@ const DetailPJDD = (props) => {
             <Icon name="layers" size={24} color="#fff" />
             <Text style={styles.summaryTitle}>Total Pembangunan Jalan</Text>
           </View>
-          <Text style={styles.summaryValue}>{formatNumber(totalPanjang)} Km</Text>
+          <Text style={styles.summaryValue}>{formatNumber(totalPanjangRounded)} Km</Text>
           <Text style={styles.summarySubtitle}>
-            Periode {sortedData.length} Record
+            Periode {sortedData.length} Tahun
           </Text>
         </View>
 
@@ -121,9 +123,9 @@ const DetailPJDD = (props) => {
                     <Icon name={category.icon} size={32} color={category.color} />
                     <View style={styles.roadContent}>
                       <Text style={[styles.roadValue, { color: category.color }]}>
-                        {formatNumber(item?.panjang)}
+                        {formatNumberWithDecimals(item?.panjang)}
                       </Text>
-                      <Text style={styles.roadLabel}>Kilometer</Text>
+                      <Text style={styles.roadLabel}>Km</Text>
                     </View>
                   </View>
                   
@@ -190,7 +192,7 @@ const DetailPJDD = (props) => {
                 <Icon name="calculator" size={20} color="#1e88e5" />
                 <Text style={styles.statLabel}>Rata-rata</Text>
                 <Text style={[styles.statValue, { color: '#1e88e5' }]}>
-                  {formatNumber((sortedData.reduce((sum, d) => sum + (parseFloat(d?.panjang || 0)), 0) / sortedData.length))} Km
+                  {formatNumberWithDecimals((sortedData.reduce((sum, d) => sum + (parseFloat(d?.panjang || 0)), 0) / sortedData.length))} Km
                 </Text>
               </View>
             </View>

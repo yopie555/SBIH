@@ -2,7 +2,7 @@ import { View, Text, Dimensions, StyleSheet, ScrollView } from 'react-native'
 import React from 'react'
 import { LineChart } from "react-native-chart-kit";
 import { stateDataPanjangJalanDibangun } from '../../../state/dataPJD';
-import { color, formatNumber } from '../../../constants/Helper';
+import { color, formatNumber, formatNumberWithDecimals } from '../../../constants/Helper';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const GrafikPJDD = (props) => {
@@ -177,7 +177,7 @@ const GrafikPJDD = (props) => {
                 <Text style={[styles.trendValue, { 
                   color: latestValue > values[0] ? '#43a047' : '#e53935' 
                 }]}>
-                  {latestValue > values[0] ? '↑' : '↓'} {formatNumber(Math.abs(latestValue - values[0]))} Km
+                  {latestValue > values[0] ? '↑' : '↓'} {formatNumberWithDecimals(Math.abs(latestValue - values[0]))} Km
                 </Text>
               </View>
               <Text style={styles.trendDescription}>
