@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, LogBox } from 'react-native'
 import React, { useEffect } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createDrawerNavigator, DrawerContentScrollView } from '@react-navigation/drawer';
@@ -77,6 +77,14 @@ const DashboardDrawer = () => {
 
 
 const App = () => {
+  // Suppress warning from @react-navigation/material-top-tabs about key prop spread
+  // This is a known issue in the library and doesn't affect functionality
+  useEffect(() => {
+    LogBox.ignoreLogs([
+      'A props object containing a "key" prop is being spread into JSX',
+    ]);
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <NavigationContainer>

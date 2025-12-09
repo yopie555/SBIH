@@ -1,8 +1,11 @@
-import { StyleSheet, Text, View, ScrollView, Animated } from 'react-native'
-import React, { useRef, useEffect } from 'react'
+import { StyleSheet, Text, View, ScrollView, Animated, ActivityIndicator } from 'react-native'
+import React, { useRef, useEffect, useState, useMemo } from 'react'
 import { stateDataAngkaMelekHuruf } from '../../../state/dataAMH'
 import { color } from '../../../constants/Helper'
 import Icon from 'react-native-vector-icons/Ionicons'
+import axios from 'axios'
+import { baseURL } from '../../../constants/General'
+import { useMutation } from 'react-query'
 
 const AnimatedCard = ({ children, delay = 0 }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -38,7 +41,34 @@ const AnimatedCard = ({ children, delay = 0 }) => {
 };
 
 const DetailAMH = (props) => {
-  const { dataAngkaMelekHuruf } = stateDataAngkaMelekHuruf()
+  const { dataAngkaMelekHuruf, setDataAngkaMelekHuruf } = stateDataAngkaMelekHuruf()
+
+  // API call with POST method (no parameters needed)
+  const { mutate: fetchData, isLoading } = useMutation(
+    async () => {
+      const response = await axios.post(`${baseURL}/sosial/amh`, {});
+      return response.data.result;
+    },
+    {
+      onError: (error) => {
+        console.error("Error fetching AMH data:", error);
+      },
+      onSuccess: (data) => {
+        setDataAngkaMelekHuruf(data);
+      }
+    }
+  );
+
+  // Fetch data on component mount
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Sort data by year in descending order (current year to past years)
+  const sortedData = useMemo(() => {
+    return [...(dataAngkaMelekHuruf || [])].sort((a, b) => b.tahun - a.tahun);
+  }, [dataAngkaMelekHuruf]);
 
   const getStatusColor = (status) => {
     if (status.toLowerCase().includes('tetap')) return '#43a047';
@@ -46,16 +76,16 @@ const DetailAMH = (props) => {
     return '#666';
   };
 
-  const getLiteracyCategory = (percentage) => {
-    const value = parseFloat(percentage);
-    if (value >= 95) return { label: 'Sangat Baik', color: '#43a047' };
-    if (value >= 90 && value < 95) return { label: 'Baik', color: '#1e88e5' };
-    if (value >= 80 && value < 90) return { label: 'Cukup', color: '#fb8c00' };
+  const getLiteracyCategory = (jumlah) => {
+    const value = parseFloat(jumlah);
+    if (value >= 150000) return { label: 'Sangat Baik', color: '#43a047' };
+    if (value >= 100000 && value < 150000) return { label: 'Baik', color: '#1e88e5' };
+    if (value >= 50000 && value < 100000) return { label: 'Cukup', color: '#fb8c00' };
     return { label: 'Rendah', color: '#e53935' };
   };
 
-  // Sort data by year in descending order (current year to past years)
-  const sortedData = [...(dataAngkaMelekHuruf || [])].sort((a, b) => b.tahun - a.tahun);
+  // Data is already filtered by API, so we use sortedData directly
+  const dataFiltered = sortedData;
 
   return (
     <View style={styles.container}>
@@ -72,17 +102,26 @@ const DetailAMH = (props) => {
         </View>
       </View>
 
+      {/* Loading Indicator */}
+      {isLoading && (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#00897b" />
+          <Text style={styles.loadingText}>Memuat data...</Text>
+        </View>
+      )}
+
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.summaryCard}>
           <Text style={styles.summaryTitle}>Total Data Tersedia</Text>
-          <Text style={styles.summaryValue}>{sortedData.length || 0} Tahun</Text>
+          <Text style={styles.summaryValue}>{dataFiltered?.length || 0} Record</Text>
         </View>
 
-        {sortedData.map((item, index) => {
-          const category = getLiteracyCategory(item.laki);
+        {dataFiltered?.map((item, index) => {
+          const category = getLiteracyCategory(item.jumlah);
+          const formattedJumlah = item.jumlah?.toLocaleString('id-ID') || '0';
           return (
             <AnimatedCard key={index} delay={index * 50}>
               <View style={styles.dataCard}>
@@ -104,9 +143,8 @@ const DetailAMH = (props) => {
                     <Icon name="book" size={28} color={category.color} />
                     <View style={styles.ahhContent}>
                       <Text style={[styles.ahhValue, { color: category.color }]}>
-                        {item.laki}%
-                      </Text>
-                      <Text style={styles.ahhLabel}>Kelompok {item.kel_umur}</Text>
+                        {formattedJumlah}
+                      </Text>                      
                     </View>
                   </View>
 
@@ -117,25 +155,25 @@ const DetailAMH = (props) => {
                     </Text>
                   </View>
 
-                  {/* Life Expectancy Interpretation */}
+                  {/* Interpretation */}
                   <View style={styles.interpretationBox}>
                     <Icon name="information-circle" size={18} color="#00897b" />
                     <Text style={styles.interpretationText}>
-                      Tingkat melek huruf untuk kelompok {item.kel_umur}: {item.laki}%
+                      Jumlah penduduk melek huruf pada tahun {item.tahun}: {formattedJumlah} orang
                     </Text>
                   </View>
                 </View>
 
                 <View style={styles.cardFooter}>
                   <Icon name="information-circle-outline" size={16} color="#999" />
-                  <Text style={styles.footerText}>Angka Melek Huruf per Kelompok Umur</Text>
+                  <Text style={styles.footerText}>Angka Melek Huruf</Text>
                 </View>
               </View>
             </AnimatedCard>
           )
         })}
 
-        {sortedData.length === 0 && (
+        {dataFiltered?.length === 0 && (
           <View style={styles.emptyState}>
             <Icon name="book-outline" size={80} color="#ccc" />
             <Text style={styles.emptyText}>Belum ada data tersedia</Text>
@@ -205,6 +243,22 @@ const styles = StyleSheet.create({
   sourceBPS: {
     color: '#e53935',
     fontWeight: '600',
+  },
+  loadingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 16,
+    backgroundColor: '#E0F2F1',
+    marginHorizontal: 16,
+    marginTop: 16,
+    borderRadius: 8,
+    gap: 12,
+  },
+  loadingText: {
+    fontSize: 14,
+    color: '#00897b',
+    fontWeight: '500',
   },
   scrollContent: {
     padding: 16,

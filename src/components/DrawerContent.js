@@ -21,86 +21,110 @@ const DrawerContent = () => {
                 onPress={() => navigation.dispatch(DrawerActions.closeDrawer())}
             >
                 <Icon name="home" size={30} color="black" style={{ marginVertical: 10, marginHorizontal: 10 }} />
-                <Text style={{ marginVertical: 10, marginHorizontal: 10, color: 'black'  }}>Home</Text>
+                <Text style={{ marginVertical: 10, marginHorizontal: 10, color: 'black', fontSize: 12  }}>Home</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 style={{ flexDirection: 'row', alignItems: 'center' }}
                 onPress={()=> navigation.navigate('TentangKami')}
             >
                 <Icon2 name="infocirlce" size={26} color="black" style={{ marginVertical: 10, marginHorizontal: 10 }} />
-                <Text style={{ marginVertical: 10, marginHorizontal: 10, color: 'black'  }}>Tentang Kami</Text>
+                <Text style={{ marginVertical: 10, marginHorizontal: 10, color: 'black', fontSize: 12  }}>Tentang Kami</Text>
             </TouchableOpacity>
             {/* separator */}
             <View style={{ borderBottomWidth: 1, borderBottomColor: 'black', marginVertical: 5 }}></View>
 
 
-            <List.Section title="Kategori">
+            <List.Section title="Kategori" titleStyle={{ fontSize: 12 }}>
                 <List.Accordion
                     title="Sosial"
-                    left={props => <List.Icon {...props} icon="folder" />}>
-                    <List.Item titleNumberOfLines={2} title="Persentase Penduduk Miskin" onPress={() => navigation.navigate('DetailDashboard')} />
-                    <List.Item titleNumberOfLines={2} title="Index Pembangunan Manusia (IPM)" onPress={() => navigation.navigate('DetailIPMDashboard')} />
-                    <List.Item titleNumberOfLines={2} title="Angka Rata-Rata Lama Sekolah (RLS)" onPress={() => navigation.navigate('DetailRLSDashboard')} />
-                    <List.Item titleNumberOfLines={2} title="Angka Melek Huruf (AMH)" onPress={() => navigation.navigate('DetailAMHDashboard')} />
-                    <List.Item titleNumberOfLines={2} title="Angka Harapan Hidup (AHH)" onPress={() => navigation.navigate('DetailAHHDashboard')} />
-                    <List.Item titleNumberOfLines={2} title="Angka Keberlangsungan Hidup Bayi (AKHB)" onPress={() => navigation.navigate('DetailAKHBDashboard')}/>
-                    <List.Item titleNumberOfLines={3} titleMaxFontSizeMultiplier={18} title="Angka Kematian Ibu Melahirkan (AKIM)" onPress={() => navigation.navigate('DetailAKIMDashboard')}/>
-                    <List.Item titleNumberOfLines={2} title="Perkembangan Kondisi Ketenagakerjaan" onPress={() => navigation.navigate('DetailPKKDashboard')}/>
-                    <List.Item titleNumberOfLines={2} title="Index Pembangunan Gender" onPress={() => navigation.navigate('DetailIPGDashboard')} />
-                    <List.Item titleNumberOfLines={2} title="Angka Partisipasi Kasar" onPress={() => navigation.navigate('DetailAPKDashboard')}  />
-                    <List.Item titleNumberOfLines={2} title="Angka Partisipasi Murni" onPress={() => navigation.navigate('DetailAPMDashboard')}  />
-                    <List.Item titleNumberOfLines={2} title="Angka Harapan Lama Sekolah (HLS)" onPress={() => navigation.navigate('DetailHLSDashboard')} />
-                    <List.Item titleNumberOfLines={2} title="Jumlah Rumah Tidak Layak Huni yang Di Rehab" onPress={() => navigation.navigate('DetailJRTLHDashboard')} />
-                    <List.Item titleNumberOfLines={2} title="Index Gini" onPress={() => navigation.navigate("DetailIGDashboard")} />
+                    titleStyle={{ fontSize: 12 }}
+                    left={props => {
+                        const { key, ...restProps } = props;
+                        return <List.Icon {...restProps} icon="folder" />;
+                    }}>
+                    <List.Item titleNumberOfLines={2} title="% Penduduk Miskin" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate('DetailDashboard')} />
+                    <List.Item titleNumberOfLines={2} title="Index Pembangunan Manusia" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate('DetailIPMDashboard')} />
+                    <List.Item titleNumberOfLines={2} title="Angka Rata-Rata Lama Sekolah" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate('DetailRLSDashboard')} />
+                    <List.Item titleNumberOfLines={2} title="Angka Melek Huruf" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate('DetailAMHDashboard')} />
+                    <List.Item titleNumberOfLines={2} title="Angka Harapan Hidup" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate('DetailAHHDashboard')} />
+                    <List.Item titleNumberOfLines={2} title="Angka Keberlangsungan Hidup Bayi" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate('DetailAKHBDashboard')}/>
+                    <List.Item titleNumberOfLines={3} titleMaxFontSizeMultiplier={18} title="Angka Kematian Ibu Melahirkan" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate('DetailAKIMDashboard')}/>
+                    <List.Item titleNumberOfLines={2} title="Perkembangan Kondisi Ketenagakerjaan" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate('DetailPKKDashboard')}/>
+                    <List.Item titleNumberOfLines={2} title="Index Pembangunan Gender" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate('DetailIPGDashboard')} />
+                    <List.Item titleNumberOfLines={2} title="Angka Partisipasi Kasar" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate('DetailAPKDashboard')}  />
+                    <List.Item titleNumberOfLines={2} title="Angka Partisipasi Murni" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate('DetailAPMDashboard')}  />
+                    <List.Item titleNumberOfLines={2} title="Angka Harapan Lama Sekolah" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate('DetailHLSDashboard')} />
+                    <List.Item titleNumberOfLines={2} title="Jumlah Rumah Tidak Layak Huni yang Di Rehab" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate('DetailJRTLHDashboard')} />
+                    <List.Item titleNumberOfLines={2} title="Index Gini" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate("DetailIGDashboard")} />
                     {/* <List.Item titleNumberOfLines={2} title="Index Daya Beli (Purchasing Power Parity)" onPress={() => navigation.navigate("DetailIDBDashboard")} /> */}
-                    <List.Item titleNumberOfLines={3} titleMaxFontSizeMultiplier={18} title="Persentase Penduduk Usia 15 Tahun Ke Atas Menurut Pendidikan yang Di Tamatkan" onPress={() => navigation.navigate("DetailPPUDashboard")}/>
-                    <List.Item titleNumberOfLines={2} title="Index pemberdayaan Gender" onPress={() => navigation.navigate("DetailIPGGDashboard")}/>
+                    <List.Item titleNumberOfLines={3} titleMaxFontSizeMultiplier={18} title="% Penduduk Usia 15 Tahun Ke Atas Menurut Pendidikan yang Di Tamatkan" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate("DetailPPUDashboard")}/>
+                    <List.Item titleNumberOfLines={2} title="Index pemberdayaan Gender" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate("DetailIPGGDashboard")}/>
 
                 </List.Accordion>
                 <List.Accordion
                     title="Ekonomi"
-                    left={props => <List.Icon {...props} icon="folder" />}>
-                    <List.Item titleNumberOfLines={2} title="Pertumbuhan Ekonomi" onPress={() => navigation.navigate("DetailPEDashboard")} />
-                    <List.Item titleNumberOfLines={2} title="Tingkat Inflasi" onPress={() => navigation.navigate("DetailLIDashboard")} />
-                    <List.Item titleNumberOfLines={2} title="Kunjungan Wisata" onPress={() => navigation.navigate("DetailKWDashboard")} />
-                    <List.Item titleNumberOfLines={2} title="Realisasi Investasi PMA / PMDN" onPress={() => navigation.navigate("DetailPMADashboard")}/>
-                    <List.Item titleNumberOfLines={2} title="PDRB Atas Dasar Harga Berlaku (ADHB)" onPress={() => navigation.navigate("DetailADHBDashboard")} />
-                    <List.Item titleNumberOfLines={2} title="PDRB Atas Dasar Harga Konstan (ADHK)" onPress={() => navigation.navigate("DetailADHKDashboard")}/>
+                    titleStyle={{ fontSize: 12 }}
+                    left={props => {
+                        const { key, ...restProps } = props;
+                        return <List.Icon {...restProps} icon="folder" />;
+                    }}>
+                    <List.Item titleNumberOfLines={2} title="Pertumbuhan Ekonomi" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate("DetailPEDashboard")} />
+                    <List.Item titleNumberOfLines={2} title="Tingkat Inflasi" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate("DetailLIDashboard")} />
+                    <List.Item titleNumberOfLines={2} title="Kunjungan Wisata" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate("DetailKWDashboard")} />
+                    <List.Item titleNumberOfLines={2} title="Realisasi Investasi PMA / PMDN" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate("DetailPMADashboard")}/>
+                    <List.Item titleNumberOfLines={2} title="PDRB ADHB" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate("DetailADHBDashboard")} />
+                    <List.Item titleNumberOfLines={2} title="PDRB ADHK" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate("DetailADHKDashboard")}/>
                 </List.Accordion>
                 <List.Accordion
                     title="Pertanian dan Perikanan"
-                    left={props => <List.Icon {...props} icon="folder" />}>
-                    <List.Item titleNumberOfLines={2} title="Produksi Perikanan Budidaya (PBB)" onPress={() => navigation.navigate("DetailPPBDashboard")}/>
-                    <List.Item titleNumberOfLines={2} title="Produksi Perikanan Tangkap (Ton)" onPress={() => navigation.navigate("DetailPPTDashboard")}/>
-                    <List.Item titleNumberOfLines={3} title="Capaian Produksi Komoditi Unggulan Perkebunan (Ton)" onPress={() => navigation.navigate("DetailCPKUPDashboard")} />
-                    <List.Item titleNumberOfLines={2} title="Capaian Produksi Komoditi Hortikultura (Ton/ha)" onPress={() => navigation.navigate("DetailCPKHDashboard")} />
-                    <List.Item titleNumberOfLines={2} title="Jumlah Produksi Peternakan (Ton)" onPress={() => navigation.navigate("DetailJPPDashboard")}/>
+                    titleStyle={{ fontSize: 12 }}
+                    left={props => {
+                        const { key, ...restProps } = props;
+                        return <List.Icon {...restProps} icon="folder" />;
+                    }}>
+                    <List.Item titleNumberOfLines={2} title="Produksi Perikanan Budidaya" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate("DetailPPBDashboard")}/>
+                    <List.Item titleNumberOfLines={2} title="Produksi Perikanan Tangkap" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate("DetailPPTDashboard")}/>
+                    <List.Item titleNumberOfLines={3} title="Capaian Produksi Komoditi Unggulan Perkebunan" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate("DetailCPKUPDashboard")} />
+                    <List.Item titleNumberOfLines={2} title="Capaian Produksi Komoditi Hortikultura" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate("DetailCPKHDashboard")} />
+                    <List.Item titleNumberOfLines={2} title="Jumlah Produksi Peternakan" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate("DetailJPPDashboard")}/>
                 </List.Accordion>
                 <List.Accordion
                     title="Kependudukan"
-                    left={props => <List.Icon {...props} icon="folder" />}>
-                    <List.Item titleNumberOfLines={2} title="Pertumbuhan Penduduk"  onPress={() => navigation.navigate("DetailPPDashboard")}/>
-                    <List.Item titleNumberOfLines={2} title="Jumlah Penduduk" onPress={() => navigation.navigate("DetailJPDashboard")}/>
-                    <List.Item titleNumberOfLines={3} title="Jumlah Penduduk Berdasarkan Kelompok Umur" onPress={() => navigation.navigate("DetailJPBKUDashboard")}/>
-                    <List.Item titleNumberOfLines={3} title="Jumlah Penduduk berdasarkan Kecamatan" onPress={() => navigation.navigate("DetailJPBKDashboard")}/>
+                    titleStyle={{ fontSize: 12 }}
+                    left={props => {
+                        const { key, ...restProps } = props;
+                        return <List.Icon {...restProps} icon="folder" />;
+                    }}>
+                    <List.Item titleNumberOfLines={2} title="Pertumbuhan Penduduk" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate("DetailPPDashboard")}/>
+                    <List.Item titleNumberOfLines={2} title="Jumlah Penduduk" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate("DetailJPDashboard")}/>
+                    <List.Item titleNumberOfLines={3} title="Jumlah Penduduk Berdasarkan Kelompok Umur" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate("DetailJPBKUDashboard")}/>
+                    <List.Item titleNumberOfLines={3} title="Jumlah Penduduk berdasarkan Kecamatan" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate("DetailJPBKDashboard")}/>
                 </List.Accordion>
                 <List.Accordion
                     title="Infrastruktur"
-                    left={props => <List.Icon {...props} icon="folder" />}>
-                    <List.Item titleNumberOfLines={3} title="Panjang Jalan yang Di Bangun dan Ditingkatkan" onPress={() => navigation.navigate("DetailPJDDDashboard")} />
-                    <List.Item titleNumberOfLines={3} title="Persentase Rumah Tangga yang Menggunakan Air Bersih" onPress={() => navigation.navigate("DetailPRTDashboard")} />
-                    <List.Item titleNumberOfLines={3} title="Persentase Tingkat Kemantapan Jalan (Mantap Sempurna)" onPress={() => navigation.navigate("DetailPTKJDashboard")} />
+                    titleStyle={{ fontSize: 12 }}
+                    left={props => {
+                        const { key, ...restProps } = props;
+                        return <List.Icon {...restProps} icon="folder" />;
+                    }}>
+                    <List.Item titleNumberOfLines={3} title="Panjang Jalan yang Di Bangun dan Ditingkatkan" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate("DetailPJDDDashboard")} />
+                    <List.Item titleNumberOfLines={3} title="% Rumah Tangga yang Menggunakan Air Bersih" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate("DetailPRTDashboard")} />
+                    <List.Item titleNumberOfLines={3} title="% Tingkat Kemantapan Jalan (Mantap Sempurna)" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate("DetailPTKJDashboard")} />
                 </List.Accordion>
                 <List.Accordion
                     title="Video"
-                    left={props => <List.Icon {...props} icon="folder" />}>
-                    <List.Item titleNumberOfLines={2} title="Video" onPress={() => navigation.navigate('DetailVideoDashboard')} />
+                    titleStyle={{ fontSize: 12 }}
+                    left={props => {
+                        const { key, ...restProps } = props;
+                        return <List.Icon {...restProps} icon="folder" />;
+                    }}>
+                    <List.Item titleNumberOfLines={2} title="Video" titleStyle={{ fontSize: 12 }} onPress={() => navigation.navigate('DetailVideoDashboard')} />
                 </List.Accordion>
             </List.Section>
             {/* separator with text inline */}
             <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 5 }}>
                 <View style={{ borderBottomWidth: 1, borderBottomColor: 'black', flex: 1 }}></View>
-                <Text style={{ marginHorizontal: 5, color: 'black'  }}>E-money</Text>
+                <Text style={{ marginHorizontal: 5, color: 'black', fontSize: 12  }}>E-money</Text>
                 <View style={{ borderBottomWidth: 1, borderBottomColor: 'black', flex: 1 }}></View>
             </View>
             <TouchableOpacity
@@ -108,7 +132,7 @@ const DrawerContent = () => {
                 onPress={() => navigation.navigate('DashboardAnggaranMurni')}
             >
                 <Icon name="chart-box" size={30} color="black" style={{ marginVertical: 10, marginHorizontal: 10  }} />
-                <Text style={{ marginVertical: 10, marginHorizontal: 10, color: 'black'  }}>Anggaran Murni dan Perubahan</Text>
+                <Text style={{ marginVertical: 10, marginHorizontal: 10, color: 'black', fontSize: 12  }}>Anggaran Murni dan Perubahan</Text>
             </TouchableOpacity>
             {/* <TouchableOpacity
                 style={{ flexDirection: 'row', alignItems: 'center' }}
@@ -133,6 +157,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#0074BD',
     },
     titleText: {
-        color: 'white'
+        color: 'white',
+        fontSize: 12
     }
 })

@@ -196,7 +196,7 @@ const DetailPP = (props) => {
             <Icon name="bar-chart" size={24} color="#fff" />
             <Text style={styles.summaryTitle}>Total Data</Text>
           </View>
-          <Text style={styles.summaryValue}>{dataFiltered.length} Tahun</Text>
+          <Text style={styles.summaryValue}>{dataFiltered.length} Record</Text>
           {dataFiltered.length > 0 && (
             <Text style={styles.summarySubtitle}>
               Kelompok Umur: {title}

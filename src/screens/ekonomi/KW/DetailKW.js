@@ -89,7 +89,7 @@ const DetailKW = (props) => {
       >
         <View style={styles.summaryCard}>
           <Text style={styles.summaryTitle}>Total Data Tersedia</Text>
-          <Text style={styles.summaryValue}>{sortedData.length} Tahun</Text>
+          <Text style={styles.summaryValue}>{sortedData.length} Record</Text>
         </View>
 
         {sortedData.map((item, index) => {

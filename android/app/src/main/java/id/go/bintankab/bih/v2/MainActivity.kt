@@ -1,4 +1,4 @@
-package com.smartbintan
+package id.go.bintankab.bih.v2
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

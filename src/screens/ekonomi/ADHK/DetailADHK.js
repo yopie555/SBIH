@@ -124,7 +124,7 @@ const DetailADHK = (props) => {
       >  
         <View style={styles.summaryCard}>
           <Text style={styles.summaryTitle}>Total Data Tersedia</Text>
-          <Text style={styles.summaryValue}>{dataRender.length} Tahun</Text>
+          <Text style={styles.summaryValue}>{dataRender.length} Record</Text>
         </View>
 
         {dataRender.length > 0 ? (  

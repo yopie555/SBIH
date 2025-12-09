@@ -105,7 +105,7 @@ const DetailAKIM = (props) => {
                     <Icon name="heart" size={32} color={category.color} />
                     <View style={styles.akimContent}>
                       <Text style={[styles.akimValue, { color: category.color }]}>
-                        {parseFloat(item.kematian_ibu).toFixed(2)}%
+                        {parseFloat(item.kematian_ibu).toFixed(2)}
                       </Text>
                       <Text style={styles.akimLabel}>per 100K</Text>
                     </View>
@@ -115,7 +115,7 @@ const DetailAKIM = (props) => {
                   <View style={styles.interpretationBox}>
                     <Icon name="information-circle" size={18} color="#c2185b" />
                     <Text style={styles.interpretationText}>
-                      Dari 100.000 kelahiran hidup, sekitar {parseFloat(item.kematian_ibu).toFixed(2)}% ibu meninggal
+                      Dari 100.000 kelahiran hidup, sekitar {parseFloat(item.kematian_ibu).toFixed(2)} ibu meninggal
                     </Text>
                   </View>
                 </View>

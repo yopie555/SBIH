@@ -1,5 +1,5 @@
 import { View, Text, Dimensions, StyleSheet, ScrollView } from 'react-native'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { LineChart } from "react-native-chart-kit";
 import { stateDataAngkaMelekHuruf } from '../../../state/dataAMH';
 import { color } from '../../../constants/Helper';
@@ -33,24 +33,60 @@ const GrafikAMH = (props) => {
     );
   }
 
-  const kel_umur = dataAngkaMelekHuruf.map(item => item.kel_umur)
-  const dataPresentase = dataAngkaMelekHuruf.map(item => parseFloat(item.laki))
+  // Get latest 5 records (data from API is already descending by year)
+  // Then sort ascending for chart display
+  const chartData = useMemo(() => {
+    // Take first 5 records (latest years) since API returns descending
+    const latest5Records = (dataAngkaMelekHuruf || []).slice(0, 5);
+    
+    // Filter valid data
+    const validData = latest5Records.filter(item => {
+      const value = parseFloat(item.jumlah);
+      return !isNaN(value) && value >= 0;
+    });
+    
+    // Sort ascending for chart (oldest to newest)
+    const sortedForChart = validData.sort((a, b) => a.tahun - b.tahun);
+    
+    return {
+      labels: sortedForChart.map(item => String(item.tahun)),
+      data: sortedForChart.map(item => parseFloat(item.jumlah))
+    };
+  }, [dataAngkaMelekHuruf]);
+
+  // Sort all data by year in ascending order for statistics
+  const sortedData = useMemo(() => {
+    return [...(dataAngkaMelekHuruf || [])].sort((a, b) => a.tahun - b.tahun);
+  }, [dataAngkaMelekHuruf]);
+
+  const chartLabels = chartData.labels;
+  const dataOrang = chartData.data;
 
   // Statistik dengan pengecekan error
-  const avgPresentase = dataPresentase.length > 0 ? (dataPresentase.reduce((a, b) => a + b, 0) / dataPresentase.length).toFixed(2) : '0';
-  const maxPresentase = dataPresentase.length > 0 ? Math.max(...dataPresentase) : 0;
-  const minPresentase = dataPresentase.length > 0 ? Math.min(...dataPresentase) : 0;
+  const avgJumlah = dataOrang.length > 0 ? (dataOrang.reduce((a, b) => a + b, 0) / dataOrang.length).toFixed(0) : '0';
+  const maxJumlah = dataOrang.length > 0 ? Math.max(...dataOrang) : 0;
+  const minJumlah = dataOrang.length > 0 ? Math.min(...dataOrang) : 0;
+
+  // Calculate yAxisInterval safely
+  const yAxisInterval = useMemo(() => {
+    if (dataOrang.length === 0) return 20000;
+    const range = maxJumlah - minJumlah;
+    if (range === 0) return 20000;
+    const calculated = Math.ceil(range / 5);
+    // Ensure it's a valid positive number
+    return isNaN(calculated) || calculated <= 0 ? 20000 : calculated;
+  }, [dataOrang.length, maxJumlah, minJumlah]);
 
   // Kategori AMH
-  const getAMHCategory = (presentase) => {
-    const value = parseFloat(presentase);
-    if (value >= 95) return { label: 'Sangat Tinggi', color: '#43a047' };
-    if (value >= 90) return { label: 'Tinggi', color: '#1e88e5' };
-    if (value >= 85) return { label: 'Sedang', color: '#fb8c00' };
+  const getAMHCategory = (jumlah) => {
+    const value = parseFloat(jumlah);
+    if (value >= 150000) return { label: 'Sangat Tinggi', color: '#43a047' };
+    if (value >= 100000) return { label: 'Tinggi', color: '#1e88e5' };
+    if (value >= 50000) return { label: 'Sedang', color: '#fb8c00' };
     return { label: 'Rendah', color: '#e53935' };
   };
 
-  const currentCategory = getAMHCategory(avgPresentase);
+  const currentCategory = getAMHCategory(avgJumlah);
 
   return (
     <View style={styles.container}>
@@ -75,28 +111,33 @@ const GrafikAMH = (props) => {
         {/* Period Info */}
         <View style={styles.periodCard}>
           <Icon name="time-outline" size={24} color="#00897b" />
-          <Text style={styles.periodText}>
-            Total Data: <Text style={styles.periodValue}>{dataAngkaMelekHuruf.length} Kelompok Umur</Text>
-          </Text>
+          <View style={styles.periodContent}>
+            <Text style={styles.periodText}>
+              Total Data: <Text style={styles.periodValue}>{dataAngkaMelekHuruf.length} Record</Text>
+            </Text>
+            <Text style={styles.periodText}>
+              Chart Menampilkan: <Text style={styles.periodValue}>5 Record Terbaru</Text>
+            </Text>
+          </View>
         </View>
 
         {/* Statistics Cards */}
         <View style={styles.statsContainer}>
           <View style={[styles.statCard, { backgroundColor: '#43a047' }]}>
             <Icon name="trending-up" size={24} color="#fff" />
-            <Text style={styles.statValue}>{maxPresentase}%</Text>
+            <Text style={styles.statValue}>{maxJumlah.toLocaleString('id-ID')}</Text>
             <Text style={styles.statLabel}>Tertinggi</Text>
           </View>
 
           <View style={[styles.statCard, { backgroundColor: '#e53935' }]}>
             <Icon name="trending-down" size={24} color="#fff" />
-            <Text style={styles.statValue}>{minPresentase}%</Text>
+            <Text style={styles.statValue}>{minJumlah.toLocaleString('id-ID')}</Text>
             <Text style={styles.statLabel}>Terendah</Text>
           </View>
 
           <View style={[styles.statCard, { backgroundColor: '#00897b' }]}>
             <Icon name="calculator" size={24} color="#fff" />
-            <Text style={styles.statValue}>{avgPresentase}%</Text>
+            <Text style={styles.statValue}>{parseFloat(avgJumlah).toLocaleString('id-ID')}</Text>
             <Text style={styles.statLabel}>Rata-rata</Text>
           </View>
         </View>
@@ -110,22 +151,32 @@ const GrafikAMH = (props) => {
           </View>
 
           <View style={styles.chartWrapper}>
-            <LineChart
-              data={{
-                labels: kel_umur,
-                datasets: [
-                  {
-                    data: dataPresentase,
-                    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                    strokeWidth: 4
-                  }
-                ]
-              }}
+            {chartLabels.length > 0 && dataOrang.length > 0 ? (
+              <LineChart
+                key={`chart-${dataAngkaMelekHuruf.length}`}
+                data={{
+                  labels: chartLabels,
+                  datasets: [
+                    {
+                      data: dataOrang,
+                      color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                      strokeWidth: 4
+                    }
+                  ]
+                }}
               width={Dimensions.get("window").width - 48}
               height={280}
-              yAxisSuffix="%"
-              yAxisInterval={20}
+              yAxisSuffix=""
+              yAxisInterval={yAxisInterval}
               fromZero={true}
+              segments={4}
+              formatYLabel={(value) => {
+                const num = parseFloat(value);
+                if (num >= 1000) {
+                  return (num / 1000).toFixed(0) + 'K';
+                }
+                return num.toFixed(0);
+              }}
               chartConfig={{
                 backgroundColor: "#00897b",
                 backgroundGradientFrom: "#00897b",
@@ -152,13 +203,19 @@ const GrafikAMH = (props) => {
               bezier
               style={styles.chart}
             />
+            ) : (
+              <View style={styles.noChartContainer}>
+                <Icon name="bar-chart-outline" size={48} color="#ccc" />
+                <Text style={styles.noChartText}>Data tidak cukup untuk menampilkan grafik</Text>
+              </View>
+            )}
           </View>
 
           {/* Y-Axis Info */}
           <View style={styles.axisInfo}>
             <View style={styles.axisRow}>
               <Icon name="resize-outline" size={16} color="#666" />
-              <Text style={styles.axisText}>Sumbu Y: 0% - 100%</Text>
+              <Text style={styles.axisText}>Sumbu X: Tahun | Sumbu Y: Jumlah Penduduk</Text>
             </View>
           </View>
 
@@ -167,7 +224,7 @@ const GrafikAMH = (props) => {
             <Icon name="people-outline" size={20} color="#666" />
             <View style={styles.currentValueWrapper}>
               <Text style={styles.currentValueText}>
-                Rata-rata Keseluruhan: <Text style={[styles.currentValue, { color: currentCategory.color }]}>{avgPresentase}%</Text>
+                Rata-rata Keseluruhan: <Text style={[styles.currentValue, { color: currentCategory.color }]}>{parseFloat(avgJumlah).toLocaleString('id-ID')}</Text>
               </Text>
               <View style={[styles.categoryBadge, { backgroundColor: currentCategory.color + '20' }]}>
                 <Text style={[styles.categoryText, { color: currentCategory.color }]}>
@@ -184,19 +241,19 @@ const GrafikAMH = (props) => {
           <View style={styles.legendContent}>
             <View style={styles.legendItem}>
               <View style={[styles.legendDot, { backgroundColor: '#43a047' }]} />
-              <Text style={styles.legendText}>Sangat Tinggi (≥95%)</Text>
+              <Text style={styles.legendText}>Sangat Tinggi (≥150.000)</Text>
             </View>
             <View style={styles.legendItem}>
               <View style={[styles.legendDot, { backgroundColor: '#1e88e5' }]} />
-              <Text style={styles.legendText}>Tinggi (90-94.99%)</Text>
+              <Text style={styles.legendText}>Tinggi (100.000 - 149.999)</Text>
             </View>
             <View style={styles.legendItem}>
               <View style={[styles.legendDot, { backgroundColor: '#fb8c00' }]} />
-              <Text style={styles.legendText}>Sedang (85-89.99%)</Text>
+              <Text style={styles.legendText}>Sedang (50.000 - 99.999)</Text>
             </View>
             <View style={styles.legendItem}>
               <View style={[styles.legendDot, { backgroundColor: '#e53935' }]} />
-              <Text style={styles.legendText}>Rendah {'(<85%)'}</Text>
+              <Text style={styles.legendText}>Rendah {'(<50.000)'}</Text>
             </View>
           </View>
         </View>
@@ -210,19 +267,19 @@ const GrafikAMH = (props) => {
           <View style={styles.infoContent}>
             <View style={styles.infoRow}>
               <View style={styles.infoDot} />
-              <Text style={styles.infoText}>Menampilkan data berdasarkan kelompok umur</Text>
+              <Text style={styles.infoText}>Menampilkan tren AMH 5 tahun terbaru</Text>
             </View>
             <View style={styles.infoRow}>
               <View style={styles.infoDot} />
-              <Text style={styles.infoText}>Sumbu Y dimulai dari 0% hingga 100%</Text>
+              <Text style={styles.infoText}>Sumbu X: Tahun | Sumbu Y: Jumlah Penduduk</Text>
             </View>
             <View style={styles.infoRow}>
               <View style={styles.infoDot} />
-              <Text style={styles.infoText}>AMH = Angka Melek Huruf (persentase)</Text>
+              <Text style={styles.infoText}>AMH = Angka Melek Huruf (jumlah penduduk)</Text>
             </View>
             <View style={styles.infoRow}>
               <View style={styles.infoDot} />
-              <Text style={styles.infoText}>Total data: {dataAngkaMelekHuruf.length} kelompok umur</Text>
+              <Text style={styles.infoText}>Total data: {dataAngkaMelekHuruf.length} Record | Chart: 5 Record Terbaru</Text>
             </View>
           </View>
         </View>
@@ -289,6 +346,10 @@ const styles = StyleSheet.create({
     padding: 16,
     marginBottom: 16,
     gap: 12,
+  },
+  periodContent: {
+    flex: 1,
+    gap: 4,
   },
   periodText: {
     fontSize: 14,
@@ -486,6 +547,18 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#999',
     marginTop: 8,
+    textAlign: 'center',
+  },
+  noChartContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 60,
+    minHeight: 280,
+  },
+  noChartText: {
+    fontSize: 14,
+    color: '#999',
+    marginTop: 16,
     textAlign: 'center',
   },
   })
