@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, ScrollView, Animated } from 'react-native'
 import React, { useRef, useEffect } from 'react'
 import {stateDataJumlahPenduduk} from '../../../state/dataJP'
-import { color } from '../../../constants/Helper'
+import { color, formatNumber } from '../../../constants/Helper'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 const AnimatedCard = ({ children, delay = 0 }) => {
@@ -55,10 +55,6 @@ const DetailPP = (props) => {
     return '#666';
   };
 
-  const formatNumber = (num) => {
-    if (!num) return '0';
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  };
 
   const calculatePercentage = (laki, perempuan) => {
     const lakiNum = parseInt(laki) || 0;

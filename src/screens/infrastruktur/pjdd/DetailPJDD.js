@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, ScrollView, Animated } from 'react-native'
 import React, { useRef, useEffect } from 'react'
 import { stateDataPanjangJalanDibangun } from '../../../state/dataPJD'
-import { color } from '../../../constants/Helper'
+import { color, formatNumber } from '../../../constants/Helper'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 const AnimatedCard = ({ children, delay = 0 }) => {
@@ -64,14 +64,6 @@ const DetailPJDD = (props) => {
     return { label: 'Rendah', color: '#e53935', icon: 'trending-down' };
   };
 
-  const formatNumber = (num) => {
-    if (!num) return '0';
-    const numValue = parseFloat(num);
-    if (Number.isInteger(numValue)) {
-      return numValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    }
-    return numValue.toFixed(2).replace(/\./g, ',');
-  };
 
   // Hitung total panjang jalan
   const totalPanjang = sortedData.reduce((sum, item) => sum + (parseFloat(item?.panjang) || 0), 0);

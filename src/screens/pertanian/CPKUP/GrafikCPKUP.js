@@ -2,7 +2,7 @@ import { View, Text, Dimensions, StyleSheet, ScrollView } from 'react-native'
 import React from 'react'
 import { LineChart } from "react-native-chart-kit";
 import { stateDataCapaianProduksiKomoditiUnggulanPerkebunan } from '../../../state/dataCPKUP';
-import { color } from '../../../constants/Helper';
+import { color, formatNumber } from '../../../constants/Helper';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const GrafikCPKUP = (props) => {
@@ -18,9 +18,6 @@ const GrafikCPKUP = (props) => {
   const avgValue = (values.reduce((a, b) => a + b, 0) / values.length).toFixed(0);
   const latestValue = values[values.length - 1];
 
-  const formatNumber = (num) => {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  };
 
   // Kategori CPKUP
   const getCPKUPCategory = (jumlah) => {

@@ -2,7 +2,7 @@ import { View, Text, Dimensions, StyleSheet, ScrollView } from 'react-native'
 import React from 'react'
 import { LineChart } from "react-native-chart-kit";
 import { stateDataJumlahPenduduk } from '../../../state/dataJP';
-import { color } from '../../../constants/Helper';
+import { color, formatNumber } from '../../../constants/Helper';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const GrafikJP = (props) => {
@@ -22,10 +22,6 @@ const GrafikJP = (props) => {
   const maxTotal = Math.max(...totalData);
   const minTotal = Math.min(...totalData);
   
-  // Format number
-  const formatNumber = (num) => {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  };
 
   // Hitung persentase gender
   const lakiPct = ((parseInt(latestData.laki) / parseInt(latestData.total)) * 100).toFixed(1);

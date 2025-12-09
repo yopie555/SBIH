@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, ScrollView, Animated, TouchableOpacity, Modal, FlatList } from 'react-native'
 import React, { useRef, useEffect, useState } from 'react'
 import { stateDataJumlahPendudukBerdasarkanKecamatan } from '../../../state/dataJBPK'
-import { color } from '../../../constants/Helper'
+import { color, formatNumber } from '../../../constants/Helper'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 const AnimatedCard = ({ children, delay = 0 }) => {
@@ -94,10 +94,6 @@ const DetailPP = (props) => {
     return { label: 'Rendah', color: '#43a047', icon: 'body' };
   };
 
-  const formatNumber = (num) => {
-    if (!num) return '0';
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  };
 
   const calculateGenderRatio = (laki, perempuan) => {
     const lakiNum = parseInt(laki) || 0;

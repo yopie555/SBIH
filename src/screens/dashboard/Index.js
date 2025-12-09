@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import axios, { AxiosError } from 'axios'
 import { baseURL } from '../../constants/General'
+import { formatNumber } from '../../constants/Helper'
 import { useQuery } from 'react-query'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { stateDataPenduduk } from '../../state/dataPenduduk'
@@ -123,11 +124,6 @@ const Index = () => {
 
     const [refreshing, setRefreshing] = useState(false);
 
-    // Helper function to format numbers with null check
-    const formatNumber = (num) => {
-        if (!num && num !== 0) return '0';
-        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    };
 
     // 1. Pertumbuhan Ekonomi
     const dataPE = useQuery('dataPE', async () => {
