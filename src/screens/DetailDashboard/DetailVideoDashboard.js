@@ -10,21 +10,46 @@ const DetailVideoDashboard = () => {
     const { dataVideo } = stateDataVideo();  
     const [expandedIndex, setExpandedIndex] = useState(null);
 
-    // Function to split the video link and extract the video ID  
-    function splitLinkVideo(link) {  
-        const splitLink = link.split('/');  
-        const lastIndex = splitLink.length - 1;  
-        let idVideo = splitLink[lastIndex];  
-        const check = idVideo.includes('=');  
-        if (check) {  
-            const splitIdVideo = idVideo.split('=');  
-            idVideo = splitIdVideo[1];  
-        } else if(idVideo.includes('watch?v=')) {  
-            const watchSplit = idVideo.split('watch?v=');  
-            idVideo = watchSplit[1];  
-        }  
-        return idVideo;  
+    // Function to split the video link and extract the video ID
+    function splitLinkVideo(link) {
+        let idVideo = '';
+
+        // Handle youtu.be format (https://youtu.be/VIDEO_ID)
+        if (link.includes('youtu.be/')) {
+            const splitLink = link.split('youtu.be/');
+            idVideo = splitLink[1];
+            // Remove any additional parameters
+            if (idVideo.includes('?')) {
+                idVideo = idVideo.split('?')[0];
+            }
+        }
+        // Handle youtube.com format (https://www.youtube.com/watch?v=VIDEO_ID)
+        else if (link.includes('youtube.com/watch')) {
+            // Use regex to extract v parameter
+            const match = link.match(/[?&]v=([^&#]*)/);
+            if (match && match[1]) {
+                idVideo = match[1];
+            }
+        }
+        // Handle embedded format (https://www.youtube.com/embed/VIDEO_ID)
+        else if (link.includes('youtube.com/embed/')) {
+            const splitLink = link.split('youtube.com/embed/');
+            idVideo = splitLink[1];
+            // Remove any additional parameters
+            if (idVideo.includes('?')) {
+                idVideo = idVideo.split('?')[0];
+            }
+        }
+
+        return idVideo;
     }  
+
+    // Test the splitLinkVideo function with sample URLs
+    dataVideo.forEach((item, index) => {
+        const videoId = splitLinkVideo(item.link);
+        console.log(`Video ${index + 1} - Title: ${item.judul}, Link: ${item.link}, Extracted ID: ${videoId}`);
+    });
+    
 
     const toggleExpand = (index) => {
         setExpandedIndex(expandedIndex === index ? null : index);
@@ -70,7 +95,7 @@ const DetailVideoDashboard = () => {
                                 <View style={styles.videoWrapper}>
                                     <WebView  
                                         style={styles.webview}
-                                        source={{ uri: 'https://www.youtube.com/embed/' + splitLinkVideo(item.link) }}  
+                                        source={{ uri: 'https://youtu.be/' + splitLinkVideo(item.link) }}  
                                         javaScriptEnabled={true}
                                         allowsInlineMediaPlayback={true}
                                         mediaPlaybackRequiresUserAction={false}
