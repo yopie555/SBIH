@@ -31,6 +31,16 @@ export const formatNumber = (num) => {
     return integerPart;
 };
 
+// Format number with fixed 2 decimal places (always shows 2 decimals)
+// Example: 6.005 -> 6,00 | 5.9885 -> 5,99 | 417.0255000001 -> 417,03
+export const formatNumberWithDecimals = (num, decimals = 2) => {
+    if (!num && num !== 0) return '0,' + '0'.repeat(decimals);
+    const rounded = (num || 0).toFixed(decimals);
+    const parts = rounded.split('.');
+    const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    return `${integerPart},${parts[1]}`;
+};
+
 export const dataPS = [
     {
         id: 1,
