@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView, Animated, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, Animated, ActivityIndicator } from 'react-native'
 import React, { useRef, useEffect, useState, useMemo } from 'react'
 import { stateDataAngkaMelekHuruf } from '../../../state/dataAMH'
 import { color } from '../../../constants/Helper'
@@ -43,28 +43,10 @@ const AnimatedCard = ({ children, delay = 0 }) => {
 const DetailAMH = (props) => {
   const { dataAngkaMelekHuruf, setDataAngkaMelekHuruf } = stateDataAngkaMelekHuruf()
 
-  const [expanded, setExpanded] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState('15-24') // Default: kategori 1 (15-24)
-
-  const filterOptions = [
-    { kelUmur: '1', title: 'Usia 15-24', icon: 'people' },
-    { kelUmur: '2', title: 'Usia 25-34', icon: 'people' },
-    { kelUmur: '3', title: 'Usia 35-44', icon: 'people' },
-    { kelUmur: '4', title: 'Usia 45-54', icon: 'people' },
-    { kelUmur: '5', title: 'Usia 55+', icon: 'people' },
-  ];
-
-  // Get current kel_umur from selected category
-  const currentKelUmur = useMemo(() => {
-    return filterOptions.find(opt => opt.title === selectedCategory)?.kelUmur || filterOptions[0].kelUmur;
-  }, [selectedCategory]);
-
-  // API call with POST method
+  // API call with POST method (no parameters needed)
   const { mutate: fetchData, isLoading } = useMutation(
-    async (kelUmur) => {
-      const response = await axios.post(`${baseURL}/sosial/amh`, {
-        'kel_umur': kelUmur
-      });
+    async () => {
+      const response = await axios.post(`${baseURL}/sosial/amh`, {});
       return response.data.result;
     },
     {
@@ -77,11 +59,11 @@ const DetailAMH = (props) => {
     }
   );
 
-  // Fetch data when category changes
+  // Fetch data on component mount
   useEffect(() => {
-    fetchData(currentKelUmur);
+    fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentKelUmur]);
+  }, []);
 
   // Sort data by year in descending order (current year to past years)
   const sortedData = useMemo(() => {
@@ -94,26 +76,12 @@ const DetailAMH = (props) => {
     return '#666';
   };
 
-  const getLiteracyCategory = (percentage) => {
-    const value = parseFloat(percentage);
-    if (value >= 95) return { label: 'Sangat Baik', color: '#43a047' };
-    if (value >= 90 && value < 95) return { label: 'Baik', color: '#1e88e5' };
-    if (value >= 80 && value < 90) return { label: 'Cukup', color: '#fb8c00' };
+  const getLiteracyCategory = (jumlah) => {
+    const value = parseFloat(jumlah);
+    if (value >= 150000) return { label: 'Sangat Baik', color: '#43a047' };
+    if (value >= 100000 && value < 150000) return { label: 'Baik', color: '#1e88e5' };
+    if (value >= 50000 && value < 100000) return { label: 'Cukup', color: '#fb8c00' };
     return { label: 'Rendah', color: '#e53935' };
-  };
-
-  const getCategoryColor = (category) => {
-    if (category === '15-24') return '#4caf50';
-    if (category === '25-34') return '#2196f3';
-    if (category === '35-44') return '#ff9800';
-    if (category === '45-54') return '#9c27b0';
-    if (category === '55+') return '#f44336';
-    return '#666';
-  };
-
-  const handleFilterChange = (kelUmur, title) => {
-    setSelectedCategory(title);
-    setExpanded(false);
   };
 
   // Data is already filtered by API, so we use sortedData directly
@@ -142,69 +110,18 @@ const DetailAMH = (props) => {
         </View>
       )}
 
-      {/* Filter Accordion */}
-      <View style={styles.filterContainer}>
-        <TouchableOpacity 
-          style={styles.filterButton}
-          onPress={() => setExpanded(!expanded)}
-        >
-          <View style={styles.filterButtonContent}>
-            <Icon name="filter" size={20} color="#00897b" />
-            <Text style={styles.filterButtonText}>
-              Filter: <Text style={styles.filterButtonValue}>{selectedCategory}</Text>
-            </Text>
-          </View>
-          <Icon 
-            name={expanded ? "chevron-up" : "chevron-down"} 
-            size={20} 
-            color="#00897b" 
-          />
-        </TouchableOpacity>
-
-        {expanded && (
-          <View style={styles.filterOptions}>
-            {filterOptions.map((option, index) => (
-              <TouchableOpacity
-                key={index}
-                style={[
-                  styles.filterOption,
-                  selectedCategory === option.title && styles.filterOptionSelected
-                ]}
-                onPress={() => handleFilterChange(option.kelUmur, option.title)}
-              >
-                <Icon 
-                  name={option.icon} 
-                  size={24} 
-                  color={selectedCategory === option.title ? getCategoryColor(option.title) : '#666'} 
-                />
-                <View style={styles.filterOptionContent}>
-                  <Text style={[
-                    styles.filterOptionTitle,
-                    selectedCategory === option.title && { color: getCategoryColor(option.title) }
-                  ]}>
-                    {option.title}
-                  </Text>
-                </View>
-                {selectedCategory === option.title && (
-                  <Icon name="checkmark-circle" size={20} color={getCategoryColor(option.title)} />
-                )}
-              </TouchableOpacity>
-            ))}
-          </View>
-        )}
-      </View>
-
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.summaryCard}>
-          <Text style={styles.summaryTitle}>Total Data {selectedCategory}</Text>
+          <Text style={styles.summaryTitle}>Total Data Tersedia</Text>
           <Text style={styles.summaryValue}>{dataFiltered?.length || 0} Record</Text>
         </View>
 
         {dataFiltered?.map((item, index) => {
-          const category = getLiteracyCategory(item.laki);
+          const category = getLiteracyCategory(item.jumlah);
+          const formattedJumlah = item.jumlah?.toLocaleString('id-ID') || '0';
           return (
             <AnimatedCard key={index} delay={index * 50}>
               <View style={styles.dataCard}>
@@ -226,7 +143,7 @@ const DetailAMH = (props) => {
                     <Icon name="book" size={28} color={category.color} />
                     <View style={styles.ahhContent}>
                       <Text style={[styles.ahhValue, { color: category.color }]}>
-                        {item.laki}%
+                        {formattedJumlah}
                       </Text>                      
                     </View>
                   </View>
@@ -238,18 +155,18 @@ const DetailAMH = (props) => {
                     </Text>
                   </View>
 
-                  {/* Life Expectancy Interpretation */}
+                  {/* Interpretation */}
                   <View style={styles.interpretationBox}>
                     <Icon name="information-circle" size={18} color="#00897b" />
                     <Text style={styles.interpretationText}>
-                      Tingkat melek huruf untuk kelompok {item.kel_umur}: {item.laki}%
+                      Jumlah penduduk melek huruf pada tahun {item.tahun}: {formattedJumlah} orang
                     </Text>
                   </View>
                 </View>
 
                 <View style={styles.cardFooter}>
                   <Icon name="information-circle-outline" size={16} color="#999" />
-                  <Text style={styles.footerText}>Angka Melek Huruf per Kelompok Umur</Text>
+                  <Text style={styles.footerText}>Angka Melek Huruf</Text>
                 </View>
               </View>
             </AnimatedCard>
@@ -342,59 +259,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#00897b',
     fontWeight: '500',
-  },
-  filterContainer: {
-    backgroundColor: '#fff',
-    marginHorizontal: 16,
-    marginTop: 16,
-    borderRadius: 12,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-  },
-  filterButton: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 16,
-  },
-  filterButtonContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  filterButtonText: {
-    fontSize: 16,
-    color: '#666',
-  },
-  filterButtonValue: {
-    fontWeight: 'bold',
-    color: '#00897b',
-  },
-  filterOptions: {
-    borderTopWidth: 1,
-    borderTopColor: '#f0f0f0',
-  },
-  filterOption: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 16,
-    gap: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
-  },
-  filterOptionSelected: {
-    backgroundColor: '#f5f5f5',
-  },
-  filterOptionContent: {
-    flex: 1,
-  },
-  filterOptionTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#1a1a1a',
   },
   scrollContent: {
     padding: 16,

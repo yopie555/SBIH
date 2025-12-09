@@ -215,9 +215,7 @@ const Index = () => {
     }, { retry: 0, keepPreviousData: true, enabled: dataPJD.isSuccess })
 
     const dataAMH = useQuery('dataAMH', async () => {
-        const res = await axios.post(`${baseURL}/sosial/amh`, {
-            'kel_umur': '1'
-        })
+        const res = await axios.post(`${baseURL}/sosial/amh`, {})
         setDataAngkaMelekHuruf(res?.data?.result)
         return res.data
     }, { retry: 0, keepPreviousData: true, enabled: dataPRT.isSuccess })
