@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, ScrollView, Animated, TouchableOpacity, Modal, FlatList } from 'react-native'
 import React, { useRef, useEffect, useState } from 'react'
 import { stateDataPerkembanganKondisiKetenagakerjaan } from '../../../state/dataPKK'
-import { color } from '../../../constants/Helper'
+import { color, formatNumber } from '../../../constants/Helper'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 const AnimatedCard = ({ children, delay = 0 }) => {
@@ -56,9 +56,6 @@ const DetailPKK = (props) => {
     return { label: 'Tinggi', color: '#e53935' };
   };
 
-  const formatNumber = (num) => {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  };
 
   // Kategori data yang tersedia
   const categories = [

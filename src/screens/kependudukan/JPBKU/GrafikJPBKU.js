@@ -2,7 +2,7 @@ import { View, Text, Dimensions, Modal, TouchableOpacity, StyleSheet, ScrollView
 import React from 'react'
 import { LineChart } from "react-native-chart-kit";
 import { stateDataJumlahPendudukBerdasarkanKelompokUmur } from '../../../state/dataJPBKU';
-import { color } from '../../../constants/Helper';
+import { color, formatNumber } from '../../../constants/Helper';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const GrafikPP = (props) => {
@@ -55,9 +55,6 @@ const GrafikPP = (props) => {
   const avgValue = values.length > 0 ? (values.reduce((a, b) => a + b, 0) / values.length).toFixed(0) : 0;
   const latestValue = values.length > 0 ? values[values.length - 1] : 0;
 
-  const formatNumber = (num) => {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  };
 
   const category = getAgeCategory(selectedGroup);
 

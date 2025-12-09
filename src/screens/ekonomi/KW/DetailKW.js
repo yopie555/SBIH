@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, ScrollView, Animated } from 'react-native'
 import React, { useRef, useEffect } from 'react'
 import { stateDataKunjunganWisata } from '../../../state/dataKW'
-import { color } from '../../../constants/Helper'
+import { color, formatNumber } from '../../../constants/Helper'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 const AnimatedCard = ({ children, delay = 0 }) => {
@@ -63,10 +63,6 @@ const DetailKW = (props) => {
     return { label: 'Rendah', color: '#e53935', icon: 'trending-down' };
   };
 
-  const formatNumber = (num) => {
-    if (!num) return '0';
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  };
 
   return (
     <View style={styles.container}>

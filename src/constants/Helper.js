@@ -15,6 +15,22 @@ export const color = {
     graph4: "#0098f8"
 };
 
+// Format number with Indonesian format: thousand separator (.) and decimal separator (,)
+// Example: 2853.74 -> 2.853,74
+export const formatNumber = (num) => {
+    if (!num && num !== 0) return '0';
+    const numStr = num.toString();
+    // Split integer and decimal parts
+    const parts = numStr.split('.');
+    // Format integer part with thousand separator (dot)
+    const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    // If there's decimal part, replace dot with comma
+    if (parts.length > 1) {
+        return `${integerPart},${parts[1]}`;
+    }
+    return integerPart;
+};
+
 export const dataPS = [
     {
         id: 1,

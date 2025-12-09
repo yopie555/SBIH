@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, ScrollView, Animated } from 'react-native'
 import React, { useRef, useEffect } from 'react'
 import { stateDataJumlahRumahTidakLayakHuni } from '../../../state/dataJRTLH'
-import { color } from '../../../constants/Helper'
+import { color, formatNumber } from '../../../constants/Helper'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 const AnimatedCard = ({ children, delay = 0 }) => {
@@ -54,9 +54,6 @@ const DetailJRTLH = (props) => {
     return { label: 'Kritis', color: '#e53935', icon: 'alert-circle' };
   };
 
-  const formatNumber = (num) => {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  };
 
   const sortedData = [...(dataJumlahRumahTidakLayakHuni || [])].sort((a, b) => {
     return parseInt(b.tahun) - parseInt(a.tahun);

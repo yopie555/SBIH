@@ -2,7 +2,7 @@ import { View, Text, Dimensions, StyleSheet, ScrollView } from 'react-native'
 import React from 'react'
 import { LineChart } from "react-native-chart-kit";
 import { stateDataJumlahPendudukBerdasarkanKecamatan } from '../../../state/dataJBPK';
-import { color } from '../../../constants/Helper';
+import { color, formatNumber } from '../../../constants/Helper';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const GrafikJPBK = (props) => {
@@ -29,9 +29,6 @@ const GrafikJPBK = (props) => {
   const minLaki = Math.min(...dataPresentaseLaki);
   const minPerempuan = Math.min(...dataPresentasePerempuan);
   
-  const formatNumber = (num) => {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  };
 
   // Cari kecamatan dengan penduduk terbanyak
   const maxTotalIndex = latestYearData.reduce((maxIdx, item, idx, arr) => {

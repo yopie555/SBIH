@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, ScrollView, Animated } from 'react-native'
 import React, { useRef, useEffect, useMemo } from 'react'
 import { stateDataJumlahProduksiPeternakan } from '../../../state/dataJPP'
-import { color } from '../../../constants/Helper'
+import { color, formatNumber } from '../../../constants/Helper'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 const AnimatedCard = ({ children, delay = 0 }) => {
@@ -66,14 +66,6 @@ const DetailAHH = (props) => {
     return { label: 'Rendah', color: '#e53935', icon: 'trending-down' };
   };
 
-  const formatNumber = (num) => {
-    // Format dengan 2 desimal jika ada desimal, tanpa desimal jika bulat
-    const numValue = parseFloat(num);
-    if (Number.isInteger(numValue)) {
-      return numValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    }
-    return numValue.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ".").replace('.', ',');
-  };
 
   return (
     <View style={styles.container}>

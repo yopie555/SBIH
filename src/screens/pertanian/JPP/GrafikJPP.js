@@ -2,7 +2,7 @@ import { View, Text, Dimensions, StyleSheet, ScrollView } from 'react-native'
 import React from 'react'
 import { LineChart } from "react-native-chart-kit";
 import { stateDataJumlahProduksiPeternakan } from '../../../state/dataJPP';
-import { color } from '../../../constants/Helper';
+import { color, formatNumber } from '../../../constants/Helper';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const GrafikAHH = (props) => {
@@ -18,13 +18,6 @@ const GrafikAHH = (props) => {
   const avgValue = values.length > 0 ? (values.reduce((a, b) => a + b, 0) / values.length).toFixed(2) : 0;
   const latestValue = values.length > 0 ? values[values.length - 1] : 0;
 
-  const formatNumber = (num) => {
-    const numValue = parseFloat(num);
-    if (Number.isInteger(numValue)) {
-      return numValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    }
-    return numValue.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ".").replace('.', ',');
-  };
 
   // Kategori Produksi
   const getProductionCategory = (jumlah) => {

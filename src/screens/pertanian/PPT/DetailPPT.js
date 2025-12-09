@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, ScrollView, Animated } from 'react-native'
 import React, { useRef, useEffect } from 'react'
 import { stateDataProduksiPerikananTangkap } from '../../../state/dataPPT'
-import { color } from '../../../constants/Helper'
+import { color, formatNumber } from '../../../constants/Helper'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 const AnimatedCard = ({ children, delay = 0 }) => {
@@ -54,9 +54,6 @@ const DetailPPT = (props) => {
     return { label: 'Rendah', color: '#e53935', icon: 'trending-down' };
   };
 
-  const formatNumber = (num) => {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  };
 
   // Sort data by year in descending order (current year to past years)
   const sortedData = [...(dataProduksiPerikananTangkap || [])].sort((a, b) => b.tahun - a.tahun);
