@@ -1,13 +1,14 @@
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';  
-import React, { useState } from 'react';  
-import { WebView } from 'react-native-webview';  
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import React, { useState } from 'react';
+import { WebView } from 'react-native-webview';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { stateDataVideo } from '../../state/dataVideo';  
+import { stateDataVideo } from '../../state/dataVideo';
+import SafeScreen from '../../components/SafeScreen';
 
 const { width } = Dimensions.get('window');
 
-const DetailVideoDashboard = () => {  
-    const { dataVideo } = stateDataVideo();  
+const DetailVideoDashboard = () => {
+    const { dataVideo } = stateDataVideo();
     const [expandedIndex, setExpandedIndex] = useState(null);
 
     // Function to split the video link and extract the video ID
@@ -42,92 +43,94 @@ const DetailVideoDashboard = () => {
         }
 
         return idVideo;
-    }  
+    }
 
     // Test the splitLinkVideo function with sample URLs
     dataVideo.forEach((item, index) => {
         const videoId = splitLinkVideo(item.link);
         console.log(`Video ${index + 1} - Title: ${item.judul}, Link: ${item.link}, Extracted ID: ${videoId}`);
     });
-    
+
 
     const toggleExpand = (index) => {
         setExpandedIndex(expandedIndex === index ? null : index);
     };
 
-    return (  
-        <ScrollView 
-            style={styles.container}
-            contentContainerStyle={styles.contentContainer}
-            showsVerticalScrollIndicator={false}
-        >  
-            <View style={styles.header}>
-                <Icon name="play-circle" size={32} color="#0074BD" />
-                <Text style={styles.headerTitle}>Galeri Video</Text>
-            </View>
-
-            {dataVideo.map((item, index) => {  
-                const isExpanded = expandedIndex === index;
-                return (  
-                    <View key={index} style={styles.videoCard}>  
-                        {/* Video Header */}
-                        <TouchableOpacity 
-                            style={styles.videoHeader}
-                            onPress={() => toggleExpand(index)}
-                            activeOpacity={0.7}
-                        >
-                            <View style={styles.iconContainer}>
-                                <Icon name="videocam" size={24} color="#0074BD" />
-                            </View>
-                            <Text style={styles.videoTitle} numberOfLines={2}>  
-                                {item.judul}  
-                            </Text>
-                            <Icon 
-                                name={isExpanded ? "chevron-up" : "chevron-down"} 
-                                size={24} 
-                                color="#666" 
-                            />
-                        </TouchableOpacity>
-
-                        {/* Video Content */}
-                        {isExpanded && (
-                            <View style={styles.videoContent}>
-                                <View style={styles.videoWrapper}>
-                                    <WebView  
-                                        style={styles.webview}
-                                        source={{ uri: 'https://youtu.be/' + splitLinkVideo(item.link) }}  
-                                        javaScriptEnabled={true}
-                                        allowsInlineMediaPlayback={true}
-                                        mediaPlaybackRequiresUserAction={false}
-                                    />  
-                                </View>
-                                
-                                {/* Video Info */}
-                                {/* <View style={styles.videoInfo}>
-                                    <View style={styles.infoRow}>
-                                        <Icon name="eye-outline" size={18} color="#666" />
-                                        <Text style={styles.infoText}>Tonton di YouTube</Text>
-                                    </View>
-                                </View> */}
-                            </View>
-                        )}
-
-                        {/* Divider */}
-                        {!isExpanded && <View style={styles.divider} />}
-                    </View>  
-                );  
-            })}
-
-            {/* Empty State */}
-            {dataVideo.length === 0 && (
-                <View style={styles.emptyState}>
-                    <Icon name="film-outline" size={80} color="#ccc" />
-                    <Text style={styles.emptyText}>Belum ada video tersedia</Text>
+    return (
+        <SafeScreen edges={['top', 'bottom']} statusBarStyle="dark-content">
+            <ScrollView
+                style={styles.container}
+                contentContainerStyle={styles.contentContainer}
+                showsVerticalScrollIndicator={false}
+            >
+                <View style={styles.header}>
+                    <Icon name="play-circle" size={32} color="#0074BD" />
+                    <Text style={styles.headerTitle}>Galeri Video</Text>
                 </View>
-            )}
-        </ScrollView>  
-    );  
-}  
+
+                {dataVideo.map((item, index) => {
+                    const isExpanded = expandedIndex === index;
+                    return (
+                        <View key={index} style={styles.videoCard}>
+                            {/* Video Header */}
+                            <TouchableOpacity
+                                style={styles.videoHeader}
+                                onPress={() => toggleExpand(index)}
+                                activeOpacity={0.7}
+                            >
+                                <View style={styles.iconContainer}>
+                                    <Icon name="videocam" size={24} color="#0074BD" />
+                                </View>
+                                <Text style={styles.videoTitle} numberOfLines={2}>
+                                    {item.judul}
+                                </Text>
+                                <Icon
+                                    name={isExpanded ? "chevron-up" : "chevron-down"}
+                                    size={24}
+                                    color="#666"
+                                />
+                            </TouchableOpacity>
+
+                            {/* Video Content */}
+                            {isExpanded && (
+                                <View style={styles.videoContent}>
+                                    <View style={styles.videoWrapper}>
+                                        <WebView
+                                            style={styles.webview}
+                                            source={{ uri: 'https://youtu.be/' + splitLinkVideo(item.link) }}
+                                            javaScriptEnabled={true}
+                                            allowsInlineMediaPlayback={true}
+                                            mediaPlaybackRequiresUserAction={false}
+                                        />
+                                    </View>
+
+                                    {/* Video Info */}
+                                    {/* <View style={styles.videoInfo}>
+                                        <View style={styles.infoRow}>
+                                            <Icon name="eye-outline" size={18} color="#666" />
+                                            <Text style={styles.infoText}>Tonton di YouTube</Text>
+                                        </View>
+                                    </View> */}
+                                </View>
+                            )}
+
+                            {/* Divider */}
+                            {!isExpanded && <View style={styles.divider} />}
+                        </View>
+                    );
+                })}
+
+                {/* Empty State */}
+                {dataVideo.length === 0 && (
+                    <View style={styles.emptyState}>
+                        <Icon name="film-outline" size={80} color="#ccc" />
+                        <Text style={styles.emptyText}>Belum ada video tersedia</Text>
+                    </View>
+                )}
+            </ScrollView>
+        </SafeScreen>
+    );
+}
 
 const styles = StyleSheet.create({
     container: {

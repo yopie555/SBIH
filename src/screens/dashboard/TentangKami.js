@@ -3,74 +3,77 @@ import React from 'react'
 import BIH from '../../assets/bih.png'
 import { color } from '../../constants/Helper'
 import Icon from 'react-native-vector-icons/Ionicons'
+import SafeScreen from '../../components/SafeScreen'
 
 const TentangKami = () => {
     return (
-        <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-            <View style={styles.content}>
-                {/* Header Section */}
-                <View style={styles.headerSection}>
-                    <View style={styles.logoContainer}>
-                        <Image source={BIH} style={styles.logo} />
-                    </View>
-                    <View style={styles.titleContainer}>
-                        <Text style={styles.mainTitle}>BAPELITBANG</Text>
-                        <Text style={styles.subtitle}>Kabupaten Bintan</Text>
-                    </View>
-                </View>
-
-                {/* Description Section */}
-                <View style={styles.card}>
-                    <View style={styles.cardHeader}>
-                        <Icon name="information-circle" size={24} color="#0074BD" />
-                        <Text style={styles.cardTitle}>Deskripsi</Text>
-                    </View>
-                    <Text style={styles.descriptionText}>
-                        Aplikasi ini adalah wujud dari sistem peragaan data Daerah Kabupaten Bintan yang dikembangkan oleh Bappeda Litbang Kabupaten Bintan.{'\n\n'}
-                        Aplikasi ini mempublikasikan berbagai data umum penting Kabupaten Bintan yang diambil dari berbagai sumber resmi. Data yang di publikasikan merupakan data yang di tampilkan dalam bentuk tabel dan grafik lengkap dengan deskripsinya. Selain itu terdapat data visual dalam bentuk video dan publikasi ekspose pembangunan Kabupaten Bintan.
-                    </Text>
-                </View>
-
-                {/* Contact Section */}
-                <View style={styles.card}>
-                    <View style={styles.cardHeader}>
-                        <Icon name="call" size={24} color="#0074BD" />
-                        <Text style={styles.cardTitle}>Kontak</Text>
-                    </View>
-
-                    <View style={styles.contactItem}>
-                        <Icon name="location" size={20} color="#666" style={styles.contactIcon} />
-                        <View style={styles.contactTextContainer}>
-                            <Text style={styles.contactLabel}>Alamat</Text>
-                            <Text style={styles.contactText}>Jalan Jendral A. Yani, KM 5 Atas</Text>
-                            <Text style={styles.contactText}>Tanjungpinang, Provinsi Kepulauan Riau</Text>
+        <SafeScreen edges={['top', 'bottom']} statusBarStyle="dark-content">
+            <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+                <View style={styles.content}>
+                    {/* Header Section */}
+                    <View style={styles.headerSection}>
+                        <View style={styles.logoContainer}>
+                            <Image source={BIH} style={styles.logo} />
+                        </View>
+                        <View style={styles.titleContainer}>
+                            <Text style={styles.mainTitle}>BAPELITBANG</Text>
+                            <Text style={styles.subtitle}>Kabupaten Bintan</Text>
                         </View>
                     </View>
 
-                    <View style={styles.contactItem}>
-                        <Icon name="mail" size={20} color="#666" style={styles.contactIcon} />
-                        <View style={styles.contactTextContainer}>
-                            <Text style={styles.contactLabel}>Email</Text>
-                            <Text style={styles.contactText}>bapelitbang@bapelitbang.bintankab.go.id</Text>
+                    {/* Description Section */}
+                    <View style={styles.card}>
+                        <View style={styles.cardHeader}>
+                            <Icon name="information-circle" size={24} color="#0074BD" />
+                            <Text style={styles.cardTitle}>Deskripsi</Text>
+                        </View>
+                        <Text style={styles.descriptionText}>
+                            Aplikasi ini adalah wujud dari sistem peragaan data Daerah Kabupaten Bintan yang dikembangkan oleh Bappeda Litbang Kabupaten Bintan.{'\n\n'}
+                            Aplikasi ini mempublikasikan berbagai data umum penting Kabupaten Bintan yang diambil dari berbagai sumber resmi. Data yang di publikasikan merupakan data yang di tampilkan dalam bentuk tabel dan grafik lengkap dengan deskripsinya. Selain itu terdapat data visual dalam bentuk video dan publikasi ekspose pembangunan Kabupaten Bintan.
+                        </Text>
+                    </View>
+
+                    {/* Contact Section */}
+                    <View style={styles.card}>
+                        <View style={styles.cardHeader}>
+                            <Icon name="call" size={24} color="#0074BD" />
+                            <Text style={styles.cardTitle}>Kontak</Text>
+                        </View>
+
+                        <View style={styles.contactItem}>
+                            <Icon name="location" size={20} color="#666" style={styles.contactIcon} />
+                            <View style={styles.contactTextContainer}>
+                                <Text style={styles.contactLabel}>Alamat</Text>
+                                <Text style={styles.contactText}>Jalan Jendral A. Yani, KM 5 Atas</Text>
+                                <Text style={styles.contactText}>Tanjungpinang, Provinsi Kepulauan Riau</Text>
+                            </View>
+                        </View>
+
+                        <View style={styles.contactItem}>
+                            <Icon name="mail" size={20} color="#666" style={styles.contactIcon} />
+                            <View style={styles.contactTextContainer}>
+                                <Text style={styles.contactLabel}>Email</Text>
+                                <Text style={styles.contactText}>bapelitbang@bapelitbang.bintankab.go.id</Text>
+                            </View>
+                        </View>
+
+                        <View style={styles.contactItem}>
+                            <Icon name="call" size={20} color="#666" style={styles.contactIcon} />
+                            <View style={styles.contactTextContainer}>
+                                <Text style={styles.contactLabel}>Telepon</Text>
+                                <Text style={styles.contactText}>0771-29647</Text>
+                            </View>
                         </View>
                     </View>
 
-                    <View style={styles.contactItem}>
-                        <Icon name="call" size={20} color="#666" style={styles.contactIcon} />
-                        <View style={styles.contactTextContainer}>
-                            <Text style={styles.contactLabel}>Telepon</Text>
-                            <Text style={styles.contactText}>0771-29647</Text>
-                        </View>
+                    {/* Footer */}
+                    <View style={styles.footer}>
+                        <Text style={styles.footerText}>Smart Bintan in Hands</Text>
+                        <Text style={styles.footerSubtext}>Versi 1.0.0</Text>
                     </View>
                 </View>
-
-                {/* Footer */}
-                <View style={styles.footer}>
-                    <Text style={styles.footerText}>Smart Bintan in Hands</Text>
-                    <Text style={styles.footerSubtext}>Versi 1.0.0</Text>
-                </View>
-            </View>
-        </ScrollView>
+            </ScrollView>
+        </SafeScreen>
     )
 }
 

@@ -1,4 +1,4 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, ImageBackground, RefreshControl, Alert, Animated } from 'react-native'
+import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, ImageBackground, RefreshControl, Alert, Animated, StatusBar } from 'react-native'
 import React, { useState, useEffect, useRef } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import axios, { AxiosError } from 'axios'
@@ -6,6 +6,7 @@ import { baseURL } from '../../constants/General'
 import { formatNumber } from '../../constants/Helper'
 import { useQuery } from 'react-query'
 import Icon from 'react-native-vector-icons/Ionicons'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { stateDataPenduduk } from '../../state/dataPenduduk'
 import { stateDataIPM } from '../../state/dataIPM'
 import { stateDataLamaSekolah } from '../../state/dataRLS'
@@ -85,6 +86,7 @@ const AnimatedCard = ({ children, delay = 0 }) => {
 };
 
 const Index = () => {
+    const insets = useSafeAreaInsets()
     const navigation = useNavigation()
     const { setDataPenduduk } = stateDataPenduduk()
     const { setDataIPM } = stateDataIPM()
@@ -458,17 +460,18 @@ const Index = () => {
     ];
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, { paddingBottom: insets.bottom }]}>
+            <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
             <ImageBackground
                 source={headerImage}
-                style={styles.headerImage}
+                style={[styles.headerImage, { paddingTop: insets.top }]}
             >
                 <View style={styles.statusIndicator}>
                     <View style={[styles.statusDot, { backgroundColor: dataVideo.isFetched ? '#4caf50' : '#f44336' }]} />
                     <Text style={styles.statusText}>{dataVideo.isFetched ? 'Online' : 'Loading'}</Text>
                 </View>
             </ImageBackground>
-            
+
             <ScrollView
                 contentContainerStyle={styles.scrollContent}
                 refreshControl={
@@ -501,10 +504,10 @@ const Index = () => {
                                     </View>
                                     <Icon name={card.iconName} size={28} color="rgba(255,255,255,0.9)" />
                                 </View>
-                                
+
                                 <View style={styles.cardBody}>
                                     <Text style={styles.cardTitle} numberOfLines={2}>{card.title}</Text>
-                                    
+
                                     {card.data.isLoading ? (
                                         <ActivityIndicator size="small" color="#fff" style={styles.loader} />
                                     ) : (
@@ -512,7 +515,7 @@ const Index = () => {
                                             <Text style={styles.cardYear}>
                                                 Tahun {card.year || card.data?.data?.last_data?.[0]?.tahun || '-'}
                                             </Text>
-                                            
+
                                             {card.isPopulation ? (
                                                 <View style={styles.populationData}>
                                                     <Text style={styles.cardValue}>Laki: {card.getValue().laki} Orang</Text>

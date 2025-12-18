@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createDrawerNavigator, DrawerContentScrollView } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack'
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import Dashboard from './src/screens/dashboard/Index'
 import TentangKami from './src/screens/dashboard/TentangKami.js';
@@ -86,212 +87,214 @@ const App = () => {
   }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen
-            name="Dashboard"
-            component={DashboardDrawer}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name='TentangKami'
-            component={TentangKami}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="DetailDashboard"
-            component={DetailDashboard}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="DetailIPMDashboard"
-            component={DetailIPMDashboard}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="DetailRLSDashboard"
-            component={DetailRLSDashboard}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="DetailIGDashboard"
-            component={DetailIGDashboard}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="DetailIDBDashboard"
-            component={DetailIDBDashboard}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="DetailPEDashboard"
-            component={DetailPEDashboard}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="DetailKWDashboard"
-            component={DetailKWDashboard}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="DetailPPDashboard"
-            component={DetailPPDashboard}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="DetailPJDDDashboard"
-            component={DetailPJDDDashboard}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="DetailPRTDashboard"
-            component={DetailPRTDashboard}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="DetailAMHDashboard"
-            component={DetailAMHDashboard}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="DetailAHHDashboard"
-            component={DetailAHHDashboard}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="DetailAKHBDashboard"
-            component={DetailAKHBDashboard}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="DetailAKIMDashboard"
-            component={DetailAKIMDashboard}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="DetailPKKDashboard"
-            component={DetailPKKDashboard}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="DetailIPGDashboard"
-            component={DetailIPGDashboard}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="DetailAPKDashboard"
-            component={DetailAPKDashboard}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="DetailAPMDashboard"
-            component={DetailAPmDashboard}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="DetailHLSDashboard"
-            component={DetailHLSDashboard}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="DetailJRTLHDashboard"
-            component={DetailJRTLHDashboard}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="DetailPPUDashboard"
-            component={DetailPPUDashboard}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="DetailIPGGDashboard"
-            component={DetailIPGGDashboard}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name='DetailLIDashboard'
-            component={DetailLIDashboard}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name='DetailPMADashboard'
-            component={DetailPMADashboard}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name='DetailPPBDashboard'
-            component={DetailPPBDashboard}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name='DetailPPTDashboard'
-            component={DetailPPTDashboard}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name='DetailCPKUPDashboard'
-            component={DetailCPKUPDashboard}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name='DetailCPKHDashboard'
-            component={DetailCPKHDashboard}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name='DetailJPPDashboard'
-            component={DetailJPPDashboard}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name='DetailJPDashboard'
-            component={DetailJPDashboard}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name='DetailJPBKDashboard'
-            component={DetailJPBKDashboard}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name='DetailJPBKUDashboard'
-            component={DetailJPBKUDashboard}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name='DetailPTKJDashboard'
-            component={DetailPTKJDashboard}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name='DetailVideoDashboard'
-            component={DetailVideoDashboard}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name='DashboardAnggaranMurni'
-            component={DashboardAnggaranMurni}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name='DetailADHBDashboard'
-            component={DetailADHBDashboard}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name='DetailADHKDashboard'
-            component={DetailADHKDashboard}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name='DetailPSDashboard'
-            component={DetailPSDashboard}
-            options={{ headerShown: false }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </QueryClientProvider>
+    <SafeAreaProvider>
+      <QueryClientProvider client={queryClient}>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen
+              name="Dashboard"
+              component={DashboardDrawer}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name='TentangKami'
+              component={TentangKami}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="DetailDashboard"
+              component={DetailDashboard}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="DetailIPMDashboard"
+              component={DetailIPMDashboard}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="DetailRLSDashboard"
+              component={DetailRLSDashboard}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="DetailIGDashboard"
+              component={DetailIGDashboard}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="DetailIDBDashboard"
+              component={DetailIDBDashboard}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="DetailPEDashboard"
+              component={DetailPEDashboard}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="DetailKWDashboard"
+              component={DetailKWDashboard}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="DetailPPDashboard"
+              component={DetailPPDashboard}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="DetailPJDDDashboard"
+              component={DetailPJDDDashboard}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="DetailPRTDashboard"
+              component={DetailPRTDashboard}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="DetailAMHDashboard"
+              component={DetailAMHDashboard}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="DetailAHHDashboard"
+              component={DetailAHHDashboard}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="DetailAKHBDashboard"
+              component={DetailAKHBDashboard}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="DetailAKIMDashboard"
+              component={DetailAKIMDashboard}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="DetailPKKDashboard"
+              component={DetailPKKDashboard}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="DetailIPGDashboard"
+              component={DetailIPGDashboard}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="DetailAPKDashboard"
+              component={DetailAPKDashboard}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="DetailAPMDashboard"
+              component={DetailAPmDashboard}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="DetailHLSDashboard"
+              component={DetailHLSDashboard}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="DetailJRTLHDashboard"
+              component={DetailJRTLHDashboard}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="DetailPPUDashboard"
+              component={DetailPPUDashboard}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="DetailIPGGDashboard"
+              component={DetailIPGGDashboard}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name='DetailLIDashboard'
+              component={DetailLIDashboard}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name='DetailPMADashboard'
+              component={DetailPMADashboard}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name='DetailPPBDashboard'
+              component={DetailPPBDashboard}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name='DetailPPTDashboard'
+              component={DetailPPTDashboard}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name='DetailCPKUPDashboard'
+              component={DetailCPKUPDashboard}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name='DetailCPKHDashboard'
+              component={DetailCPKHDashboard}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name='DetailJPPDashboard'
+              component={DetailJPPDashboard}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name='DetailJPDashboard'
+              component={DetailJPDashboard}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name='DetailJPBKDashboard'
+              component={DetailJPBKDashboard}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name='DetailJPBKUDashboard'
+              component={DetailJPBKUDashboard}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name='DetailPTKJDashboard'
+              component={DetailPTKJDashboard}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name='DetailVideoDashboard'
+              component={DetailVideoDashboard}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name='DashboardAnggaranMurni'
+              component={DashboardAnggaranMurni}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name='DetailADHBDashboard'
+              component={DetailADHBDashboard}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name='DetailADHKDashboard'
+              component={DetailADHKDashboard}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name='DetailPSDashboard'
+              component={DetailPSDashboard}
+              options={{ headerShown: false }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </QueryClientProvider>
+    </SafeAreaProvider>
   )
 }
 

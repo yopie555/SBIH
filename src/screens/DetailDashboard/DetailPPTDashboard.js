@@ -1,5 +1,6 @@
 import React from 'react'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import SafeScreen from '../../components/SafeScreen';
 
 import DetailPPT from '../pertanian/PPT/DetailPPT'
 import GrafikPPT from '../pertanian/PPT/GrafikPPT'
@@ -9,27 +10,29 @@ const Tab = createMaterialTopTabNavigator()
 const DetailPPTDashboard = (props) => {
 
   return (
-    <Tab.Navigator
-      screenOptions={{
-        tabBarActiveTintColor: '#0074BD',
-        tabBarInactiveTintColor: '#979797',
-        tabBarLabelStyle: {
-          fontSize: 14,
-          fontWeight: '700',
-        },
-      }}
-    >
-      <Tab.Screen
-        name="Detail Produksi Perikanan Tangkap (PPT)"
-        component={DetailPPT}
-        initialParams={{ title: "Data Produksi Perikanan Tangkap (Ton)" }}
-      />
-      <Tab.Screen
-        name="Grafik Produksi Perikanan Tangkap (PPT)"
-        component={GrafikPPT}
-        initialParams={{ title: "Data Produksi Perikanan Tangkap (Ton)" }}
-      />
-    </Tab.Navigator>
+    <SafeScreen edges={['top', 'bottom']} statusBarStyle="dark-content">
+      <Tab.Navigator
+        screenOptions={{
+          tabBarActiveTintColor: '#0074BD',
+          tabBarInactiveTintColor: '#979797',
+          tabBarLabelStyle: {
+            fontSize: 14,
+            fontWeight: '700',
+          },
+        }}
+      >
+        <Tab.Screen
+          name="Detail Produksi Perikanan Tangkap (PPT)"
+          component={DetailPPT}
+          initialParams={{ title: "Data Produksi Perikanan Tangkap (Ton)" }}
+        />
+        <Tab.Screen
+          name="Grafik Produksi Perikanan Tangkap (PPT)"
+          component={GrafikPPT}
+          initialParams={{ title: "Data Produksi Perikanan Tangkap (Ton)" }}
+        />
+      </Tab.Navigator>
+    </SafeScreen>
   )
 }
 

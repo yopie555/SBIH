@@ -12,23 +12,26 @@ import GrafikFisikAPBPPPerubahan from './screens/GrafikFisikAPBPPPerubahan';
 import { useMutation } from 'react-query';
 import { stateDataAnggaran } from '../../state/dataAnggaran';
 import { stateDataTahun } from '../../state/dataTahun';
+import SafeScreen from '../../components/SafeScreen';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Tab = createMaterialTopTabNavigator();
 
 const DashboardAnggaranMurni = ({ navigation }) => {
     const [tahun, setTahun] = useState(new Date().getFullYear());
     const [modalVisible, setModalVisible] = useState(false);
-    const {setDataAnggaran} = stateDataAnggaran();
-    const {setDataTahuns} = stateDataTahun();
+    const { setDataAnggaran } = stateDataAnggaran();
+    const { setDataTahuns } = stateDataTahun();
     const rotateAnim = useRef(new Animated.Value(0)).current;
     const slideAnim = useRef(new Animated.Value(0)).current;
+    const insets = useSafeAreaInsets();
 
     // Accordion for year selection
     const years = Array.from({ length: new Date().getFullYear() - 2021 + 1 }, (_, i) => 2021 + i);
 
     const toggleAccordion = () => {
         const toValue = modalVisible ? 0 : 1;
-        
+
         // Rotate animation for icon
         Animated.timing(rotateAnim, {
             toValue,
@@ -88,9 +91,9 @@ const DashboardAnggaranMurni = ({ navigation }) => {
         });
 
         return (
-            <View style={styles.yearSelectorContainer}>
+            <View style={[styles.yearSelectorContainer, { bottom: insets.bottom }]}>
                 {modalVisible && (
-                    <Animated.View 
+                    <Animated.View
                         style={[
                             styles.accordion,
                             {
@@ -102,8 +105,8 @@ const DashboardAnggaranMurni = ({ navigation }) => {
                             data={years}
                             keyExtractor={(item) => item.toString()}
                             renderItem={({ item }) => (
-                                <TouchableOpacity 
-                                    onPress={() => selectYear(item)} 
+                                <TouchableOpacity
+                                    onPress={() => selectYear(item)}
                                     style={[
                                         styles.yearItem,
                                         item === tahun && styles.selectedYearItem
@@ -124,8 +127,8 @@ const DashboardAnggaranMurni = ({ navigation }) => {
                         />
                     </Animated.View>
                 )}
-                <TouchableOpacity 
-                    onPress={toggleAccordion} 
+                <TouchableOpacity
+                    onPress={toggleAccordion}
                     style={styles.yearButton}
                     activeOpacity={0.8}
                 >
@@ -142,38 +145,42 @@ const DashboardAnggaranMurni = ({ navigation }) => {
     };
 
     return (
-        <View style={styles.container}>
-            {isLoading && (
-                <View style={styles.loadingContainer}>
-                    <ActivityIndicator size="large" color="#0074BD" />
-                </View>
-            )}
-            {error && <Text style={{ color: 'red', padding: 10 }}>Error: {error.message}</Text>}
-            
-            <Tab.Navigator
-                screenOptions={{
-                    tabBarActiveTintColor: '#0074BD',
-                    tabBarInactiveTintColor: '#979797',
-                    tabBarLabelStyle: {
-                        fontSize: 14,
-                        fontWeight: '700',
-                    },
-                    tabBarScrollEnabled: true,
-                }}
-            >
-                <Tab.Screen
-                    name="Anggaran Murni"
-                    component={AnggaranMurni}
-                />
-                <Tab.Screen name="Grafik Anggaran Murni" component={GrafikAnggaranMurni} />
-                <Tab.Screen name="Grafik Fisik Murni" component={GrafikFisikMurni} />
-                <Tab.Screen name="APBP Perubahan" component={APBPPerubahan} />
-                <Tab.Screen name="Grafik APBP Perubahan" component={GrafikAPBPPPerubahan} />
-                <Tab.Screen name="Grafik Fisik APBP Perubahan" component={GrafikFisikAPBPPPerubahan} />
-            </Tab.Navigator>
+        <SafeScreen edges={['top']} statusBarStyle="dark-content">
+            <View style={styles.container}>
+                {isLoading && (
+                    <View style={styles.loadingContainer}>
+                        <ActivityIndicator size="large" color="#0074BD" />
+                    </View>
+                )}
+                {error && <Text style={{ color: 'red', padding: 10 }}>Error: {error.message}</Text>}
 
-            <YearSelector />
-        </View>
+                <View style={{ flex: 1, marginBottom: 60 + insets.bottom }}>
+                    <Tab.Navigator
+                        screenOptions={{
+                            tabBarActiveTintColor: '#0074BD',
+                            tabBarInactiveTintColor: '#979797',
+                            tabBarLabelStyle: {
+                                fontSize: 14,
+                                fontWeight: '700',
+                            },
+                            tabBarScrollEnabled: true,
+                        }}
+                    >
+                        <Tab.Screen
+                            name="Anggaran Murni"
+                            component={AnggaranMurni}
+                        />
+                        <Tab.Screen name="Grafik Anggaran Murni" component={GrafikAnggaranMurni} />
+                        <Tab.Screen name="Grafik Fisik Murni" component={GrafikFisikMurni} />
+                        <Tab.Screen name="APBP Perubahan" component={APBPPerubahan} />
+                        <Tab.Screen name="Grafik APBP Perubahan" component={GrafikAPBPPPerubahan} />
+                        <Tab.Screen name="Grafik Fisik APBP Perubahan" component={GrafikFisikAPBPPPerubahan} />
+                    </Tab.Navigator>
+                </View>
+
+                <YearSelector />
+            </View>
+        </SafeScreen>
     );
 };
 
